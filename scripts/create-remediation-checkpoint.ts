@@ -77,9 +77,11 @@ export function parsesCheckpointArguments(arguments_: readonly string[]): Checkp
       "--feature",
       /^features\/[A-Za-z0-9._/-]+\.feature$/u
     ),
+    // Must stay in step with the history gate's implementation paths, or a
+    // governed change would be unscopable and therefore unauthorizable.
     implementationScopes: many(
       "--scope",
-      /^(?:src\/|contracts\/|scripts\/|docs\/remediation-governance\/|package\.json$|pnpm-lock\.yaml$|vitest\.config\.ts$|\.github\/)[A-Za-z0-9._/-]*$/u
+      /^(?:src\/|contracts\/|scripts\/|tests\/|docs\/remediation-governance\/|docs\/documentation-snapshots\/|package\.json$|pnpm-lock\.yaml$|vitest\.config\.ts$|\.gitattributes$|\.github\/)[A-Za-z0-9._/-]*$/u
     )
   };
 }

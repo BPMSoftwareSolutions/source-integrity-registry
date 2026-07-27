@@ -83,6 +83,14 @@ async function provesFreshBuild(): Promise<void> {
         return;
       }
       process.stdout.write("Compiled dist output matches a fresh build of committed source.\n");
+    } else {
+      // Not a failure: dist is gitignored, so a clean checkout legitimately has
+      // none. Stating it keeps the log honest about what was compared, since
+      // "fresh build verified" alone could be misread as proving the packed
+      // surface, which prove-packed-consumer builds for itself.
+      process.stdout.write(
+        "No dist tree present; the packed-consumer gate builds the shipped output it proves.\n"
+      );
     }
   } finally {
     await rm(staging, { recursive: true, force: true });

@@ -52,3 +52,48 @@ export function createsSirSchemaValidator(): SirValidator {
   addFormats(ajv);
   return ajv;
 }
+
+/** A validation verdict that a thrown exception cannot escape. */
+export type GuardedValidation =
+  | { readonly outcome: "valid" }
+  | { readonly outcome: "invalid"; readonly errors: string };
+
+/**
+ * Applies a compiled validator so that a thrown exception becomes RED.
+ *
+ * A validator that throws is strictly worse than one returning `false`: the
+ * caller gets no verdict at all, and a checker whose purpose is to refuse bad
+ * authority instead crashes. AJV reaches that state on inputs it cannot
+ * compare — `uniqueItems`, `const`, and `enum` delegate to a deep-equality
+ * helper that calls `valueOf()` on its operands, and JSON may legitimately
+ * define its own `"valueOf"` member, shadowing the inherited method with a
+ * non-callable value.
+ *
+ * Enumerating every such shape would be an open-ended guess, and stripping
+ * them would change the document's JSON meaning. Converting the exception into
+ * an explicit invalid verdict is closed and preserves the fail-closed
+ * property: unvalidatable authority is never admitted.
+ */
+export function validatesGuarded(
+  validate: (value: unknown) => boolean,
+  value: unknown
+): GuardedValidation {
+  let valid: boolean;
+  try {
+    valid = validate(value);
+  } catch (cause) {
+    return {
+      outcome: "invalid",
+      errors: `Validation could not produce a verdict for this document: ${
+        cause instanceof Error ? cause.message : String(cause)
+      }`
+    };
+  }
+
+  if (valid) {
+    return { outcome: "valid" };
+  }
+
+  const errors = (validate as { errors?: unknown }).errors;
+  return { outcome: "invalid", errors: JSON.stringify(errors) };
+}

@@ -6,7 +6,11 @@ export {
   type ValidationFinding
 } from "./validation/validate-registry.js";
 
-export { createsSirSchemaValidator } from "./validation/ajv-factory.js";
+export {
+  createsSirSchemaValidator,
+  validatesGuarded,
+  type GuardedValidation
+} from "./validation/ajv-factory.js";
 
 export {
   admitsSchemaCatalog,
@@ -73,6 +77,7 @@ export {
   recoversOriginBytes,
   reproducesDerivedDocument,
   appliesTransformation,
+  projectsCheckedOutBytes,
   isDocumentationSnapshot,
   isDocumentationDerivation,
   type DocumentationSnapshot,

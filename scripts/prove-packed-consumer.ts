@@ -19,6 +19,26 @@ async function provesPackedConsumer(): Promise<void> {
   const consumer = path.join(workspace, "consumer");
 
   try {
+    // `dist` is gitignored, so a clean checkout has none. Packing with
+    // `--ignore-scripts` (required to avoid prepack recursion) would then ship
+    // a tarball with no compiled output, and this gate would pass only where
+    // an earlier build happened to leave residue behind. Building explicitly
+    // makes the packed surface a product of committed source on every host.
+    const built = spawnSync(
+      process.execPath,
+      [
+        path.join(repositoryRoot, "node_modules", "typescript", "lib", "tsc.js"),
+        "--project",
+        path.join(repositoryRoot, "tsconfig.build.json")
+      ],
+      { cwd: repositoryRoot, encoding: "utf8" }
+    );
+
+    if (built.status !== 0) {
+      fails(`Build for packing failed:\n${built.stdout ?? ""}${built.stderr ?? ""}`);
+      return;
+    }
+
     // `--ignore-scripts` prevents the pack from re-entering prepack, which
     // would recurse back into proof.
     const packed = spawnSync(

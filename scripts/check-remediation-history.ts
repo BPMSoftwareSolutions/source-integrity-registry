@@ -4,7 +4,7 @@ import path from "node:path";
 
 import { parsesAuthorityDocument } from "../src/authority/parse-authority-document.ts";
 import { digestsBytes } from "../src/domain/digest.ts";
-import { createsSirSchemaValidator } from "../src/validation/ajv-factory.ts";
+import { createsSirSchemaValidator, validatesGuarded } from "../src/validation/ajv-factory.ts";
 import { isMainModule } from "./is-main-module.ts";
 import {
   repositoryRoot,
@@ -25,13 +25,24 @@ const IMPLEMENTATION_PREFIXES = [
   "contracts/",
   "scripts/",
   ".github/",
-  "docs/remediation-governance/"
+  "docs/remediation-governance/",
+  // Admitted documentation origin and derivation authority. Excluding it would
+  // let a commit replace a snapshot and its digest under the same identity
+  // with no covering checkpoint.
+  "docs/documentation-snapshots/",
+  // Tests are the executed testimony scenario coverage is derived from, so a
+  // change to them changes what proof actually asserts.
+  "tests/"
 ] as const;
 const IMPLEMENTATION_FILES = new Set([
   "package.json",
   "pnpm-lock.yaml",
-  "vitest.config.ts"
+  "vitest.config.ts",
+  // Normalization policy decides whether admitted bytes survive checkout, so
+  // it governs the integrity of every digest in the repository.
+  ".gitattributes"
 ]);
+const SNAPSHOT_DIRECTORY = "docs/documentation-snapshots";
 
 interface AuthorityCheckpoint {
   readonly checkpointType: "sir-remediation-authority-checkpoint.v1";
@@ -156,9 +167,13 @@ async function checksRemediationHistory(
   if (parsedSchema.outcome === "failed") {
     throw new Error(`Checkpoint schema is inadmissible: ${parsedSchema.failure.message}`);
   }
-  const validateCheckpoint = createsSirSchemaValidator().compile(
+  const compiledCheckpoint = createsSirSchemaValidator().compile(
     parsedSchema.document.value as object
   );
+  // Guarded: a validator that throws yields no verdict at all, so authority
+  // that cannot be compared must be refused rather than crash the gate.
+  const validateCheckpoint = (value: unknown): boolean =>
+    validatesGuarded(compiledCheckpoint, value).outcome === "valid";
   const indexSchemaBytes = await readFile(
     path.join(
       repositoryRoot,
@@ -173,9 +188,11 @@ async function checksRemediationHistory(
       `Remediation-index schema is inadmissible: ${parsedIndexSchema.failure.message}`
     );
   }
-  const validateIndex = createsSirSchemaValidator().compile(
+  const compiledIndex = createsSirSchemaValidator().compile(
     parsedIndexSchema.document.value as object
   );
+  const validateIndex = (value: unknown): boolean =>
+    validatesGuarded(compiledIndex, value).outcome === "valid";
 
   const commits = git(["rev-list", "--reverse", `${baseCommit}..HEAD`])
     .trim()
@@ -217,6 +234,9 @@ async function checksRemediationHistory(
         (value) => validateCheckpoint(value),
         (value) => validateIndex(value)
       )
+    );
+    violations.push(
+      ...checksSnapshotImmutability(commit, parent, changedPaths, gitObjectExists)
     );
     const implementationPaths = changedPaths.filter(isImplementationPath);
     if (implementationPaths.length === 0) {
@@ -273,6 +293,46 @@ async function checksRemediationHistory(
         ...checksHistoricalCoordinates(checkpoint, (value) => validateIndex(value))
       );
     }
+  }
+
+  return violations;
+}
+
+/**
+ * Enforces immutability of admitted documentation origin snapshots.
+ *
+ * A snapshot's whole purpose is that exact supplied bytes remain recoverable
+ * under a stable identity. Rewriting `SIR-DS-NNN.json` in place would move
+ * both the bytes and the digest that attests them, so the change would be
+ * self-consistent and invisible. A changed document earns a new snapshot ID;
+ * an existing one is never edited or deleted.
+ *
+ * Derivation declarations may be revised, because they assert a relationship
+ * between identities rather than retaining irreplaceable bytes.
+ */
+export function checksSnapshotImmutability(
+  commit: string,
+  parent: string,
+  changedPaths: readonly string[],
+  objectExists: (specifier: string) => boolean
+): RemediationHistoryViolation[] {
+  const violations: RemediationHistoryViolation[] = [];
+
+  for (const changedPath of changedPaths) {
+    const match = /^docs\/documentation-snapshots\/(SIR-DS-[0-9]{3})\.json$/u.exec(changedPath);
+    if (match === null) {
+      continue;
+    }
+    if (!objectExists(`${parent}:${changedPath}`)) {
+      // First appearance: admitting new origin bytes.
+      continue;
+    }
+    violations.push({
+      code: objectExists(`${commit}:${changedPath}`)
+        ? "SNAPSHOT_CHANGED_AFTER_ADMISSION"
+        : "SNAPSHOT_DELETED_AFTER_ADMISSION",
+      message: `${changedPath} is immutable after its admission commit; changed source bytes require a new snapshot identity.`
+    });
   }
 
   return violations;

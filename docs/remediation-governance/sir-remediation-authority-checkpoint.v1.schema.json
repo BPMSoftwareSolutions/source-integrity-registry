@@ -80,7 +80,8 @@
       "uniqueItems": true,
       "items": {
         "type": "string",
-        "pattern": "^(src/|contracts/|scripts/|docs/remediation-governance/|package\\.json$|pnpm-lock\\.yaml$|vitest\\.config\\.ts$|\\.github/)[A-Za-z0-9._/-]*$"
+        "description": "Must admit every path the history gate treats as an implementation path, or a governed change would be unscopable and therefore unauthorizable.",
+        "pattern": "^(src/|contracts/|scripts/|tests/|docs/remediation-governance/|docs/documentation-snapshots/|package\\.json$|pnpm-lock\\.yaml$|vitest\\.config\\.ts$|\\.gitattributes$|\\.github/)[A-Za-z0-9._/-]*$"
       }
     }
   }

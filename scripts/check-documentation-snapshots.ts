@@ -3,21 +3,33 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 
 import { parsesAuthorityDocument } from "../src/authority/parse-authority-document.ts";
-import { digestsMatch } from "../src/domain/digest.ts";
+import { digestsBytes, digestsMatch } from "../src/domain/digest.ts";
 import {
   isDocumentationDerivation,
   isDocumentationSnapshot,
+  projectsCheckedOutBytes,
   recoversOriginBytes,
   reproducesDerivedDocument,
   type DocumentationDerivation,
   type DocumentationSnapshot
 } from "../src/documentation/documentation-snapshot.ts";
-import { createsSirSchemaValidator } from "../src/validation/ajv-factory.ts";
+import { createsSirSchemaValidator, validatesGuarded } from "../src/validation/ajv-factory.ts";
 import { isMainModule } from "./is-main-module.ts";
 import { repositoryRoot } from "./remediation/build-index.ts";
 
 const SNAPSHOT_DIRECTORY = path.join(repositoryRoot, "docs", "documentation-snapshots");
 const GOVERNANCE_DIRECTORY = path.join(repositoryRoot, "docs", "remediation-governance");
+
+/**
+ * Documentation authority this repository must carry.
+ *
+ * Without a required inventory the verification loops iterate over whatever
+ * happens to be present, so deleting a declaration would remove the obligation
+ * along with the evidence and proof would pass vacuously. Admitted identities
+ * are listed here so their absence is itself a violation.
+ */
+const REQUIRED_SNAPSHOT_IDS = ["SIR-DS-001"] as const;
+const REQUIRED_DERIVATION_IDS = ["SIR-DD-001"] as const;
 
 export interface DocumentationViolation {
   readonly code: string;
@@ -65,12 +77,13 @@ export async function checksDocumentationSnapshots(): Promise<DocumentationViola
 
     const value = parsed.document.value;
     if (entry.startsWith("SIR-DS-")) {
-      if (!validateSnapshot(value) || !isDocumentationSnapshot(value)) {
+      const verdict = validatesGuarded(validateSnapshot, value);
+      if (verdict.outcome === "invalid" || !isDocumentationSnapshot(value)) {
         violations.push({
           code: "SNAPSHOT_CONTRACT_INVALID",
-          message: `${entry} violates the documentation-snapshot contract: ${JSON.stringify(
-            validateSnapshot.errors
-          )}`
+          message: `${entry} violates the documentation-snapshot contract: ${
+            verdict.outcome === "invalid" ? verdict.errors : "structural admission failed"
+          }`
         });
         continue;
       }
@@ -86,12 +99,13 @@ export async function checksDocumentationSnapshots(): Promise<DocumentationViola
     }
 
     if (entry.startsWith("SIR-DD-")) {
-      if (!validateDerivation(value) || !isDocumentationDerivation(value)) {
+      const verdict = validatesGuarded(validateDerivation, value);
+      if (verdict.outcome === "invalid" || !isDocumentationDerivation(value)) {
         violations.push({
           code: "DERIVATION_CONTRACT_INVALID",
-          message: `${entry} violates the documentation-derivation contract: ${JSON.stringify(
-            validateDerivation.errors
-          )}`
+          message: `${entry} violates the documentation-derivation contract: ${
+            verdict.outcome === "invalid" ? verdict.errors : "structural admission failed"
+          }`
         });
         continue;
       }
@@ -112,11 +126,25 @@ export async function checksDocumentationSnapshots(): Promise<DocumentationViola
     });
   }
 
-  if (snapshots.size === 0) {
-    violations.push({
-      code: "DOCUMENTATION_ORIGIN_ABSENT",
-      message: "No documentation origin snapshot is admitted."
-    });
+  // A required identity that is absent is a violation in its own right, so
+  // deleting authority cannot delete the obligation to prove it.
+  for (const snapshotId of REQUIRED_SNAPSHOT_IDS) {
+    if (!snapshots.has(snapshotId)) {
+      violations.push({
+        code: "REQUIRED_SNAPSHOT_ABSENT",
+        message: `${snapshotId} is required documentation origin authority but is not admitted.`
+      });
+    }
+  }
+
+  const derivationIds = new Set(derivations.map((derivation) => derivation.derivationId));
+  for (const derivationId of REQUIRED_DERIVATION_IDS) {
+    if (!derivationIds.has(derivationId)) {
+      violations.push({
+        code: "REQUIRED_DERIVATION_ABSENT",
+        message: `${derivationId} is required derivation authority but is not admitted.`
+      });
+    }
   }
 
   // @sir-package-010: the exact supplied bytes must still be recoverable.
@@ -166,23 +194,44 @@ export async function checksDocumentationSnapshots(): Promise<DocumentationViola
       // Reconstructed into temporary storage, never over the tracked document.
       await writeFile(path.join(staging, path.basename(derivation.derivedPath)), reproduction.bytes);
 
-      // The authoritative comparison is reproduction against the declaration,
-      // which reproducesDerivedDocument has already made byte-exact.
-      //
-      // The working-tree Markdown file is deliberately not authority here. It
-      // is checked out through `* text=auto eol=lf`, so its bytes are
-      // normalized on any fresh clone exactly as the origin's were. Requiring
-      // it to match a CRLF digest would make proof pass on the machine that
-      // happened to author the file and fail everywhere else, which is the
-      // same false-green class SIR-RA-042 was raised to close. Its absence is
-      // still a fault, because the declaration names it.
       const trackedPath = path.join(repositoryRoot, derivation.derivedPath);
+      let trackedBytes: Buffer;
       try {
-        await readFile(trackedPath);
+        trackedBytes = await readFile(trackedPath);
       } catch {
         violations.push({
           code: "DERIVED_DOCUMENT_ABSENT",
           message: `${derivation.derivedPath} is declared by ${derivation.derivationId} but absent from the workspace.`
+        });
+        continue;
+      }
+
+      // The checked-out file is filtered through `text=auto eol=lf`, so its
+      // exact CRLF digest is reproducible only on the authoring machine.
+      // Comparing the declared normalization projection instead detects a real
+      // content change on every host, which comparing nothing did not.
+      const projected = projectsCheckedOutBytes(reproduction.bytes);
+      const projectedDigest = digestsBytes(projected);
+
+      if (!digestsMatch(projectedDigest, derivation.checkedOutProjection.sha256)) {
+        violations.push({
+          code: "DERIVED_PROJECTION_DECLARATION_MISMATCH",
+          message: `${derivation.derivationId} declares checked-out projection ${derivation.checkedOutProjection.sha256}, but the reproduction projects to ${projectedDigest}.`
+        });
+        continue;
+      }
+
+      // The working copy may be checked out either way depending on platform
+      // and filter settings, so it must equal the derived bytes or their
+      // declared projection. Anything else is changed content.
+      const trackedDigest = digestsBytes(trackedBytes);
+      const matchesExact = digestsMatch(trackedDigest, derivation.derivedSha256);
+      const matchesProjection = digestsMatch(trackedDigest, derivation.checkedOutProjection.sha256);
+
+      if (!matchesExact && !matchesProjection) {
+        violations.push({
+          code: "DERIVED_DOCUMENT_CHANGED",
+          message: `${derivation.derivedPath} is ${trackedDigest}, which is neither the declared derived identity ${derivation.derivedSha256} nor its checked-out projection ${derivation.checkedOutProjection.sha256}.`
         });
       }
     }

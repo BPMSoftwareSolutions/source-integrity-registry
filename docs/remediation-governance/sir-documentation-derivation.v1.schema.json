@@ -13,7 +13,8 @@
     "transformation",
     "derivedPath",
     "derivedByteLength",
-    "derivedSha256"
+    "derivedSha256",
+    "checkedOutProjection"
   ],
   "properties": {
     "derivationType": {
@@ -69,6 +70,25 @@
     "derivedSha256": {
       "type": "string",
       "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "checkedOutProjection": {
+      "description": "Identity of the derived document as the repository checks it out. derivedSha256 covers exact bytes, which may carry CRLF; the working copy is filtered through text=auto eol=lf and legally differs. Declaring the projection lets proof detect real content change on any host instead of only on the authoring machine.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lineEndings", "byteLength", "sha256"],
+      "properties": {
+        "lineEndings": {
+          "enum": ["lf"]
+        },
+        "byteLength": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
     }
   }
 }

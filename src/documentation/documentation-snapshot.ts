@@ -36,6 +36,20 @@ export interface DocumentationDerivation {
   readonly derivedPath: string;
   readonly derivedByteLength: number;
   readonly derivedSha256: Sha256Digest;
+  /**
+   * Identity of the derived document as the repository actually checks it out.
+   *
+   * `derivedSha256` covers the exact derived bytes, which carry CRLF. The
+   * working copy is filtered through `text=auto eol=lf`, so its bytes legally
+   * differ on every clone. Declaring that projection explicitly is what lets
+   * proof detect a real content change instead of either ignoring the file or
+   * failing everywhere but the authoring machine.
+   */
+  readonly checkedOutProjection: {
+    readonly lineEndings: "lf";
+    readonly byteLength: number;
+    readonly sha256: Sha256Digest;
+  };
 }
 
 export type DocumentationTransformationId = "remove-blank-line-at-byte-offset.v1";
@@ -125,8 +139,45 @@ export function isDocumentationDerivation(value: unknown): value is Documentatio
     typeof candidate["derivedByteLength"] === "number" &&
     Number.isInteger(candidate["derivedByteLength"]) &&
     (candidate["derivedByteLength"] as number) >= 0 &&
-    isSha256Digest(candidate["derivedSha256"])
+    isSha256Digest(candidate["derivedSha256"]) &&
+    isCheckedOutProjection(candidate["checkedOutProjection"])
   );
+}
+
+function isCheckedOutProjection(
+  value: unknown
+): value is DocumentationDerivation["checkedOutProjection"] {
+  if (typeof value !== "object" || value === null) {
+    return false;
+  }
+  const candidate = value as Record<string, unknown>;
+  return (
+    candidate["lineEndings"] === "lf" &&
+    typeof candidate["byteLength"] === "number" &&
+    Number.isInteger(candidate["byteLength"]) &&
+    (candidate["byteLength"] as number) >= 0 &&
+    isSha256Digest(candidate["sha256"])
+  );
+}
+
+/**
+ * Projects derived bytes through the repository's checkout normalization.
+ *
+ * CRLF becomes LF, matching `text=auto eol=lf`. This is applied to the
+ * reproduction, so the comparison against a checked-out file tests content
+ * rather than which machine wrote it.
+ */
+export function projectsCheckedOutBytes(bytes: Uint8Array): Uint8Array {
+  const output: number[] = [];
+  for (let index = 0; index < bytes.length; index += 1) {
+    const byte = bytes[index] as number;
+    // Drop CR only when it is part of a CRLF pair; a lone CR is content.
+    if (byte === 0x0d && bytes[index + 1] === 0x0a) {
+      continue;
+    }
+    output.push(byte);
+  }
+  return Uint8Array.from(output);
 }
 
 /**
