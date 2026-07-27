@@ -1,0 +1,13 @@
+{
+  "extensionType": "sir-governed-path-extension.v1",
+  "rationale": "Widens the implementation-path set the remediation-history gate enforces. Review found that documentation snapshots, tests, and normalization policy could change without a covering authority checkpoint, so an admitted origin snapshot and the digest attesting it could be replaced together under one identity.",
+  "prospective": true,
+  "effect": "Applies to a commit only when its parent already contains this marker. Commits authored under the narrower rule keep being judged by it, because their checkpoints could not have scoped a path that was not yet governed; condemning them would force either a false green or a rewrite of history.",
+  "addedPrefixes": [
+    "docs/documentation-snapshots/",
+    "tests/"
+  ],
+  "addedFiles": [
+    ".gitattributes"
+  ]
+}

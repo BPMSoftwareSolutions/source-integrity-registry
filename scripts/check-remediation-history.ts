@@ -25,7 +25,28 @@ const IMPLEMENTATION_PREFIXES = [
   "contracts/",
   "scripts/",
   ".github/",
-  "docs/remediation-governance/",
+  "docs/remediation-governance/"
+] as const;
+const IMPLEMENTATION_FILES = new Set([
+  "package.json",
+  "pnpm-lock.yaml",
+  "vitest.config.ts"
+]);
+
+/**
+ * Paths that became governed after the original implementation-path set.
+ *
+ * Widening the set is an integrity improvement, but applying it to history
+ * authored under the narrower rule would retroactively condemn commits whose
+ * checkpoints could not have scoped a path that was not yet governed. That
+ * would make an honest past unrepresentable and force either a false green or
+ * a rewrite of history.
+ *
+ * So the widening is prospective, exactly like the pipeline marker: it binds
+ * commits after the commit that introduced it. The extension is still
+ * enforced for everything from that point on.
+ */
+const EXTENDED_IMPLEMENTATION_PREFIXES = [
   // Admitted documentation origin and derivation authority. Excluding it would
   // let a commit replace a snapshot and its digest under the same identity
   // with no covering checkpoint.
@@ -34,14 +55,19 @@ const IMPLEMENTATION_PREFIXES = [
   // change to them changes what proof actually asserts.
   "tests/"
 ] as const;
-const IMPLEMENTATION_FILES = new Set([
-  "package.json",
-  "pnpm-lock.yaml",
-  "vitest.config.ts",
+const EXTENDED_IMPLEMENTATION_FILES = new Set([
   // Normalization policy decides whether admitted bytes survive checkout, so
   // it governs the integrity of every digest in the repository.
   ".gitattributes"
 ]);
+
+/**
+ * Marks where the extended path set takes effect.
+ *
+ * The extension applies to a commit when its parent already declares it, which
+ * is the same prospective test the pipeline marker uses.
+ */
+const EXTENSION_MARKER = "docs/remediation-governance/sir-governed-path-extension.v1.json";
 const SNAPSHOT_DIRECTORY = "docs/documentation-snapshots";
 
 interface AuthorityCheckpoint {
@@ -63,10 +89,17 @@ export interface RemediationHistoryViolation {
   readonly message: string;
 }
 
-export function isImplementationPath(filePath: string): boolean {
-  return (
+export function isImplementationPath(filePath: string, extended = true): boolean {
+  if (
     IMPLEMENTATION_FILES.has(filePath) ||
     IMPLEMENTATION_PREFIXES.some((prefix) => filePath.startsWith(prefix))
+  ) {
+    return true;
+  }
+  return (
+    extended &&
+    (EXTENDED_IMPLEMENTATION_FILES.has(filePath) ||
+      EXTENDED_IMPLEMENTATION_PREFIXES.some((prefix) => filePath.startsWith(prefix)))
   );
 }
 
@@ -76,10 +109,11 @@ export function extractsCheckpointIds(message: string): string[] {
 
 export function checksCheckpointCoverage(
   checkpoint: AuthorityCheckpoint,
-  changedPaths: readonly string[]
+  changedPaths: readonly string[],
+  extended = true
 ): RemediationHistoryViolation[] {
   return changedPaths
-    .filter(isImplementationPath)
+    .filter((changedPath) => isImplementationPath(changedPath, extended))
     .filter(
       (changedPath) =>
         !checkpoint.implementationScopes.some(
@@ -235,10 +269,17 @@ async function checksRemediationHistory(
         (value) => validateIndex(value)
       )
     );
+    // The widened path set binds a commit only once its parent already
+    // declares the extension, so history authored under the narrower rule is
+    // judged by the rule that was in force when it was written.
+    const extended = gitObjectExists(`${parent}:${EXTENSION_MARKER}`);
+
     violations.push(
       ...checksSnapshotImmutability(commit, parent, changedPaths, gitObjectExists)
     );
-    const implementationPaths = changedPaths.filter(isImplementationPath);
+    const implementationPaths = changedPaths.filter((changedPath) =>
+      isImplementationPath(changedPath, extended)
+    );
     if (implementationPaths.length === 0) {
       continue;
     }
@@ -286,7 +327,7 @@ async function checksRemediationHistory(
         });
       }
 
-      violations.push(...checksCheckpointCoverage(checkpoint, implementationPaths));
+      violations.push(...checksCheckpointCoverage(checkpoint, implementationPaths, extended));
       violations.push(...checksCheckpointRequiredAuthorityFiles(checkpoint));
       violations.push(...checksAuthorityFileDigests(checkpoint, parent));
       violations.push(
