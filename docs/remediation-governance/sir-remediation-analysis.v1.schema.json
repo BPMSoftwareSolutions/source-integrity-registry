@@ -2,10 +2,21 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.deterministic.solutions/sir/governance/sir-remediation-analysis/1.0.0/schema.json",
   "title": "SIR Remediation Analysis Block",
-  "description": "Closed format for the sir-analysis metadata block carried by each analysis ledger entry. One block per analysis coordinate.",
+  "description": "Closed, unreleased v1 format for the integrity assertions carried by each remediation-analysis decision. One block per analysis coordinate.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["analysisMetadataType", "analysisId", "status", "supersededBy"],
+  "required": [
+    "analysisMetadataType",
+    "analysisId",
+    "status",
+    "supersededBy",
+    "evidence",
+    "direction",
+    "integrityGain",
+    "nonDegradationGuards",
+    "proofBoundary",
+    "scenarioCoveragePolicy"
+  ],
   "properties": {
     "analysisMetadataType": { "const": "sir-remediation-analysis.v1" },
     "analysisId": {
@@ -25,6 +36,106 @@
     "supersededBy": {
       "description": "Analysis coordinate replacing this decision, or null when current.",
       "oneOf": [{ "type": "null" }, { "type": "string", "pattern": "^SIR-RA-[0-9]{3}$" }]
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["evidenceId", "kind", "reference"],
+        "properties": {
+          "evidenceId": {
+            "type": "string",
+            "pattern": "^SIR-RA-[0-9]{3}-E[0-9]{2}$"
+          },
+          "kind": {
+            "const": "ledger-section",
+            "description": "Unreleased v1 admits only evidence references the repository checker can resolve locally. External observations must be preserved in the referenced ledger section."
+          },
+          "reference": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "direction": {
+      "$ref": "#/$defs/ledgerAssertionReference"
+    },
+    "integrityGain": {
+      "$ref": "#/$defs/ledgerAssertionReference"
+    },
+    "nonDegradationGuards": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/ledgerAssertionReference"
+      }
+    },
+    "proofBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["proves", "doesNotProve"],
+      "properties": {
+        "proves": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "doesNotProve": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "scenarioCoveragePolicy": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["classification", "requiresScenarioCoverage", "rationale"],
+          "properties": {
+            "classification": { "const": "scenario-required" },
+            "requiresScenarioCoverage": { "const": true },
+            "rationale": { "type": "string", "minLength": 1 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["classification", "requiresScenarioCoverage", "rationale"],
+          "properties": {
+            "classification": { "const": "plan-only" },
+            "requiresScenarioCoverage": { "const": false },
+            "rationale": { "type": "string", "minLength": 1 }
+          }
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "ledgerAssertionReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reference"],
+      "properties": {
+        "reference": {
+          "type": "string",
+          "pattern": "^SIR-RA-[0-9]{3}#(direction|integrity-gain|non-degradation-guard)$"
+        }
+      }
     }
   }
 }

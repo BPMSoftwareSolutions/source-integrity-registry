@@ -34,3 +34,38 @@ Feature: Prove the Source Integrity Registry package
     When the remediation traceability projection is checked
     Then every analysis, plan, and scenario coordinate resolves with a permitted role
     And the committed projection matches deterministic regeneration
+
+  @sir-package-005
+  Scenario: Admit only integrity-complete remediation analyses
+    Given an analysis proposed as remediation authority
+    When remediation admission is evaluated
+    Then evidence, direction, integrity gain, non-degradation guards, proof limits, and coverage policy are structurally required
+    And an incomplete analysis cannot become plan authority
+
+  @sir-package-006
+  Scenario: Enforce declared analysis-to-scenario coverage
+    Given adopted analyses with explicit scenario coverage policies
+    When the remediation graph is evaluated
+    Then every scenario-required analysis has an explicit scenario edge
+    And a plan-only analysis is not assigned a manufactured scenario edge
+
+  @sir-package-007
+  Scenario: Preserve the canonical projection when remediation governance is invalid
+    Given schema-invalid, graph-invalid, or projection-contract-invalid remediation input
+    When explicit remediation-index generation is requested
+    Then diagnostics are reported before any canonical projection is written
+    And the existing committed projection remains byte-for-byte unchanged
+
+  @sir-package-008
+  Scenario: Prove scenario coverage from executed tests
+    Given the current feature scenario identities
+    When the default test command completes
+    Then every scenario has registered, selected, executed, passing testimony
+    And skipped, filtered, failed, or source-only references do not satisfy coverage
+
+  @sir-package-009
+  Scenario: Require feature authority before implementation
+    Given an implementation change governed by remediation analyses and feature scenarios
+    When repository history is evaluated
+    Then a valid authority checkpoint exists in a parent commit
+    And the checkpoint binds the analyses, plans, scenarios, feature bytes, validated projection, and implementation scope

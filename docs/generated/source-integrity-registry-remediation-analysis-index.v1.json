@@ -5,6 +5,13 @@
       "analysisId": "SIR-RA-001",
       "status": "VALID",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "plan-only",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_NOT_REQUIRED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-010",
@@ -21,6 +28,13 @@
       "analysisId": "SIR-RA-002",
       "status": "VALID",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-030",
@@ -31,16 +45,29 @@
           "role": "authority"
         },
         {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        },
+        {
           "planId": "SIR-RP-800",
           "role": "context"
         }
       ],
-      "scenarioIds": []
+      "scenarioIds": [
+        "@sir-package-009"
+      ]
     },
     {
       "analysisId": "SIR-RA-003",
       "status": "VALID",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-030",
@@ -67,6 +94,13 @@
       "analysisId": "SIR-RA-004",
       "status": "VALID",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-030",
@@ -94,6 +128,10 @@
       "analysisId": "SIR-RA-005",
       "status": "NOT_ADOPTED",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-100",
@@ -116,6 +154,13 @@
       "analysisId": "SIR-RA-006",
       "status": "VALID_WITH_REFINEMENT",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-030",
@@ -149,6 +194,13 @@
       "analysisId": "SIR-RA-007",
       "status": "VALID_WITH_REFINEMENT",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-030",
@@ -177,6 +229,13 @@
       "analysisId": "SIR-RA-008",
       "status": "VALID_WITH_REFINEMENT",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-030",
@@ -206,6 +265,13 @@
       "analysisId": "SIR-RA-009",
       "status": "VALID",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-030",
@@ -234,6 +300,13 @@
       "analysisId": "SIR-RA-010",
       "status": "VALID_WITH_REFINEMENT",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-030",
@@ -263,6 +336,13 @@
       "analysisId": "SIR-RA-011",
       "status": "VALID_WITH_REFINEMENT",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-030",
@@ -290,6 +370,13 @@
       "analysisId": "SIR-RA-012",
       "status": "VALID_WITH_REFINEMENT",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-030",
@@ -317,6 +404,13 @@
       "analysisId": "SIR-RA-013",
       "status": "VALID_WITH_REFINEMENT",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-030",
@@ -346,6 +440,13 @@
       "analysisId": "SIR-RA-014",
       "status": "VALID_WITH_REFINEMENT",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-030",
@@ -372,6 +473,13 @@
       "analysisId": "SIR-RA-015",
       "status": "VALID_WITH_REFINEMENT",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-030",
@@ -395,6 +503,13 @@
       "analysisId": "SIR-RA-016",
       "status": "VALID",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-030",
@@ -417,6 +532,13 @@
       "analysisId": "SIR-RA-017",
       "status": "VALID",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-030",
@@ -439,6 +561,13 @@
       "analysisId": "SIR-RA-018",
       "status": "VALID",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-030",
@@ -461,6 +590,13 @@
       "analysisId": "SIR-RA-019",
       "status": "VALID_WITH_REFINEMENT",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-100",
@@ -487,6 +623,13 @@
       "analysisId": "SIR-RA-020",
       "status": "VALID_WITH_REFINEMENT",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "plan-only",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_NOT_REQUIRED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-900",
@@ -499,6 +642,10 @@
       "analysisId": "SIR-RA-021",
       "status": "DEFERRED",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-030",
@@ -521,6 +668,13 @@
       "analysisId": "SIR-RA-022",
       "status": "VALID",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "plan-only",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_NOT_REQUIRED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-000",
@@ -541,6 +695,13 @@
       "analysisId": "SIR-RA-023",
       "status": "VALID_WITH_REFINEMENT",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-030",
@@ -563,6 +724,13 @@
       "analysisId": "SIR-RA-024",
       "status": "VALID_WITH_REFINEMENT",
       "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
       "planReferences": [
         {
           "planId": "SIR-RP-000",
@@ -596,6 +764,199 @@
       "scenarioIds": [
         "@sir-package-004"
       ]
+    },
+    {
+      "analysisId": "SIR-RA-025",
+      "status": "VALID_WITH_REFINEMENT",
+      "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
+      "planReferences": [
+        {
+          "planId": "SIR-RP-000",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-500",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-900",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-950",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-package-005"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-028",
+      "status": "VALID_WITH_REFINEMENT",
+      "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-500",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-900",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-950",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-package-006"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-029",
+      "status": "VALID",
+      "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-500",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-900",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-950",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-package-007"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-030",
+      "status": "VALID_WITH_REFINEMENT",
+      "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-500",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-900",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-950",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-package-008"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-032",
+      "status": "VALID_WITH_REFINEMENT",
+      "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-100",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-500",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-900",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-950",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-package-009"
+      ]
     }
   ],
   "plans": [
@@ -603,7 +964,8 @@
       "planId": "SIR-RP-000",
       "analysisIds": [
         "SIR-RA-022",
-        "SIR-RA-024"
+        "SIR-RA-024",
+        "SIR-RA-025"
       ],
       "scenarioIds": []
     },
@@ -642,7 +1004,12 @@
         "SIR-RA-018",
         "SIR-RA-021",
         "SIR-RA-023",
-        "SIR-RA-024"
+        "SIR-RA-024",
+        "SIR-RA-025",
+        "SIR-RA-028",
+        "SIR-RA-029",
+        "SIR-RA-030",
+        "SIR-RA-032"
       ],
       "scenarioIds": []
     },
@@ -663,7 +1030,8 @@
         "SIR-RA-013",
         "SIR-RA-018",
         "SIR-RA-019",
-        "SIR-RA-024"
+        "SIR-RA-024",
+        "SIR-RA-032"
       ],
       "scenarioIds": [
         "@sir-admit-001",
@@ -677,6 +1045,7 @@
         "@sir-admit-016",
         "@sir-admit-017",
         "@sir-package-004",
+        "@sir-package-009",
         "@sir-provenance-001"
       ]
     },
@@ -742,13 +1111,23 @@
         "SIR-RA-017",
         "SIR-RA-019",
         "SIR-RA-023",
-        "SIR-RA-024"
+        "SIR-RA-024",
+        "SIR-RA-025",
+        "SIR-RA-028",
+        "SIR-RA-029",
+        "SIR-RA-030",
+        "SIR-RA-032"
       ],
       "scenarioIds": [
         "@sir-package-001",
         "@sir-package-002",
         "@sir-package-003",
-        "@sir-package-004"
+        "@sir-package-004",
+        "@sir-package-005",
+        "@sir-package-006",
+        "@sir-package-007",
+        "@sir-package-008",
+        "@sir-package-009"
       ]
     },
     {
@@ -763,6 +1142,7 @@
     {
       "planId": "SIR-RP-700",
       "analysisIds": [
+        "SIR-RA-002",
         "SIR-RA-003",
         "SIR-RA-004",
         "SIR-RA-005",
@@ -781,7 +1161,12 @@
         "SIR-RA-019",
         "SIR-RA-021",
         "SIR-RA-023",
-        "SIR-RA-024"
+        "SIR-RA-024",
+        "SIR-RA-025",
+        "SIR-RA-028",
+        "SIR-RA-029",
+        "SIR-RA-030",
+        "SIR-RA-032"
       ],
       "scenarioIds": [
         "@sir-admit-001",
@@ -805,6 +1190,11 @@
         "@sir-package-002",
         "@sir-package-003",
         "@sir-package-004",
+        "@sir-package-005",
+        "@sir-package-006",
+        "@sir-package-007",
+        "@sir-package-008",
+        "@sir-package-009",
         "@sir-provenance-001"
       ]
     },
@@ -822,7 +1212,12 @@
       "analysisIds": [
         "SIR-RA-019",
         "SIR-RA-020",
-        "SIR-RA-024"
+        "SIR-RA-024",
+        "SIR-RA-025",
+        "SIR-RA-028",
+        "SIR-RA-029",
+        "SIR-RA-030",
+        "SIR-RA-032"
       ],
       "scenarioIds": []
     },
@@ -830,7 +1225,12 @@
       "planId": "SIR-RP-950",
       "analysisIds": [
         "SIR-RA-022",
-        "SIR-RA-024"
+        "SIR-RA-024",
+        "SIR-RA-025",
+        "SIR-RA-028",
+        "SIR-RA-029",
+        "SIR-RA-030",
+        "SIR-RA-032"
       ],
       "scenarioIds": []
     }
@@ -998,6 +1398,42 @@
       "analysisIds": [
         "SIR-RA-019",
         "SIR-RA-024"
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-005",
+      "feature": "features/prove-source-integrity-registry-package.feature",
+      "analysisIds": [
+        "SIR-RA-025"
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-006",
+      "feature": "features/prove-source-integrity-registry-package.feature",
+      "analysisIds": [
+        "SIR-RA-028"
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-007",
+      "feature": "features/prove-source-integrity-registry-package.feature",
+      "analysisIds": [
+        "SIR-RA-029"
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-008",
+      "feature": "features/prove-source-integrity-registry-package.feature",
+      "analysisIds": [
+        "SIR-RA-030"
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-009",
+      "feature": "features/prove-source-integrity-registry-package.feature",
+      "analysisIds": [
+        "SIR-RA-002",
+        "SIR-RA-032"
       ]
     },
     {

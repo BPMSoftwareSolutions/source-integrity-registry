@@ -25,18 +25,30 @@ No slice may broaden invalid acceptance, continue after failed admission,
 silently repair authority during proof, invent an unsupported domain rule, or
 claim a stronger guarantee than it implements. (`SIR-RA-022`)
 
+No analysis may serve as implementation authority unless its corrected,
+unreleased `sir-remediation-analysis.v1` block is schema-valid and carries
+non-empty evidence, explicit direction, explicit integrity gain, at least one
+non-degradation guard, bounded proof claims, and an explicit scenario-coverage
+policy. Structured references must resolve to the analysis entry that owns
+them. Presence proves completeness of the decision record, not correctness of
+the decision. (`SIR-RA-025`)
+
 ```sir-trace
 {
   "traceabilityType": "sir-remediation-trace.v1",
   "planId": "SIR-RP-000",
   "planReferences": [
     {
+      "analysisId": "SIR-RA-022",
+      "role": "context"
+    },
+    {
       "analysisId": "SIR-RA-024",
       "role": "authority"
     },
     {
-      "analysisId": "SIR-RA-022",
-      "role": "context"
+      "analysisId": "SIR-RA-025",
+      "role": "authority"
     }
   ],
   "scenarioMappings": []
@@ -141,6 +153,10 @@ The following conditions block the first release:
    (`SIR-RA-021`)
 10. The remediation traceability graph has no generated machine-readable
     projection or committed conformance check. (`SIR-RA-024`)
+11. Remediation admission, scenario coverage, projection generation, executed
+    scenario testimony, and feature-first history are not yet completely
+    enforced by repository gates. (`SIR-RA-025`, `SIR-RA-028` through
+    `SIR-RA-030`, `SIR-RA-032`)
 
 ```sir-trace
 {
@@ -222,6 +238,26 @@ The following conditions block the first release:
     {
       "analysisId": "SIR-RA-024",
       "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-025",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-028",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-029",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-030",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-032",
+      "role": "context"
     }
   ],
   "scenarioMappings": []
@@ -246,6 +282,49 @@ adversarial and positive proof
     ->
 receipt or package testimony
 ```
+
+For remediation created after the governance bootstrap, "feature first" is an
+earned history fact:
+
+```text
+analysis admitted
+    ->
+plan bound
+    ->
+feature scenarios parsed and bound
+    ->
+authority checkpoint committed
+    ->
+implementation permitted in a descendant commit
+```
+
+The checkpoint binds analysis IDs, plan IDs, scenario IDs, feature byte
+digests, the validated remediation-index projection, the authority commit, and
+explicit implementation scopes. Creation requires a completely clean committed
+workspace. A lifecycle label cannot be authored to bypass a missing
+predecessor, and a checkpoint created in the implementation commit cannot
+authorize that commit.
+(`SIR-RA-032`)
+
+After the analysis, plan, and feature authority are committed and the graph is
+GREEN, create the checkpoint with the explicit authoring command:
+
+```text
+pnpm create:remediation-checkpoint -- \
+  --checkpoint SIR-RC-NNN \
+  --analysis SIR-RA-NNN \
+  --plan SIR-RP-NNN \
+  --scenario @sir-...-NNN \
+  --feature features/<authority>.feature \
+  --scope <governed-path-prefix>
+```
+
+Commit that checkpoint without implementation changes. Each later
+implementation commit cites its `SIR-RC-NNN`; repository-history proof reads
+the checkpoint from the implementation commit's parent and revalidates the
+unchanged ledger, plan, feature, and projection bytes. Checkpoint bytes are
+immutable after their creation commit: modification, deletion, and ID reuse
+are history violations.
 
 ### Product feature
 
@@ -410,11 +489,11 @@ scenario analysis reference must also be admitted by the containing plan's
       "role": "authority"
     },
     {
-      "analysisId": "SIR-RA-009",
+      "analysisId": "SIR-RA-008",
       "role": "authority"
     },
     {
-      "analysisId": "SIR-RA-008",
+      "analysisId": "SIR-RA-009",
       "role": "authority"
     },
     {
@@ -444,18 +523,13 @@ scenario analysis reference must also be admitted by the containing plan's
     {
       "analysisId": "SIR-RA-024",
       "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-032",
+      "role": "authority"
     }
   ],
   "scenarioMappings": [
-    {
-      "scenarioId": "@sir-admit-007",
-      "analysisReferences": [
-        {
-          "analysisId": "SIR-RA-003",
-          "role": "authority"
-        }
-      ]
-    },
     {
       "scenarioId": "@sir-admit-001",
       "analysisReferences": [
@@ -487,6 +561,15 @@ scenario analysis reference must also be admitted by the containing plan's
         },
         {
           "analysisId": "SIR-RA-009",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-007",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-003",
           "role": "authority"
         }
       ]
@@ -570,6 +653,19 @@ scenario analysis reference must also be admitted by the containing plan's
         },
         {
           "analysisId": "SIR-RA-024",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-009",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-002",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-032",
           "role": "authority"
         }
       ]
@@ -1194,7 +1290,7 @@ export default defineConfig({
     include: ["tests/**/*.test.ts"],
     environment: "node",
     minWorkers: 1,
-    maxWorkers: 2
+    maxWorkers: 1
   }
 });
 ```
@@ -1291,6 +1387,10 @@ Add a comparison-only traceability check to `prove:core`. It fails on:
 - a supersession cycle;
 - an orphaned active decision;
 - a scenario without analysis authority;
+- an integrity-incomplete analysis block;
+- an unresolved structured analysis assertion;
+- missing required analysis-to-scenario coverage;
+- a manufactured scenario edge for a plan-only analysis;
 - committed projection drift.
 
 Use a Markdown parser to locate typed blocks and a Gherkin parser to locate
@@ -1298,7 +1398,17 @@ scenario tags. Do not scrape headings, prose, or feature text with regular
 expressions. Human-readable status summaries, if retained, are generated from
 `sir-analysis` metadata instead of being independently authored.
 
-Regeneration is an explicit authoring action outside proof. (`SIR-RA-024`)
+Regeneration is an explicit authoring action outside proof. It validates all
+typed blocks, the complete graph, and the candidate's closed index contract
+before writing; RED input leaves the canonical projection unchanged. A GREEN
+candidate is written to a temporary sibling and atomically renamed.
+(`SIR-RA-024`, `SIR-RA-029`)
+
+Scenario coverage is derived from completed test-runner tasks, not source-text
+search. Each required feature scenario must have at least one registered,
+selected, executed, passing, non-skipped testimony; unknown, filtered, skipped,
+or failed references cannot satisfy coverage. This proves execution coverage,
+not semantic sufficiency. (`SIR-RA-030`)
 
 ### Slice Four completion
 
@@ -1329,6 +1439,10 @@ Regeneration is an explicit authoring action outside proof. (`SIR-RA-024`)
       "role": "authority"
     },
     {
+      "analysisId": "SIR-RA-019",
+      "role": "authority"
+    },
+    {
       "analysisId": "SIR-RA-023",
       "role": "authority"
     },
@@ -1337,7 +1451,23 @@ Regeneration is an explicit authoring action outside proof. (`SIR-RA-024`)
       "role": "authority"
     },
     {
-      "analysisId": "SIR-RA-019",
+      "analysisId": "SIR-RA-025",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-028",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-029",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-030",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-032",
       "role": "authority"
     }
   ],
@@ -1386,6 +1516,51 @@ Regeneration is an explicit authoring action outside proof. (`SIR-RA-024`)
         },
         {
           "analysisId": "SIR-RA-024",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-005",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-025",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-006",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-028",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-007",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-029",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-008",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-030",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-009",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-032",
           "role": "authority"
         }
       ]
@@ -1469,6 +1644,11 @@ directions; the final feature wording remains semantically focused.
 | Stale generated authority | `@sir-package-002` | Generated drift check | Changed catalog or type | `SIR-RA-015` |
 | Packed consumer surface | `@sir-package-003` | Tarball smoke harness | Missing export, CLI, catalog, schema | `SIR-RA-017` |
 | Remediation graph conformance | `@sir-package-004` | Generated analysis index and traceability checker | Unknown ID, wrong role, cycle, orphan, or drift | `SIR-RA-019`, `SIR-RA-024` |
+| Complete remediation analysis | `@sir-package-005` | Corrected remediation-analysis `v1` schema | Missing evidence, direction, gain, guard, boundary, or coverage policy | `SIR-RA-025` |
+| Analysis scenario policy | `@sir-package-006` | Traceability checker | Missing required edge or manufactured plan-only edge | `SIR-RA-028` |
+| Fail-before-write generation | `@sir-package-007` | Remediation-index generator | Invalid candidate replacing canonical index | `SIR-RA-029` |
+| Executed scenario coverage | `@sir-package-008` | Test-runner testimony | Comment-only, skipped, filtered, or failed reference | `SIR-RA-030` |
+| Feature authority checkpoint | `@sir-package-009` | Repository-history witness | Implementation in or before checkpoint commit | `SIR-RA-002`, `SIR-RA-032` |
 | Authenticated release binding | `@sir-provenance-001` | Provenance gate | Unsigned or mismatched release | `SIR-RA-021` |
 
 ```sir-trace
@@ -1477,12 +1657,20 @@ directions; the final feature wording remains semantically focused.
   "planId": "SIR-RP-700",
   "planReferences": [
     {
+      "analysisId": "SIR-RA-002",
+      "role": "authority"
+    },
+    {
       "analysisId": "SIR-RA-003",
       "role": "authority"
     },
     {
       "analysisId": "SIR-RA-004",
       "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-005",
+      "role": "guard"
     },
     {
       "analysisId": "SIR-RA-006",
@@ -1549,8 +1737,24 @@ directions; the final feature wording remains semantically focused.
       "role": "authority"
     },
     {
-      "analysisId": "SIR-RA-005",
-      "role": "guard"
+      "analysisId": "SIR-RA-025",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-028",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-029",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-030",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-032",
+      "role": "authority"
     }
   ],
   "scenarioMappings": [
@@ -1812,6 +2016,55 @@ directions; the final feature wording remains semantically focused.
       ]
     },
     {
+      "scenarioId": "@sir-package-005",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-025",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-006",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-028",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-007",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-029",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-008",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-030",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-009",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-002",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-032",
+          "role": "authority"
+        }
+      ]
+    },
+    {
       "scenarioId": "@sir-provenance-001",
       "analysisReferences": [
         {
@@ -1900,6 +2153,18 @@ Negative controls include:
 - missing, duplicate, or schema-invalid typed traceability block;
 - ordinary JSON example mistaken for metadata;
 - implicit Cartesian-product scenario edges;
+- analysis missing evidence, direction, integrity gain, non-degradation guard,
+  proof boundary, or scenario-coverage policy;
+- scenario-required analysis without an explicit scenario edge;
+- plan-only analysis with a manufactured scenario edge;
+- invalid graph generation attempting to replace the canonical index;
+- a manually asserted lifecycle state attempting to bypass a missing
+  predecessor;
+- a scenario token present only in source, a skipped or filtered test, or a
+  failed execution;
+- implementation changing a checkpointed scope without a valid authority
+  checkpoint in a parent commit;
+- checkpoint bytes changed, deleted, or reused after their creation commit;
 - scenario analysis reference absent from its plan references;
 - rejected or deferred analysis used with the `authority` role;
 - missing or cyclic supersession target;
@@ -1940,6 +2205,26 @@ Each vector cites its governing scenario ID. (`SIR-RA-019`, `SIR-RA-020`,
     {
       "analysisId": "SIR-RA-024",
       "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-025",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-028",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-029",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-030",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-032",
+      "role": "authority"
     }
   ],
   "scenarioMappings": []
@@ -1947,6 +2232,25 @@ Each vector cites its governing scenario ID. (`SIR-RA-019`, `SIR-RA-020`,
 ```
 
 ## SIR-RP-950 — Completion gates
+
+Lifecycle is observed across the gates; it is never authored as a status
+field:
+
+```text
+EVIDENCED -> ANALYSIS_ADMITTED -> PLAN_BOUND -> FEATURE_AUTHORIZED
+    derived by the validated analysis/trace/feature projection
+
+IMPLEMENTED
+    derived only when repository history places a scoped implementation
+    change after its bound authority checkpoint
+
+EXECUTED_PROOF_GREEN
+    derived only from the completed test runner's passing testimony
+
+CLEAN_CHECKOUT_GREEN
+    derived only when the complete gate executes successfully in a clean
+    checkout; a local dirty-worktree proof cannot award it
+```
 
 ### Gate 1: authority JSON admission
 
@@ -1995,6 +2299,14 @@ scenario-to-proof traceability complete
 +
 typed analysis and trace blocks schema-valid
 +
+all structured analysis assertions resolve
++
+all scenario coverage policies are satisfied
++
+feature-authority history checkpoint valid for governed implementation changes
++
+executed scenario testimony complete
++
 generated remediation index current
 +
 all remediation graph edges resolve with permitted roles
@@ -2039,6 +2351,26 @@ No gate can compensate for another failed gate. (`SIR-RA-022`, `SIR-RA-024`)
     },
     {
       "analysisId": "SIR-RA-024",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-025",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-028",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-029",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-030",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-032",
       "role": "authority"
     }
   ],

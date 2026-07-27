@@ -1,0 +1,5 @@
+{
+  "pipelineType": "sir-remediation-pipeline.v1",
+  "bootstrapAnalysisId": "SIR-RA-025",
+  "historyEnforcement": "prospective-from-marker-parent"
+}

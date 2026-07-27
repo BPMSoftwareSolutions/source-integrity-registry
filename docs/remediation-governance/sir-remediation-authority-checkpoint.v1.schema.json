@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.deterministic.solutions/sir/governance/sir-remediation-authority-checkpoint/1.0.0/schema.json",
+  "title": "SIR Remediation Feature-Authority Checkpoint",
+  "description": "Closed, prospective history evidence that feature authority preceded a governed implementation change.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "checkpointType",
+    "checkpointId",
+    "authorityCommit",
+    "analysisIds",
+    "planIds",
+    "scenarioIds",
+    "authorityFiles",
+    "implementationScopes"
+  ],
+  "properties": {
+    "checkpointType": {
+      "const": "sir-remediation-authority-checkpoint.v1"
+    },
+    "checkpointId": {
+      "type": "string",
+      "pattern": "^SIR-RC-[0-9]{3}$"
+    },
+    "authorityCommit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "analysisIds": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^SIR-RA-[0-9]{3}$"
+      }
+    },
+    "planIds": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^SIR-RP-[0-9]{3}$"
+      }
+    },
+    "scenarioIds": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^@sir-(admit|package|provenance)-[0-9]{3}$"
+      }
+    },
+    "authorityFiles": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "pattern": "^(features/[A-Za-z0-9._/-]+\\.feature|docs/source-integrity-registry-remediation-analysis\\.md|docs/source-integrity-registry-remediation\\.md|docs/generated/source-integrity-registry-remediation-analysis-index\\.v1\\.json)$"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "implementationScopes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^(src/|contracts/|scripts/|docs/remediation-governance/|package\\.json$|pnpm-lock\\.yaml$|vitest\\.config\\.ts$|\\.github/)[A-Za-z0-9._/-]*$"
+      }
+    }
+  }
+}

@@ -65,7 +65,7 @@ Every adopted ledger entry therefore records both an **integrity gain** and a
 
 ## Workspace baseline
 
-The reviews were checked against the following current conditions:
+The reviews were checked against the following pre-remediation conditions:
 
 - `features/admit-source-integrity-registry.feature` contains five scenarios
   and does not authorize duplicate-member rejection, catalog contract
@@ -109,7 +109,38 @@ The reviews were checked against the following current conditions:
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-001",
   "status": "VALID",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-001-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-001#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-001#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-001#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-001#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-001."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "plan-only",
+    "requiresScenarioCoverage": false,
+    "rationale": "This decision governs plan-level release or integrity policy rather than one executable product scenario."
+  }
 }
 ```
 
@@ -140,7 +171,38 @@ versioning decision must be re-opened under this same ID.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-002",
   "status": "VALID",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-002-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-002#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-002#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-002#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-002#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-002."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "The feature-first decision is enforced by @sir-package-009, which rejects implementation that precedes its admitted analysis, plan, and feature authority."
+  }
 }
 ```
 
@@ -169,7 +231,38 @@ remediation obligations; it must not retroactively bless unrelated behavior.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-003",
   "status": "VALID",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-003-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-003#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-003#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-003#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-003#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-003."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
@@ -197,7 +290,38 @@ weaken byte-for-byte digest enforcement.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-004",
   "status": "VALID",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-004-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-004#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-004#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-004#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-004#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-004."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
@@ -229,7 +353,38 @@ duplicate.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-005",
   "status": "NOT_ADOPTED",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-005-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-005#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-005#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-005#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-005#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-005."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
@@ -259,7 +414,38 @@ mandatory; this decision rejects only unsupported extra restrictions.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-006",
   "status": "VALID_WITH_REFINEMENT",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-006-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-006#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-006#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-006#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-006#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-006."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
@@ -305,7 +491,38 @@ loaders must all fail closed on parser rejection.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-007",
   "status": "VALID_WITH_REFINEMENT",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-007-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-007#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-007#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-007#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-007#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-007."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
@@ -349,7 +566,38 @@ available only when the circuit cannot truthfully produce a verdict;
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-008",
   "status": "VALID_WITH_REFINEMENT",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-008-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-008#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-008#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-008#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-008#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-008."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
@@ -382,7 +630,38 @@ exact template.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-009",
   "status": "VALID",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-009-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-009#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-009#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-009#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-009#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-009."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
@@ -418,7 +697,38 @@ bytes; the caller catalog cannot replace it.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-010",
   "status": "VALID_WITH_REFINEMENT",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-010-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-010#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-010#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-010#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-010#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-010."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
@@ -456,7 +766,38 @@ evaluation.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-011",
   "status": "VALID_WITH_REFINEMENT",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-011-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-011#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-011#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-011#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-011#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-011."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
@@ -498,7 +839,38 @@ symbolic-link behavior must fail closed.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-012",
   "status": "VALID_WITH_REFINEMENT",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-012-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-012#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-012#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-012#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-012#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-012."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
@@ -533,7 +905,38 @@ no-follow file-handle mechanics remain a future option.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-013",
   "status": "VALID_WITH_REFINEMENT",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-013-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-013#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-013#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-013#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-013#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-013."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
@@ -569,7 +972,38 @@ prevents a valid disposition.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-014",
   "status": "VALID_WITH_REFINEMENT",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-014-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-014#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-014#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-014#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-014#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-014."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
@@ -602,7 +1036,38 @@ deduplicate, or merge distinct findings.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-015",
   "status": "VALID_WITH_REFINEMENT",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-015-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-015#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-015#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-015#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-015#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-015."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
@@ -642,13 +1107,46 @@ repository source for the packed artifact.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-016",
   "status": "VALID",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-016-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-016#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-016#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-016#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-016#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-016."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
-**Workspace validation:** Plain `pnpm test` reproducibly fails with
-`spawn UNKNOWN` on the current 24-core Windows host. Runs with one or two
-workers pass all 37 tests.
+**Workspace validation:** Plain `pnpm test` initially failed with
+`spawn UNKNOWN` on the current 24-core Windows host. One- and two-worker runs
+passed the original 37 tests, but the expanded governance suite later observed
+an unexpected two-worker exit inside `pnpm prove`. A one-worker
+run retains complete discovery and avoids that remaining process contention.
 
 **Direction:** Commit deterministic `minWorkers` and `maxWorkers` values in
 `vitest.config.ts`, then use unmodified `pnpm test` in proof and CI.
@@ -670,7 +1168,38 @@ it must not skip tests, narrow test discovery, or weaken assertions.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-017",
   "status": "VALID",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-017-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-017#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-017#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-017#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-017#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-017."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
@@ -701,7 +1230,38 @@ missing.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-018",
   "status": "VALID",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-018-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-018#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-018#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-018#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-018#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-018."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
@@ -734,7 +1294,38 @@ requires every applicable feature to be GREEN.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-019",
   "status": "VALID_WITH_REFINEMENT",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-019-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-019#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-019#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-019#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-019#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-019."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
@@ -768,7 +1359,38 @@ matrix.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-020",
   "status": "VALID_WITH_REFINEMENT",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-020-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-020#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-020#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-020#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-020#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-020."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "plan-only",
+    "requiresScenarioCoverage": false,
+    "rationale": "This decision governs plan-level release or integrity policy rather than one executable product scenario."
+  }
 }
 ```
 
@@ -809,7 +1431,38 @@ behavior.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-021",
   "status": "DEFERRED",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-021-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-021#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-021#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-021#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-021#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-021."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
@@ -838,7 +1491,38 @@ dispositions and is never claimed before signature verification succeeds.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-022",
   "status": "VALID",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-022-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-022#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-022#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-022#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-022#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-022."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "plan-only",
+    "requiresScenarioCoverage": false,
+    "rationale": "This decision governs plan-level release or integrity policy rather than one executable product scenario."
+  }
 }
 ```
 
@@ -873,7 +1557,38 @@ release provenance cannot turn a contract-validation failure green.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-023",
   "status": "VALID_WITH_REFINEMENT",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-023-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-023#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-023#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-023#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-023#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-023."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
@@ -923,7 +1638,38 @@ the inner prepack gate or packed-consumer smoke fails.
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-024",
   "status": "VALID_WITH_REFINEMENT",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-024-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-024#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-024#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-024#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-024#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-024."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 
@@ -958,7 +1704,38 @@ Each analysis ledger entry carries one `sir-analysis` block:
   "analysisMetadataType": "sir-remediation-analysis.v1",
   "analysisId": "SIR-RA-024",
   "status": "VALID_WITH_REFINEMENT",
-  "supersededBy": null
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-024-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-024#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-024#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-024#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-024#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The analysis records the admitted direction and integrity constraints for SIR-RA-024."
+    ],
+    "doesNotProve": [
+      "Implementation, executed proof, clean-checkout readiness, or release provenance without downstream gates."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "This decision governs behavior or proof that requires an explicit feature scenario and executed testimony."
+  }
 }
 ```
 ````
@@ -1049,6 +1826,329 @@ mistaken for active implementation authority. Human-readable status summaries,
 if retained, are generated from the `sir-analysis` block rather than maintained
 as a second status value.
 
+### SIR-RA-025 — Bootstrap complete remediation-analysis authority in corrected unreleased `v1`
+
+**Sources:** Durable-remediation pipeline review; workspace validation of the
+current remediation-governance schema.
+
+**Status:** VALID WITH REFINEMENT.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-025",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-025-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-025#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-025#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-025#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-025#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "Every structurally admitted remediation analysis carries explicit evidence, direction, integrity gain, guards, proof limits, and scenario-coverage policy."
+    ],
+    "doesNotProve": [
+      "A remediation direction is correct merely because all required fields are present."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "Remediation admission is executable repository governance and requires an adversarial feature scenario."
+  }
+}
+```
+
+**Workspace validation:** The unreleased
+`sir-remediation-analysis.v1.schema.json` requires only identity, status, and
+supersession. Evidence, direction, integrity gain, non-degradation, proof
+limits, and coverage policy can therefore be absent while the block remains
+schema-valid.
+
+**Direction:** Correct the unreleased `v1` contract in place. Require non-empty
+closed fields for every integrity assertion, migrate every existing analysis
+block, and make the checker resolve each structured reference to its owning
+ledger entry.
+
+**Integrity gain:** An incomplete analysis can no longer become plan authority
+merely by carrying a valid ID and adopted status.
+
+**Non-degradation guard:** Structural completeness never substitutes for human
+validation of the direction. The schema must not infer, default, or repair a
+missing claim, and no artificial `v2` history is created for an authority that
+has never been released.
+
+### SIR-RA-028 — Classify and enforce analysis-to-scenario coverage
+
+**Sources:** Review finding that four active adopted decisions had no scenario
+edge despite a broader documented coverage claim.
+
+**Status:** VALID WITH REFINEMENT.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-028",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-028-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-028#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-028#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-028#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-028#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "Every analysis explicitly declares whether scenario coverage is required, and the graph enforces that declaration."
+    ],
+    "doesNotProve": [
+      "A plan-only classification is semantically justified without review."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "Coverage classification changes the static authorization circuit and requires executable governance proof."
+  }
+}
+```
+
+**Workspace validation:** The checker currently requires every scenario to
+resolve to an analysis, but it requires an active analysis only to appear in a
+plan. It cannot distinguish missing behavioral coverage from a legitimate
+plan-only release or governance decision.
+
+**Direction:** Add a closed `scenario-required` or `plan-only` policy to each
+analysis. Fail if a required decision has no explicit scenario edge or if a
+plan-only decision acquires a manufactured scenario edge. Project the derived
+static lifecycle states rather than authoring them.
+
+**Integrity gain:** Coverage claims become equal to enforceable graph
+conditions without inventing scenarios for decisions that have no executable
+behavior.
+
+**Non-degradation guard:** Classification is explicit and reviewable; it cannot
+be inferred from missing edges. Existing role restrictions and the prohibition
+against prose-derived edges remain intact.
+
+### SIR-RA-029 — Prevent canonical projection from invalid governance
+
+**Sources:** Review of the remediation-index generator's write-before-failure
+behavior.
+
+**Status:** VALID.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-029",
+  "status": "VALID",
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-029-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-029#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-029#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-029#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-029#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "Schema-invalid, graph-invalid, or projection-contract-invalid remediation input cannot replace the canonical generated index."
+    ],
+    "doesNotProve": [
+      "Atomic replacement supplies durability against hardware or operating-system failure outside the filesystem guarantee."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "Failure-before-write behavior is an executable repository guarantee."
+  }
+}
+```
+
+**Workspace validation:** Before this correction, the explicit generation
+command serialized and wrote a candidate index before reporting graph
+violations, and the projection had no closed candidate contract.
+
+**Direction:** Validate all blocks, the complete graph, and the projected
+candidate against a closed index contract before constructing a canonical
+projection. On GREEN, write a temporary sibling and atomically rename it. On
+RED, emit diagnostics and leave the existing index byte-for-byte unchanged.
+
+**Integrity gain:** Invalid governance cannot become the next committed
+navigation surface even temporarily through the supported authoring command.
+
+**Non-degradation guard:** Proof remains comparison-only, generation remains an
+explicit authoring action, and diagnostic output never becomes authority.
+
+### SIR-RA-030 — Replace textual scenario references with executed-test testimony
+
+**Sources:** Review of the source-corpus scenario-token coverage test.
+
+**Status:** VALID WITH REFINEMENT.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-030",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-030-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-030#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-030#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-030#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-030#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "Every feature scenario has at least one registered, selected, executed, passing, non-skipped test testimony."
+    ],
+    "doesNotProve": [
+      "A passing test is semantically sufficient merely because it cites the scenario."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "Executed scenario testimony is itself a package-proof behavior."
+  }
+}
+```
+
+**Workspace validation:** Searching test source proves only that text exists.
+It does not establish registration, selection, execution, pass status, or
+absence of skipping and filtering.
+
+**Direction:** Derive exact scenario testimony from the test runner's completed
+task graph. Require at least one passing execution for every parsed feature
+scenario, reject unknown test scenario IDs, and make skipped, filtered, or
+failed tasks ineligible to satisfy coverage.
+
+**Integrity gain:** The default test command proves execution coverage rather
+than source-level citation coverage.
+
+**Non-degradation guard:** Testimony remains bounded to execution coverage.
+Scenario semantics, assertions, and negative-control sufficiency remain subject
+to review and their own tests.
+
+### SIR-RA-032 — Require an earned feature-authority checkpoint before implementation
+
+**Sources:** Durable-remediation pipeline review of the authoring-order problem.
+
+**Status:** VALID WITH REFINEMENT.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-032",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-032-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-032#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-032#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-032#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-032#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "An implementation change set follows a committed checkpoint binding analyses, plans, scenarios, feature bytes, the validated projection, and implementation scope."
+    ],
+    "doesNotProve": [
+      "The checkpointed feature semantics are correct or the later implementation satisfies them."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "Authority-before-implementation ordering requires an executable repository-history control."
+  }
+}
+```
+
+**Workspace validation:** A final tree can prove that analysis, plan, feature,
+and implementation coexist, but it cannot prove that feature authority preceded
+implementation.
+
+**Direction:** Admit a closed authority-checkpoint artifact binding analysis,
+plan, scenario, feature digests, the validated remediation-index projection,
+authority commit, and implementation scopes. Creation requires a completely
+clean committed workspace. Repository-history proof must require that
+checkpoint in a parent commit before a covered implementation path changes.
+Checkpoint bytes become immutable at creation. Bootstrap establishes this
+control prospectively; lifecycle states remain derived facts, never authored
+labels.
+
+**Integrity gain:** "Feature first" becomes observable history evidence rather
+than an unenforced authoring preference.
+
+**Non-degradation guard:** A checkpoint cannot assert implementation success,
+executed proof, clean-checkout readiness, or release provenance. Its scope must
+be explicit, and a checkpoint created in the same commit as implementation
+cannot authorize that implementation. A checkpoint ID cannot be edited,
+deleted, or reused after creation.
+
 ## Review-to-analysis coverage
 
 This table ensures repeated review remains idempotent and no reviewed point is
@@ -1081,11 +2181,16 @@ silently lost.
 | Review B traceability matrix | `SIR-RA-019`, `SIR-RA-020` |
 | Review B completion gate | `SIR-RA-022` |
 | Follow-up: machine-readable analysis index | `SIR-RA-024` |
+| Durable remediation: complete analysis admission | `SIR-RA-025` |
+| Durable remediation: explicit scenario policy | `SIR-RA-028` |
+| Durable remediation: fail-before-write generation | `SIR-RA-029` |
+| Durable remediation: executed scenario testimony | `SIR-RA-030` |
+| Durable remediation: feature-authority checkpoint | `SIR-RA-032` |
 
 ## Analysis conclusion
 
 The two reviews are directionally sound, but they are not adopted verbatim.
-Workspace validation produced six important refinements:
+Workspace validation produced eleven important refinements:
 
 1. Mechanical execution failures produce no receipt verdict; they do not add an
    `EXECUTION_FAILED` disposition.
@@ -1099,6 +2204,16 @@ Workspace validation produced six important refinements:
    creating package lifecycle recursion.
 6. A machine-readable index improves integrity only as a generated,
    role-aware projection over stable coordinates, never as a second authority.
+7. Remediation-governance `v1` is an unreleased candidate and is corrected in
+   place rather than replaced by artificial `v2` history.
+8. Analysis completeness is schema-enforced but does not mechanically prove the
+   correctness of the direction.
+9. Scenario coverage follows an explicit policy; plan-only decisions do not
+   receive manufactured feature edges.
+10. Scenario execution coverage comes from completed runner tasks, not token
+    presence in source.
+11. Feature-first ordering is enforced prospectively through a checkpoint in a
+    parent commit, with bootstrap limits stated rather than concealed.
 
 With those refinements, every adopted direction is integrity-monotonic: it
 closes a false green, preserves boundary evidence, strengthens deterministic

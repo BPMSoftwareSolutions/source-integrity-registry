@@ -3,8 +3,18 @@ import { describe, expect, it } from "vitest";
 import { extractsTypedBlocks } from "../scripts/remediation/extract-traceability.ts";
 import {
   buildsTraceabilityProjection,
-  repositoryRoot
+  checksTraceCoordinateUniqueness,
+  type RemediationIndex
 } from "../scripts/remediation/build-index.ts";
+
+async function buildsConformantIndex(): Promise<RemediationIndex> {
+  const { index, violations } = await buildsTraceabilityProjection();
+  expect(violations, JSON.stringify(violations, null, 2)).toEqual([]);
+  if (index === null) {
+    throw new Error("Conformant remediation governance produced no projection.");
+  }
+  return index;
+}
 
 /**
  * Governing scenario: @sir-package-004.
@@ -20,7 +30,7 @@ describe("@sir-package-004 Remediation traceability projection", () => {
   });
 
   it("projects analyses, plans, and scenarios in code-point order", async () => {
-    const { index } = await buildsTraceabilityProjection();
+    const index = await buildsConformantIndex();
 
     const analysisIds = index.analyses.map((entry) => entry.analysisId);
     expect(analysisIds).toEqual([...analysisIds].sort());
@@ -33,7 +43,7 @@ describe("@sir-package-004 Remediation traceability projection", () => {
   });
 
   it("gives every scenario at least one analysis decision", async () => {
-    const { index } = await buildsTraceabilityProjection();
+    const index = await buildsConformantIndex();
 
     for (const scenario of index.scenarios) {
       expect(scenario.analysisIds.length, `${scenario.scenarioId} has no analysis`).toBeGreaterThan(
@@ -43,7 +53,7 @@ describe("@sir-package-004 Remediation traceability projection", () => {
   });
 
   it("never cites a non-adopted decision as authority", async () => {
-    const { index } = await buildsTraceabilityProjection();
+    const index = await buildsConformantIndex();
     const adopted = new Set(["VALID", "VALID_WITH_REFINEMENT", "ALREADY_SATISFIED"]);
 
     for (const analysis of index.analyses) {
@@ -58,7 +68,7 @@ describe("@sir-package-004 Remediation traceability projection", () => {
   });
 
   it("records the rejected decision as a guard rather than dropping it", async () => {
-    const { index } = await buildsTraceabilityProjection();
+    const index = await buildsConformantIndex();
     const rejected = index.analyses.find((entry) => entry.analysisId === "SIR-RA-005");
 
     expect(rejected?.status).toBe("NOT_ADOPTED");
@@ -103,34 +113,36 @@ describe("@sir-package-004 Remediation traceability projection", () => {
     expect(extractsTypedBlocks(markdown, "sir-analysis")).toEqual([]);
   });
 
-  it("gives every scenario at least one test that cites it", async () => {
-    const { index } = await buildsTraceabilityProjection();
-    const { readdir, readFile } = await import("node:fs/promises");
-    const path = await import("node:path");
-
-    const testsRoot = path.join(repositoryRoot, "tests");
-    const sources: string[] = [];
-
-    const collect = async (directory: string): Promise<void> => {
-      for (const entry of await readdir(directory, { withFileTypes: true })) {
-        const full = path.join(directory, entry.name);
-        if (entry.isDirectory()) {
-          await collect(full);
-          continue;
+  it("rejects duplicate IDs even when repeated references use different roles", () => {
+    const violations = checksTraceCoordinateUniqueness({
+      traceabilityType: "sir-remediation-trace.v1",
+      planId: "SIR-RP-100",
+      planReferences: [
+        { analysisId: "SIR-RA-002", role: "authority" },
+        { analysisId: "SIR-RA-002", role: "context" }
+      ],
+      scenarioMappings: [
+        {
+          scenarioId: "@sir-package-009",
+          analysisReferences: [
+            { analysisId: "SIR-RA-002", role: "authority" },
+            { analysisId: "SIR-RA-002", role: "context" }
+          ]
+        },
+        {
+          scenarioId: "@sir-package-009",
+          analysisReferences: [
+            { analysisId: "SIR-RA-032", role: "authority" }
+          ]
         }
-        if (entry.name.endsWith(".ts")) {
-          sources.push((await readFile(full)).toString("utf8"));
-        }
-      }
-    };
-    await collect(testsRoot);
+      ]
+    });
 
-    const corpus = sources.join("\n");
-    const uncovered = index.scenarios
-      .map((scenario) => scenario.scenarioId)
-      .filter((scenarioId) => !corpus.includes(scenarioId));
-
-    // Every scenario must identify its proof, and every proof its scenario.
-    expect(uncovered).toEqual([]);
+    expect(violations.map((violation) => violation.code)).toEqual([
+      "DUPLICATE_PLAN_ANALYSIS_REFERENCE",
+      "DUPLICATE_SCENARIO_ANALYSIS_REFERENCE",
+      "DUPLICATE_PLAN_SCENARIO_MAPPING"
+    ]);
   });
+
 });

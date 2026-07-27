@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.deterministic.solutions/sir/governance/sir-remediation-analysis-index/1.0.0/schema.json",
+  "title": "SIR Remediation Analysis Index",
+  "description": "Closed contract for the deterministic, non-authoritative projection of admitted analyses, plans, and feature scenarios.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["analysisLedgerType", "analyses", "plans", "scenarios"],
+  "properties": {
+    "analysisLedgerType": {
+      "const": "sir-remediation-analysis-index.v1"
+    },
+    "analyses": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "analysisId",
+          "status",
+          "supersededBy",
+          "scenarioCoveragePolicy",
+          "earnedStates",
+          "planReferences",
+          "scenarioIds"
+        ],
+        "properties": {
+          "analysisId": {
+            "type": "string",
+            "pattern": "^SIR-RA-[0-9]{3}$"
+          },
+          "status": {
+            "enum": [
+              "VALID",
+              "VALID_WITH_REFINEMENT",
+              "ALREADY_SATISFIED",
+              "DEFERRED",
+              "NOT_ADOPTED"
+            ]
+          },
+          "supersededBy": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "pattern": "^SIR-RA-[0-9]{3}$"
+              }
+            ]
+          },
+          "scenarioCoveragePolicy": {
+            "enum": ["scenario-required", "plan-only"]
+          },
+          "earnedStates": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "EVIDENCED",
+                "ANALYSIS_ADMITTED",
+                "PLAN_BOUND",
+                "FEATURE_AUTHORIZED",
+                "FEATURE_NOT_REQUIRED"
+              ]
+            }
+          },
+          "planReferences": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["planId", "role"],
+              "properties": {
+                "planId": {
+                  "type": "string",
+                  "pattern": "^SIR-RP-[0-9]{3}$"
+                },
+                "role": {
+                  "enum": ["authority", "guard", "context"]
+                }
+              }
+            }
+          },
+          "scenarioIds": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^@sir-(admit|package|provenance)-[0-9]{3}$"
+            }
+          }
+        }
+      }
+    },
+    "plans": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["planId", "analysisIds", "scenarioIds"],
+        "properties": {
+          "planId": {
+            "type": "string",
+            "pattern": "^SIR-RP-[0-9]{3}$"
+          },
+          "analysisIds": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^SIR-RA-[0-9]{3}$"
+            }
+          },
+          "scenarioIds": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^@sir-(admit|package|provenance)-[0-9]{3}$"
+            }
+          }
+        }
+      }
+    },
+    "scenarios": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["scenarioId", "feature", "analysisIds"],
+        "properties": {
+          "scenarioId": {
+            "type": "string",
+            "pattern": "^@sir-(admit|package|provenance)-[0-9]{3}$"
+          },
+          "feature": {
+            "type": "string",
+            "pattern": "^features/[A-Za-z0-9._/-]+\\.feature$"
+          },
+          "analysisIds": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^SIR-RA-[0-9]{3}$"
+            }
+          }
+        }
+      }
+    }
+  }
+}

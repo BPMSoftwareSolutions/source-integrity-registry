@@ -38,7 +38,7 @@ export const INDEX_PATH = path.join(
   "source-integrity-registry-remediation-analysis-index.v1.json"
 );
 
-const FEATURE_PATHS = [
+export const FEATURE_PATHS = [
   path.join(repositoryRoot, "features", "admit-source-integrity-registry.feature"),
   path.join(repositoryRoot, "features", "prove-source-integrity-registry-package.feature"),
   path.join(
@@ -68,6 +68,14 @@ export interface RemediationIndex {
     readonly analysisId: string;
     readonly status: string;
     readonly supersededBy: string | null;
+    readonly scenarioCoveragePolicy: "scenario-required" | "plan-only";
+    readonly earnedStates: readonly (
+      | "EVIDENCED"
+      | "ANALYSIS_ADMITTED"
+      | "PLAN_BOUND"
+      | "FEATURE_AUTHORIZED"
+      | "FEATURE_NOT_REQUIRED"
+    )[];
     readonly planReferences: readonly { readonly planId: string; readonly role: string }[];
     readonly scenarioIds: readonly string[];
   }[];
@@ -84,7 +92,7 @@ export interface RemediationIndex {
 }
 
 export interface TraceabilityProjection {
-  readonly index: RemediationIndex;
+  readonly index: RemediationIndex | null;
   readonly violations: readonly TraceabilityViolation[];
 }
 
@@ -116,9 +124,13 @@ export async function buildsTraceabilityProjection(): Promise<TraceabilityProjec
   const traceBlocks = await readsTraceBlocks(PLAN_PATH);
   const scenarios = await readsFeatureScenarios(FEATURE_PATHS);
 
-  // Every typed block must satisfy its closed governance schema.
+  // Every typed block must satisfy its closed governance schema before any
+  // graph projection is constructed. Invalid blocks are diagnostics, never
+  // candidate authority.
+  let hasInvalidBlock = false;
   for (const block of analysisBlocks) {
     if (!validateAnalysis(block)) {
+      hasInvalidBlock = true;
       violations.push({
         code: "ANALYSIS_BLOCK_SCHEMA_INVALID",
         message: `sir-analysis block ${String(
@@ -129,6 +141,7 @@ export async function buildsTraceabilityProjection(): Promise<TraceabilityProjec
   }
   for (const block of traceBlocks) {
     if (!validateTrace(block)) {
+      hasInvalidBlock = true;
       violations.push({
         code: "TRACE_BLOCK_SCHEMA_INVALID",
         message: `sir-trace block ${String(
@@ -136,6 +149,10 @@ export async function buildsTraceabilityProjection(): Promise<TraceabilityProjec
         )} is schema-invalid: ${JSON.stringify(validateTrace.errors)}`
       });
     }
+  }
+
+  if (hasInvalidBlock) {
+    return { index: null, violations };
   }
 
   // Coordinates must be uniquely defined.
@@ -213,6 +230,16 @@ export async function buildsTraceabilityProjection(): Promise<TraceabilityProjec
     }
   }
 
+  const analysisSectionWitnesses = await readsAnalysisSectionWitnesses();
+  for (const block of analysisById.values()) {
+    violations.push(
+      ...checksAnalysisAssertionReferences(
+        block,
+        analysisSectionWitnesses.get(block.analysisId) ?? new Map()
+      )
+    );
+  }
+
   const citedScenarioIds = new Set<string>();
   const analysisPlanReferences = new Map<
     string,
@@ -221,6 +248,7 @@ export async function buildsTraceabilityProjection(): Promise<TraceabilityProjec
   const analysisScenarioIds = new Map<string, Set<string>>();
 
   for (const trace of traceByPlanId.values()) {
+    violations.push(...checksTraceCoordinateUniqueness(trace));
     const admittedRoles = new Map<string, Set<string>>();
 
     for (const reference of trace.planReferences) {
@@ -335,6 +363,36 @@ export async function buildsTraceabilityProjection(): Promise<TraceabilityProjec
     }
   }
 
+  // Scenario coverage is an explicit policy, never an inferred universal.
+  // A plan-only decision must not acquire a manufactured scenario edge, while
+  // a scenario-required decision cannot become statically authorized without
+  // one.
+  for (const block of analysisById.values()) {
+    const scenarioIds = analysisScenarioIds.get(block.analysisId) ?? new Set<string>();
+    if (
+      block.scenarioCoveragePolicy.requiresScenarioCoverage &&
+      scenarioIds.size === 0
+    ) {
+      violations.push({
+        code: "REQUIRED_ANALYSIS_SCENARIO_COVERAGE_MISSING",
+        message: `${block.analysisId} requires scenario coverage but has no explicit scenario edge.`
+      });
+    }
+    if (
+      !block.scenarioCoveragePolicy.requiresScenarioCoverage &&
+      scenarioIds.size > 0
+    ) {
+      violations.push({
+        code: "PLAN_ONLY_ANALYSIS_HAS_SCENARIO_EDGE",
+        message: `${block.analysisId} is classified plan-only but has scenario coverage.`
+      });
+    }
+  }
+
+  if (violations.length > 0) {
+    return { index: null, violations };
+  }
+
   const index: RemediationIndex = {
     analysisLedgerType: "sir-remediation-analysis-index.v1",
     analyses: [...analysisById.values()]
@@ -343,6 +401,12 @@ export async function buildsTraceabilityProjection(): Promise<TraceabilityProjec
         analysisId: block.analysisId,
         status: block.status,
         supersededBy: block.supersededBy,
+        scenarioCoveragePolicy: block.scenarioCoveragePolicy.classification,
+        earnedStates: derivesStaticLifecycleStates(
+          block,
+          analysisPlanReferences.get(block.analysisId) ?? [],
+          analysisScenarioIds.get(block.analysisId) ?? new Set<string>()
+        ),
         planReferences: (analysisPlanReferences.get(block.analysisId) ?? [])
           .slice()
           .sort(
@@ -380,6 +444,123 @@ export async function buildsTraceabilityProjection(): Promise<TraceabilityProjec
   return { index, violations };
 }
 
+function derivesStaticLifecycleStates(
+  block: AnalysisBlock,
+  planReferences: readonly { readonly role: string }[],
+  scenarioIds: ReadonlySet<string>
+): RemediationIndex["analyses"][number]["earnedStates"] {
+  const states: (
+    | "EVIDENCED"
+    | "ANALYSIS_ADMITTED"
+    | "PLAN_BOUND"
+    | "FEATURE_AUTHORIZED"
+    | "FEATURE_NOT_REQUIRED"
+  )[] = ["EVIDENCED"];
+
+  const adopted =
+    ADOPTED_STATUSES.has(block.status) && block.supersededBy === null;
+  if (!adopted) {
+    return states;
+  }
+  states.push("ANALYSIS_ADMITTED");
+
+  if (!planReferences.some((reference) => reference.role === "authority")) {
+    return states;
+  }
+  states.push("PLAN_BOUND");
+
+  if (block.scenarioCoveragePolicy.requiresScenarioCoverage) {
+    if (scenarioIds.size > 0) {
+      states.push("FEATURE_AUTHORIZED");
+    }
+  } else {
+    states.push("FEATURE_NOT_REQUIRED");
+  }
+
+  return states;
+}
+
+export function checksAnalysisAssertionReferences(
+  block: AnalysisBlock,
+  sectionWitnesses: ReadonlyMap<string, readonly string[]>
+): TraceabilityViolation[] {
+  const violations: TraceabilityViolation[] = [];
+  const expects = (
+    actual: string,
+    suffix: string,
+    code: string,
+    description: string
+  ): void => {
+    const expected = `${block.analysisId}#${suffix}`;
+    if (actual !== expected) {
+      violations.push({
+        code,
+        message: `${block.analysisId} ${description} must reference ${expected}, not ${actual}.`
+      });
+    }
+    const witnesses = sectionWitnesses.get(suffix) ?? [];
+    if (witnesses.length === 0) {
+      violations.push({
+        code: "ANALYSIS_ASSERTION_SECTION_MISSING",
+        message: `${block.analysisId} references a missing ${suffix} ledger section.`
+      });
+    } else {
+      if (witnesses.length > 1) {
+        violations.push({
+          code: "ANALYSIS_ASSERTION_SECTION_DUPLICATE",
+          message: `${block.analysisId} defines ${suffix} more than once.`
+        });
+      }
+      if (witnesses.every((content) => content.trim() === "")) {
+        violations.push({
+          code: "ANALYSIS_ASSERTION_SECTION_EMPTY",
+          message: `${block.analysisId} ${suffix} ledger section has no assertion content.`
+        });
+      }
+    }
+  };
+
+  for (const evidence of block.evidence) {
+    if (evidence.kind === "ledger-section") {
+      expects(
+        evidence.reference,
+        "workspace-validation",
+        "ANALYSIS_EVIDENCE_REFERENCE_INVALID",
+        `evidence ${evidence.evidenceId}`
+      );
+    }
+    if (!evidence.evidenceId.startsWith(`${block.analysisId}-E`)) {
+      violations.push({
+        code: "ANALYSIS_EVIDENCE_ID_NOT_SCOPED",
+        message: `${evidence.evidenceId} is not scoped to ${block.analysisId}.`
+      });
+    }
+  }
+
+  expects(
+    block.direction.reference,
+    "direction",
+    "ANALYSIS_DIRECTION_REFERENCE_INVALID",
+    "direction"
+  );
+  expects(
+    block.integrityGain.reference,
+    "integrity-gain",
+    "ANALYSIS_INTEGRITY_GAIN_REFERENCE_INVALID",
+    "integrity gain"
+  );
+  for (const guard of block.nonDegradationGuards) {
+    expects(
+      guard.reference,
+      "non-degradation-guard",
+      "ANALYSIS_GUARD_REFERENCE_INVALID",
+      "non-degradation guard"
+    );
+  }
+
+  return violations;
+}
+
 function recordsRole(
   admitted: Map<string, Set<string>>,
   reference: AnalysisReference
@@ -387,6 +568,99 @@ function recordsRole(
   const roles = admitted.get(reference.analysisId) ?? new Set<string>();
   roles.add(reference.role);
   admitted.set(reference.analysisId, roles);
+}
+
+export function checksTraceCoordinateUniqueness(
+  trace: TraceBlock
+): TraceabilityViolation[] {
+  const violations: TraceabilityViolation[] = [];
+  const planAnalysisIds = new Set<string>();
+  for (const reference of trace.planReferences) {
+    if (planAnalysisIds.has(reference.analysisId)) {
+      violations.push({
+        code: "DUPLICATE_PLAN_ANALYSIS_REFERENCE",
+        message: `${trace.planId} cites ${reference.analysisId} more than once in planReferences.`
+      });
+    }
+    planAnalysisIds.add(reference.analysisId);
+  }
+
+  const scenarioIds = new Set<string>();
+  for (const mapping of trace.scenarioMappings) {
+    if (scenarioIds.has(mapping.scenarioId)) {
+      violations.push({
+        code: "DUPLICATE_PLAN_SCENARIO_MAPPING",
+        message: `${trace.planId} maps ${mapping.scenarioId} more than once.`
+      });
+    }
+    scenarioIds.add(mapping.scenarioId);
+
+    const analysisIds = new Set<string>();
+    for (const reference of mapping.analysisReferences) {
+      if (analysisIds.has(reference.analysisId)) {
+        violations.push({
+          code: "DUPLICATE_SCENARIO_ANALYSIS_REFERENCE",
+          message: `${trace.planId} scenario ${mapping.scenarioId} cites ${reference.analysisId} more than once.`
+        });
+      }
+      analysisIds.add(reference.analysisId);
+    }
+  }
+  return violations;
+}
+
+async function readsAnalysisSectionWitnesses(): Promise<
+  Map<string, Map<string, string[]>>
+> {
+  const { marked } = await import("marked");
+  const markdown = (await readFile(LEDGER_PATH)).toString("utf8");
+  const witnesses = new Map<string, Map<string, string[]>>();
+  let currentAnalysisId: string | undefined;
+
+  for (const token of marked.lexer(markdown)) {
+    const candidate = token as {
+      type?: string;
+      depth?: number;
+      text?: string;
+      tokens?: readonly {
+        type?: string;
+        text?: string;
+        raw?: string;
+      }[];
+    };
+    if (candidate.type === "heading") {
+      const match = /^(SIR-RA-\d{3})\b/u.exec(candidate.text ?? "");
+      currentAnalysisId = candidate.depth === 3 ? match?.[1] : undefined;
+      if (currentAnalysisId !== undefined && !witnesses.has(currentAnalysisId)) {
+        witnesses.set(currentAnalysisId, new Map<string, string[]>());
+      }
+      continue;
+    }
+    if (
+      currentAnalysisId === undefined ||
+      candidate.type !== "paragraph" ||
+      candidate.tokens?.[0]?.type !== "strong"
+    ) {
+      continue;
+    }
+
+    const normalized = (candidate.tokens[0].text ?? "")
+      .trim()
+      .replace(/:$/u, "")
+      .toLowerCase()
+      .replace(/\s+/gu, "-");
+    const content = candidate.tokens
+      .slice(1)
+      .map((child) => child.raw ?? child.text ?? "")
+      .join("")
+      .trim();
+    const byLabel = witnesses.get(currentAnalysisId);
+    const entries = byLabel?.get(normalized) ?? [];
+    entries.push(content);
+    byLabel?.set(normalized, entries);
+  }
+
+  return witnesses;
 }
 
 /** A non-adopted decision may never be cited as current authority. */

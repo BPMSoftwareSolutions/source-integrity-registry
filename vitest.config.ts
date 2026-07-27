@@ -1,9 +1,12 @@
 import { defineConfig } from "vitest/config";
 
+import { ScenarioExecutionReporter } from "./scripts/remediation/scenario-execution-reporter.ts";
+
 export default defineConfig({
   test: {
     include: ["tests/**/*.test.ts"],
     environment: "node",
+    reporters: ["default", new ScenarioExecutionReporter()],
 
     /**
      * Bounded workers, committed as authority.
@@ -14,6 +17,6 @@ export default defineConfig({
      * it does not narrow discovery or weaken any assertion.
      */
     minWorkers: 1,
-    maxWorkers: 2
+    maxWorkers: 1
   }
 });

@@ -53,6 +53,7 @@ describe("@sir-package-001 Proof lifecycle contract", () => {
     expect(core).toContain("pnpm test");
     expect(core).toContain("check:generated");
     expect(core).toContain("check:remediation-index");
+    expect(core).toContain("check:remediation-history");
     expect(core).toContain("prove-fresh-build");
   });
 

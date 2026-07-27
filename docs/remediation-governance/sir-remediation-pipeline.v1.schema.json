@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.deterministic.solutions/sir/governance/sir-remediation-pipeline/1.0.0/schema.json",
+  "title": "SIR Remediation Pipeline Bootstrap Marker",
+  "description": "Closed marker establishing prospective repository-history enforcement after the unreleased v1 governance bootstrap.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["pipelineType", "bootstrapAnalysisId", "historyEnforcement"],
+  "properties": {
+    "pipelineType": {
+      "const": "sir-remediation-pipeline.v1"
+    },
+    "bootstrapAnalysisId": {
+      "const": "SIR-RA-025"
+    },
+    "historyEnforcement": {
+      "const": "prospective-from-marker-parent"
+    }
+  }
+}

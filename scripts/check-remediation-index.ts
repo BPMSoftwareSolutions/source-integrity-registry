@@ -7,6 +7,7 @@ import {
   INDEX_PATH,
   repositoryRoot
 } from "./remediation/build-index.ts";
+import { checksRemediationIndexCandidate } from "./generate-remediation-index.ts";
 
 /**
  * Comparison-only traceability gate.
@@ -20,8 +21,15 @@ const { index, violations } = await buildsTraceabilityProjection();
 const problems: string[] = violations.map(
   (violation) => `${violation.code}: ${violation.message}`
 );
+if (index !== null) {
+  problems.push(
+    ...(await checksRemediationIndexCandidate(index)).map(
+      (violation) => `${violation.code}: ${violation.message}`
+    )
+  );
+}
 
-const expected = rendersIndexDocument(index);
+const expected = index === null ? null : rendersIndexDocument(index);
 let actual = "";
 try {
   actual = (await readFile(INDEX_PATH)).toString("utf8");
@@ -31,7 +39,7 @@ try {
   );
 }
 
-if (actual !== "" && actual !== expected) {
+if (expected !== null && actual !== "" && actual !== expected) {
   problems.push(
     `COMMITTED_PROJECTION_DRIFT: ${path.relative(
       repositoryRoot,
@@ -49,6 +57,6 @@ if (problems.length > 0) {
   process.exitCode = 1;
 } else {
   process.stdout.write(
-    `Remediation traceability is conformant: ${index.analyses.length} analyses, ${index.plans.length} plans, ${index.scenarios.length} scenarios.\n`
+    `Remediation traceability is conformant: ${index?.analyses.length ?? 0} analyses, ${index?.plans.length ?? 0} plans, ${index?.scenarios.length ?? 0} scenarios.\n`
   );
 }

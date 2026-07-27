@@ -15,11 +15,38 @@ export type AnalysisStatus =
 
 export type ReferenceRole = "authority" | "guard" | "context";
 
+export interface LedgerAssertionReference {
+  readonly reference: string;
+}
+
 export interface AnalysisBlock {
   readonly analysisMetadataType: "sir-remediation-analysis.v1";
   readonly analysisId: string;
   readonly status: AnalysisStatus;
   readonly supersededBy: string | null;
+  readonly evidence: readonly {
+    readonly evidenceId: string;
+    readonly kind: "ledger-section";
+    readonly reference: string;
+  }[];
+  readonly direction: LedgerAssertionReference;
+  readonly integrityGain: LedgerAssertionReference;
+  readonly nonDegradationGuards: readonly LedgerAssertionReference[];
+  readonly proofBoundary: Readonly<{
+    proves: readonly string[];
+    doesNotProve: readonly string[];
+  }>;
+  readonly scenarioCoveragePolicy:
+    | Readonly<{
+        classification: "scenario-required";
+        requiresScenarioCoverage: true;
+        rationale: string;
+      }>
+    | Readonly<{
+        classification: "plan-only";
+        requiresScenarioCoverage: false;
+        rationale: string;
+      }>;
 }
 
 export interface AnalysisReference {

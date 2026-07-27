@@ -21,6 +21,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Remediation-history proof must see the base commit and every
+          # checkpoint/implementation transition in the evaluated range.
+          fetch-depth: 0
 
       - uses: pnpm/action-setup@v4
         with:
@@ -34,7 +38,14 @@ jobs:
       - name: Install with a frozen lockfile
         run: pnpm install --frozen-lockfile
 
+      - name: Prove remediation history
+        env:
+          SIR_REMEDIATION_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: pnpm check:remediation-history
+
       - name: Prove
+        env:
+          SIR_REMEDIATION_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: pnpm prove
 
       - name: Prove that proof left tracked content unchanged
