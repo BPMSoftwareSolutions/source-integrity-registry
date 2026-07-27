@@ -11,6 +11,13 @@ This is **Step Zero**: schema governance and registry contract validation, plus
 whole-file physical body observation. Source interpretation (AST inspection,
 sub-file locators, responsibility traceability) is deliberately downstream.
 
+## Public course
+
+[Building Deterministic Systems from One Governed Cell](docs/public-course-building-deterministic-systems-with-sir.md)
+is a 12-module, laboratory-based course that teaches SIR from intent and schema
+authority through observation, canonical testimony, adversarial proof,
+remediation governance, and ecosystem integration.
+
 ## Install
 
 ```bash
