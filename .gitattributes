@@ -1,0 +1,7 @@
+# SIR trust rests on byte digests. A line-ending conversion would change schema
+# bytes on checkout and invalidate every catalog digest, so normalization is
+# pinned to LF for all text rather than left to each machine's core.autocrlf.
+* text=auto eol=lf
+
+pnpm-lock.yaml -diff linguist-generated
+contracts/generated/** linguist-generated

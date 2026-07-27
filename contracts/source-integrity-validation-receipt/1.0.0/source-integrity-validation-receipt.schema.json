@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.deterministic.solutions/sir/source-integrity-validation-receipt/1.0.0/schema.json",
+  "title": "Source Integrity Validation Receipt",
+  "description": "Canonical testimony of one validation circuit execution. Carries observed truth: the disposition reached, the findings that produced it, and the exact inputs the circuit consulted.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract", "disposition", "subject", "schemaAdmission", "findings"],
+  "properties": {
+    "contract": { "$ref": "#/$defs/receiptContractDeclaration" },
+    "disposition": { "$ref": "#/$defs/disposition" },
+    "subject": { "$ref": "#/$defs/subject" },
+    "schemaAdmission": { "$ref": "#/$defs/schemaAdmission" },
+    "findings": {
+      "type": "array",
+      "description": "All findings retained for diagnosis. The parent circuit consumes only the single disposition signal.",
+      "items": { "$ref": "#/$defs/finding" }
+    },
+    "observation": {
+      "$ref": "#/$defs/observation",
+      "description": "Present only when physical body observation ran, which requires the registry contract to be structurally valid."
+    }
+  },
+  "$defs": {
+    "sha256Digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "schemaIdentityUri": {
+      "type": "string",
+      "format": "uri"
+    },
+    "exactSemanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "disposition": {
+      "enum": [
+        "REGISTRY_CONTRACT_VALID",
+        "REGISTRY_CONTRACT_INVALID",
+        "SCHEMA_NOT_ADMITTED",
+        "SCHEMA_DIGEST_MISMATCH",
+        "SOURCE_BODY_DRIFT"
+      ],
+      "description": "The single authoritative signal produced by the circuit."
+    },
+    "receiptContractDeclaration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contractType", "schemaId", "schemaVersion"],
+      "properties": {
+        "contractType": { "const": "source-integrity-validation-receipt" },
+        "schemaId": { "$ref": "#/$defs/schemaIdentityUri" },
+        "schemaVersion": { "$ref": "#/$defs/exactSemanticVersion" }
+      }
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["registryPath", "registryDigest"],
+      "properties": {
+        "registryPath": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Path of the payload as supplied to the circuit."
+        },
+        "registryDigest": {
+          "$ref": "#/$defs/sha256Digest",
+          "description": "Digest of the exact payload bytes read, established before parsing."
+        },
+        "registryId": { "type": "string" },
+        "workspaceId": { "type": "string" },
+        "workspaceRevision": { "type": "string" }
+      }
+    },
+    "schemaAdmission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["admitted"],
+      "properties": {
+        "admitted": { "type": "boolean" },
+        "declaredSchemaId": { "type": "string" },
+        "catalogDigest": { "$ref": "#/$defs/sha256Digest" },
+        "observedDigest": { "$ref": "#/$defs/sha256Digest" },
+        "catalogPath": { "type": "string" }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "instancePath", "message"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Stable finding code. AJV findings carry the keyword; circuit findings carry a SIR code."
+        },
+        "instancePath": {
+          "type": "string",
+          "description": "JSON Pointer into the payload. Empty string denotes the document root."
+        },
+        "schemaPath": { "type": "string" },
+        "message": { "type": "string", "minLength": 1 }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["performed", "entries"],
+      "properties": {
+        "performed": { "type": "boolean" },
+        "workspaceRoot": { "type": "string" },
+        "entries": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/observedEntry" }
+        }
+      }
+    },
+    "observedEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bodyId", "relativePath", "conformance"],
+      "properties": {
+        "bodyId": { "type": "string" },
+        "relativePath": { "type": "string" },
+        "conformance": {
+          "enum": [
+            "BODY_CONFORMS",
+            "BODY_HASH_MISMATCH",
+            "BODY_NOT_FOUND",
+            "BODY_LOCATOR_UNRESOLVED"
+          ]
+        },
+        "expectedHash": { "$ref": "#/$defs/sha256Digest" },
+        "observedHash": { "$ref": "#/$defs/sha256Digest" },
+        "detail": { "type": "string" }
+      }
+    }
+  }
+}

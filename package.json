@@ -1,0 +1,48 @@
+{
+  "name": "@deterministic-solutions/source-integrity-registry",
+  "version": "0.1.0",
+  "description": "Deterministic governance of physical-to-logical source bindings. Proves the contract by which source bodies may be governed, before governing them.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "sir": "./dist/cli/sir.js"
+  },
+  "files": [
+    "dist",
+    "contracts"
+  ],
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "generate:types": "tsx scripts/generate-types.ts",
+    "generate:catalog": "tsx scripts/generate-catalog.ts",
+    "check:generated": "tsx scripts/check-generated.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "json-schema-to-typescript": "^15.0.4",
+    "tsx": "^4.23.1",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.8"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}

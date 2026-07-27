@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.deterministic.solutions/sir/source-integrity-registry/1.0.0/schema.json",
+  "title": "Source Integrity Registry",
+  "description": "Declared physical-to-logical bindings between source bodies and the responsibilities they discharge. This contract carries declared truth only. Observed status, conformance disposition, and timestamps belong to validation receipts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract", "registryId", "workspace", "entries"],
+  "properties": {
+    "contract": { "$ref": "#/$defs/registryContractDeclaration" },
+    "registryId": { "$ref": "#/$defs/identifier" },
+    "workspace": { "$ref": "#/$defs/workspace" },
+    "entries": {
+      "type": "array",
+      "description": "Declared source body bindings. bodyId uniqueness is enforced.",
+      "items": { "$ref": "#/$defs/registryEntry" }
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "exactSemanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "schemaIdentityUri": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://schemas\\.deterministic\\.solutions/sir/[a-z0-9]+(-[a-z0-9]+)*/(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)/schema\\.json$"
+    },
+    "sha256Digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^(?!/)(?!.*\\\\)(?!.*(^|/)\\.\\.(/|$))[^\\u0000]+$",
+      "description": "Forward-slash path relative to the workspace root. Absolute paths, backslashes, and parent traversal are forbidden."
+    },
+    "registryContractDeclaration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contractType", "schemaId", "schemaVersion"],
+      "properties": {
+        "contractType": { "const": "source-integrity-registry" },
+        "schemaId": { "$ref": "#/$defs/schemaIdentityUri" },
+        "schemaVersion": {
+          "$ref": "#/$defs/exactSemanticVersion",
+          "description": "Must equal the version segment of schemaId. Disagreement is a hard admission failure."
+        },
+        "schemaDigest": {
+          "$ref": "#/$defs/sha256Digest",
+          "description": "Optional restatement of the governing schema digest. When present it must equal the catalog digest."
+        }
+      }
+    },
+    "workspace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["workspaceId", "revision"],
+      "properties": {
+        "workspaceId": { "$ref": "#/$defs/identifier" },
+        "revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$",
+          "description": "Exact 40-character lowercase hex commit identity. Branch names and tags are forbidden."
+        }
+      }
+    },
+    "responsibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capabilityId",
+        "featureId",
+        "scenarioId",
+        "responsibilityId",
+        "obligationId",
+        "kind"
+      ],
+      "properties": {
+        "capabilityId": { "$ref": "#/$defs/identifier" },
+        "featureId": { "$ref": "#/$defs/identifier" },
+        "scenarioId": { "$ref": "#/$defs/identifier" },
+        "responsibilityId": { "$ref": "#/$defs/identifier" },
+        "obligationId": { "$ref": "#/$defs/identifier" },
+        "kind": {
+          "enum": [
+            "execution",
+            "resolution",
+            "validation",
+            "projection",
+            "observation",
+            "admission"
+          ],
+          "description": "Declared responsibility kind. The set is closed; taxonomy is never guessed."
+        }
+      }
+    },
+    "sourceLocator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "name"],
+      "properties": {
+        "kind": {
+          "enum": ["named-declaration", "named-export", "whole-file"],
+          "description": "How the body is located within the source file."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "description": "Declared body name. For whole-file locators this restates the file identity."
+        }
+      }
+    },
+    "sourceHash": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "expected"],
+      "properties": {
+        "algorithm": { "const": "sha256" },
+        "expected": {
+          "$ref": "#/$defs/sha256Digest",
+          "description": "Declared digest of the source body bytes. Observation compares against this value; the registry never records what was observed."
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["relativePath", "language", "locator", "hash"],
+      "properties": {
+        "relativePath": { "$ref": "#/$defs/relativePath" },
+        "language": {
+          "enum": ["typescript", "javascript", "json", "gherkin", "markdown"]
+        },
+        "locator": { "$ref": "#/$defs/sourceLocator" },
+        "hash": { "$ref": "#/$defs/sourceHash" }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gherkinReference", "semanticAuthorityReference"],
+      "properties": {
+        "gherkinReference": { "$ref": "#/$defs/relativePath" },
+        "semanticAuthorityReference": { "$ref": "#/$defs/relativePath" }
+      }
+    },
+    "registryEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bodyId", "responsibility", "source", "authority"],
+      "properties": {
+        "bodyId": { "$ref": "#/$defs/identifier" },
+        "responsibility": { "$ref": "#/$defs/responsibility" },
+        "source": { "$ref": "#/$defs/source" },
+        "authority": { "$ref": "#/$defs/authority" }
+      }
+    }
+  }
+}

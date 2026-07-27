@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.deterministic.solutions/sir/sir-schema-catalog/1.0.0/schema.json",
+  "title": "SIR Schema Catalog",
+  "description": "Governs which schemas are trusted for Source Integrity Registry admission. A schema absent from an accepted catalog entry is never admitted, and is never retrieved from the network.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract", "catalogId", "entries"],
+  "properties": {
+    "contract": {
+      "$ref": "#/$defs/catalogContractDeclaration"
+    },
+    "catalogId": {
+      "$ref": "#/$defs/identifier",
+      "description": "Stable identity of this catalog."
+    },
+    "entries": {
+      "type": "array",
+      "description": "Trusted schema entries. Order is not significant; schemaId uniqueness is enforced.",
+      "items": { "$ref": "#/$defs/catalogEntry" }
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "description": "Lowercase kebab-case identifier."
+    },
+    "exactSemanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+      "description": "An exact three-part semantic version. Ranges and floating identifiers are forbidden."
+    },
+    "schemaIdentityUri": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://schemas\\.deterministic\\.solutions/sir/[a-z0-9]+(-[a-z0-9]+)*/(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)/schema\\.json$",
+      "description": "Exact immutable schema identity. The pattern structurally forbids floating identifiers such as latest, 1.x, or ^1.0.0."
+    },
+    "sha256Digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "description": "Lowercase hex sha256 digest with an explicit algorithm prefix."
+    },
+    "supportedDialect": {
+      "type": "string",
+      "const": "https://json-schema.org/draft/2020-12/schema",
+      "description": "SIR v0.1 supports Draft 2020-12 only. Mixed-dialect catalogs are not admitted."
+    },
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^(?!/)(?!.*\\\\)(?!.*(^|/)\\.\\.(/|$))[^\\u0000]+$",
+      "description": "Forward-slash relative path contained within the catalog root. Absolute paths, backslashes, and parent traversal are forbidden."
+    },
+    "catalogContractDeclaration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contractType", "schemaId", "schemaVersion"],
+      "properties": {
+        "contractType": { "const": "sir-schema-catalog" },
+        "schemaId": { "$ref": "#/$defs/schemaIdentityUri" },
+        "schemaVersion": { "$ref": "#/$defs/exactSemanticVersion" },
+        "schemaDigest": { "$ref": "#/$defs/sha256Digest" }
+      }
+    },
+    "catalogEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaId",
+        "schemaFamily",
+        "schemaVersion",
+        "dialect",
+        "relativePath",
+        "sha256",
+        "status"
+      ],
+      "properties": {
+        "schemaId": { "$ref": "#/$defs/schemaIdentityUri" },
+        "schemaFamily": { "$ref": "#/$defs/identifier" },
+        "schemaVersion": { "$ref": "#/$defs/exactSemanticVersion" },
+        "dialect": { "$ref": "#/$defs/supportedDialect" },
+        "relativePath": { "$ref": "#/$defs/relativePath" },
+        "sha256": { "$ref": "#/$defs/sha256Digest" },
+        "status": {
+          "enum": ["accepted", "revoked"],
+          "description": "Only accepted schemas may govern a payload. Revoked entries are retained so historical identities remain resolvable and explicitly refused."
+        }
+      }
+    }
+  }
+}

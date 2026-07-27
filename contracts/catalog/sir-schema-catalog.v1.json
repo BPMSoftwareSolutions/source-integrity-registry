@@ -1,0 +1,37 @@
+{
+  "contract": {
+    "contractType": "sir-schema-catalog",
+    "schemaId": "https://schemas.deterministic.solutions/sir/sir-schema-catalog/1.0.0/schema.json",
+    "schemaVersion": "1.0.0"
+  },
+  "catalogId": "sir-package-catalog",
+  "entries": [
+    {
+      "schemaId": "https://schemas.deterministic.solutions/sir/sir-schema-catalog/1.0.0/schema.json",
+      "schemaFamily": "sir-schema-catalog",
+      "schemaVersion": "1.0.0",
+      "dialect": "https://json-schema.org/draft/2020-12/schema",
+      "relativePath": "catalog/1.0.0/sir-schema-catalog.schema.json",
+      "sha256": "sha256:4218189859e9fd6501ea102f25f7216a61734943265a04e60b8235120e3b8d1e",
+      "status": "accepted"
+    },
+    {
+      "schemaId": "https://schemas.deterministic.solutions/sir/source-integrity-registry/1.0.0/schema.json",
+      "schemaFamily": "source-integrity-registry",
+      "schemaVersion": "1.0.0",
+      "dialect": "https://json-schema.org/draft/2020-12/schema",
+      "relativePath": "source-integrity-registry/1.0.0/source-integrity-registry.schema.json",
+      "sha256": "sha256:ae3491e1593b611591d6816781da9e0517288832e173b6e9d50cb6f6feb4d856",
+      "status": "accepted"
+    },
+    {
+      "schemaId": "https://schemas.deterministic.solutions/sir/source-integrity-validation-receipt/1.0.0/schema.json",
+      "schemaFamily": "source-integrity-validation-receipt",
+      "schemaVersion": "1.0.0",
+      "dialect": "https://json-schema.org/draft/2020-12/schema",
+      "relativePath": "source-integrity-validation-receipt/1.0.0/source-integrity-validation-receipt.schema.json",
+      "sha256": "sha256:e8a3d2c1e07055d50b568ff8ff8e404faf83113e49de0b72b03f01417247c389",
+      "status": "accepted"
+    }
+  ]
+}
