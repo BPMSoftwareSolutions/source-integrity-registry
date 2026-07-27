@@ -427,6 +427,228 @@ documentation fields or dispositions to the current registry and receipt
 }
 ```
 
+## SIR-RP-060 — Remediation proof-surface and earned-closure authority
+
+This slice closes the gap between feature-first implementation authority and a
+durable claim that one remediation is complete. The existing checkpoint
+remains the sole authority for ancestry, bound bytes, and implementation scope;
+the new contracts declare what must be observed and preserve what execution
+actually established. (`SIR-RA-032`, `SIR-RA-043`)
+
+### Bootstrap and activation
+
+The proof system cannot truthfully govern its own creation. Implement it under
+the existing checkpoint process, prove that implementation with the existing
+package gates, and then activate the new rule prospectively through an
+immutable checkpoint field governed by the extended
+`sir-remediation-authority-checkpoint.v1` contract.
+
+The activation checkpoint establishes this boundary:
+
+```text
+remediation checkpoints created after the activation checkpoint
+    require admitted proof surfaces
+
+implementation subjects governed by those checkpoints
+    require applicable earned closure receipts
+
+earlier remediation history
+    remains classified by the rules active when it was created
+```
+
+Activation continuity is a history invariant. Removing, bypassing, or
+reinterpreting the activation checkpoint must produce RED; it cannot revert
+the repository to the earlier policy. No proof surface or receipt is
+manufactured for pre-activation work. (`SIR-RA-043`)
+
+### Closed proof-surface authority
+
+Add `sir-remediation-proof-surface.v1.schema.json`. Each `SIR-PS-NNN` surface
+is closed and declares:
+
+- its type, stable identity, governing analysis ID, plan ID, and scenario IDs;
+- the properties it proves and explicitly does not prove;
+- named deterministic environment profiles and required toolchain constraints;
+- stable obligation and observation IDs with exact required cardinality;
+- command identity, working directory, normalized arguments, and allowed
+  environment inputs;
+- positive or adversarial control fixtures, deterministic mutations, and
+  inspected artifact identities;
+- expected raw outcome (`GREEN` or `RED`) and exact expected finding codes;
+- continuation behavior for an unexpected outcome or `NO_VERDICT`; and
+- the canonical subject fields whose change requires reproof.
+
+The surface does not contain its own digest, a future checkpoint identity, a
+future implementation digest, or an authored closure state. Its authority
+commit supplies the bytes that a later checkpoint observes. An admitted
+surface ID is immutable; an amendment receives a new identity.
+(`SIR-RA-043`)
+
+### Extend the existing checkpoint candidate
+
+Correct the unreleased `sir-remediation-authority-checkpoint.v1` candidate in
+place. Preserve all existing `SIR-RC-NNN` identities and validation. Add a
+closed proof-surface binding containing:
+
+```text
+proof-surface ID
+repository path
+sha256 digest observed from the authority commit
+```
+
+Add an explicit activation field to the same checkpoint contract instead of
+creating a marker or second checkpoint family. The field is absent on
+historical checkpoints, appears exactly once on the activation checkpoint, and
+causes every later governed checkpoint to require at least one proof-surface
+binding. Checkpoint authoring validates each surface structurally, confirms its
+analysis/plan/scenario edges, computes its digest from committed bytes, and
+never accepts a caller-supplied digest. Repository-history proof confirms that
+the checkpoint commit follows the authority commit, the implementation follows
+the checkpoint commit, and the executed surface bytes retain the
+checkpoint-bound digest. (`SIR-RA-032`, `SIR-RA-043`)
+
+### Generated execution testimony
+
+Add `sir-remediation-closure-receipt.v1.schema.json` and a deterministic proof
+runner. A generated `SIR-CR-NNN` receipt preserves three distinct layers:
+
+```text
+raw observation
+    GREEN | RED | NO_VERDICT
+
+expectation evaluation
+    SATISFIED | UNSATISFIED | NOT_EVALUATED
+
+closure evaluation
+    EARNED | NOT_EARNED | REPROOF_REQUIRED
+```
+
+An expected adversarial `RED` remains raw `RED` while satisfying its declared
+expectation. An unexpected result is unsatisfied. A crash, missing verdict, or
+unexecuted required observation is `NOT_EVALUATED` and cannot earn closure.
+Continuation policy may stop dependent observations after an unexpected
+outcome or no verdict; it must not stop merely because an expected raw result
+is RED. (`SIR-RA-023`, `SIR-RA-030`, `SIR-RA-043`)
+
+The receipt binds:
+
+- proof-surface identity and checkpoint-bound digest;
+- checkpoint identity and authority commit;
+- implementation commit, implementation tree, governed scope, and clean input
+  workspace observation;
+- environment profile and relevant observed toolchain versions;
+- stable command IDs, normalized arguments, and inspected artifact hashes;
+- pre/post tracked-tree identities where an observation can mutate state;
+- every required observation, raw outcome, finding code, expectation
+  evaluation, and cardinality result; and
+- the deterministically computed proof-subject identity and derived closure
+  evaluation.
+
+The canonical receipt excludes wall-clock authority, indiscriminate
+environment captures, stdout/stderr digests, executable hashes, self-hashes,
+and other machine noise unless a named obligation makes one of those facts
+part of the claim. The default `pnpm prove` path remains non-mutating. Explicit
+receipt generation writes only to a caller-selected output or temporary
+location; a canonical receipt is admitted intentionally in a later commit and
+is immutable under its identity. (`SIR-RA-023`, `SIR-RA-043`)
+
+### Semantic admission and closure evaluation
+
+Schema validity admits structure only. Semantic proof-surface admission must
+also establish that all coordinates exist, every scenario edge is explicit,
+every claim has required observations, every observation has exactly one
+closed expectation, and the checkpoint binds the committed surface bytes.
+
+Closure evaluation must establish that the runner executed the admitted
+surface, every required observation is present exactly as declared, no
+unexpected observation is silently accepted, raw outcomes and finding codes
+match their expectations, subject-defining identities still match, and the
+receipt is generated from those facts. A changed implementation commit, tree,
+scope, surface digest, environment profile, or inspected artifact identity
+creates a new proof subject. A prior receipt remains valid historical testimony
+but yields `REPROOF_REQUIRED` when evaluated for that new subject.
+(`SIR-RA-043`)
+
+### Completion boundary
+
+This slice is complete only when:
+
+- both new schemas and the extended checkpoint candidate are closed and
+  bootstrap-valid;
+- the checkpoint author and history verifier bind exact proof-surface bytes;
+- activation is prospective, immutable, and continuously enforced;
+- generated receipts preserve raw outcomes without semantic laundering;
+- positive, adversarial, missing-observation, cardinality, no-verdict, stale
+  subject, and changed-byte controls produce their declared results;
+- the default proof remains non-mutating and portable;
+- existing pre-activation checkpoints remain valid historical authority; and
+- the first post-activation remediation cannot implement or claim closure
+  without its admitted surface and applicable earned receipt.
+
+This completion boundary does not claim external publication or release
+provenance. (`SIR-RA-021`, `SIR-RA-043`)
+
+```sir-trace
+{
+  "traceabilityType": "sir-remediation-trace.v1",
+  "planId": "SIR-RP-060",
+  "planReferences": [
+    {
+      "analysisId": "SIR-RA-021",
+      "role": "guard"
+    },
+    {
+      "analysisId": "SIR-RA-023",
+      "role": "guard"
+    },
+    {
+      "analysisId": "SIR-RA-030",
+      "role": "guard"
+    },
+    {
+      "analysisId": "SIR-RA-032",
+      "role": "guard"
+    },
+    {
+      "analysisId": "SIR-RA-043",
+      "role": "authority"
+    }
+  ],
+  "scenarioMappings": [
+    {
+      "scenarioId": "@sir-package-012",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-032",
+          "role": "guard"
+        },
+        {
+          "analysisId": "SIR-RA-043",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-013",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-023",
+          "role": "guard"
+        },
+        {
+          "analysisId": "SIR-RA-030",
+          "role": "guard"
+        },
+        {
+          "analysisId": "SIR-RA-043",
+          "role": "authority"
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## SIR-RP-100 — Remediation Slice Zero: reconcile canonical features
 
 No schema or runtime remediation begins until the feature governing that slice

@@ -2856,6 +2856,139 @@ with a derived copy, apply a repository-wide binary policy when a narrow
 snapshot rule suffices, mutate the current registry or receipt `1.0.0`
 contracts, or claim semantic fidelity from byte reproduction alone.
 
+### SIR-RA-043 — Predeclare the remediation proof subject and earn closure from execution
+
+**Sources:** `SIR-RA-022`, `SIR-RA-023`, `SIR-RA-030`, `SIR-RA-032`,
+`SIR-RP-100`, the current remediation checkpoint contract and history checker,
+and the current package-proof command surface.
+
+**Status:** VALID WITH REFINEMENT.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-043",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-043-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-043#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-043#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-043#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-043#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "A governed remediation proof subject was declared before implementation and can be closed only by complete generated testimony satisfying the admitted expectations for its exact checkpoint-bound bytes and implementation identity."
+    ],
+    "doesNotProve": [
+      "The declared obligations are sufficient for every unstated risk, an expected adversarial RED became GREEN, an older receipt authorizes a changed subject, external release provenance, or retroactive governance of remediation history created before activation."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "Proof-surface admission, raw-outcome preservation, expectation evaluation, exact-subject binding, and closure eligibility are executable repository guarantees."
+  }
+}
+```
+
+**Workspace validation:** The current `sir-remediation-authority-checkpoint.v1`
+contract and repository-history checker establish that analysis, plan,
+scenario, projection, and feature bytes preceded a scoped implementation
+change. `SIR-RA-032` correctly limits that checkpoint: it does not assert that
+the implementation succeeded or satisfied its scenarios. Executed-scenario
+coverage proves that each feature tag has passing test testimony, while
+`pnpm prove` evaluates the current repository and returns an ephemeral command
+result.
+
+The workspace has no closed authority that predeclares the exact observations,
+expected raw outcomes, finding codes, cardinality, environment boundary, or
+artifact identities required to close one remediation. It has no generated
+receipt binding those observations to a checkpoint, implementation commit,
+tree, and inspected bytes. Consequently, a later narrative can call a slice
+"closed" without a durable, replayable subject-specific proof chain; a stale
+GREEN, an expected adversarial RED, an unexpected RED, and a mechanical crash
+are not represented as distinct remediation-closure facts.
+
+**Direction:** Add a closed `sir-remediation-proof-surface.v1` contract and a
+closed `sir-remediation-closure-receipt.v1` contract, and extend the unreleased
+checkpoint candidate in place. A proof surface uses a stable `SIR-PS-NNN`
+identity and declares governing analysis, plan, and scenario coordinates;
+proof boundary; deterministic environment profiles; exact observation
+identities and cardinality; command definitions; expected raw outcomes and
+finding codes; inspected artifact bindings; continuation behavior; and the
+canonical fields of the proof-subject projection. It contains neither its own
+digest nor a future checkpoint reference.
+
+The authority commit contains the proof-surface bytes. An existing `SIR-RC-NNN`
+checkpoint observes and binds the surface identity, path, digest, authority
+commit, and implementation scope. The checkpoint must be an ancestor of the
+implementation subject, and the executed surface bytes must equal the
+checkpoint-bound bytes. An admitted surface ID is append-only: changed
+obligations, commands, expectations, environment boundaries, or proof limits
+require a new surface identity and checkpoint.
+
+A deterministic runner preserves the raw observation vocabulary `GREEN`,
+`RED`, and `NO_VERDICT`; separately derives `SATISFIED`, `UNSATISFIED`, or
+`NOT_EVALUATED` by comparing each observation with its declared expectation;
+and generates a stable `SIR-CR-NNN` closure receipt. An expected
+negative-control `RED` may satisfy an expectation but remains raw `RED`.
+Mechanical failure produces `NO_VERDICT` and cannot earn closure. Continuation
+policy responds to unexpected outcomes or no verdict, never to raw `RED`
+merely because it is RED.
+
+The receipt binds the proof-surface and checkpoint identities,
+checkpoint-bound surface digest, authority commit, implementation commit and
+tree, governed scope, clean-workspace observation, environment profile and
+relevant toolchain versions, normalized command observations, inspected
+artifact hashes, pre/post tracked-tree identities where mutation is possible,
+raw outcomes, finding codes, expectation evaluations, cardinality, and the
+deterministically computed proof-subject identity. Closure evaluation derives
+`EARNED`, `NOT_EARNED`, or `REPROOF_REQUIRED`; no human-authored lifecycle
+label can substitute. A previous receipt remains valid historical testimony
+for its exact subject but is inapplicable after the subject-defining inputs
+change.
+
+Activation is prospective. The existing checkpoint process authorizes this
+proof system's implementation because the system cannot honestly preexist its
+own bootstrap. After implementation is proven by the existing gates, an
+immutable `SIR-RC` checkpoint activates proof-surface enforcement for later
+governed remediation checkpoints. The activation is represented inside the
+extended checkpoint contract and is enforced continuously from its checkpoint
+commit. Earlier history receives no synthetic surface or receipt.
+
+**Integrity gain:** Converts remediation closure from an agent-authored report
+into a deterministic evidence transition; tells an implementing agent exactly
+which positive, adversarial, environmental, and byte-identity observations
+will be inspected; preserves historical testimony while preventing stale
+testimony from authorizing a changed subject; and closes the gap between
+feature-first authority and proof-earned completion.
+
+**Non-degradation guard:** Reuse `SIR-RC-NNN` rather than creating a competing
+checkpoint or generalized provenance platform. Do not place a self-digest or
+future checkpoint hash inside a proof surface, launder expected `RED` into
+`GREEN`, infer success from a process exit alone, treat missing observations
+or mechanical failure as evaluated proof, mutate an admitted surface or
+receipt under the same identity, write tracked receipts during the default
+non-mutating proof command, capture volatile machine noise without a
+claim-specific reason, or retroactively condemn earlier remediation history.
+Checkpoint binding and semantic evaluation must establish traceability; schema
+validity alone proves only structure. The activation transition must be
+immutable and continuity checked from its declared checkpoint so deleting an
+activation artifact cannot silently disable enforcement.
+
 ## Documentation-authority section disposition matrix
 
 The matrix is exhaustive at the durable teaching-section level. `ALIGNED`
@@ -2963,11 +3096,12 @@ silently lost.
 | Public-course review: factual and portability refinements | `SIR-RA-040` |
 | Public-course review: ecosystem language bounded | `SIR-RA-041` |
 | Documentation integrity correction: exact origin recovery and derivation | `SIR-RA-042` |
+| Remediation closure: predeclared proof subject and generated testimony | `SIR-RA-043` |
 
 ## Analysis conclusion
 
-The two reviews are directionally sound, but they are not adopted verbatim.
-Workspace validation produced twenty-one important refinements:
+The reviewed directions are sound, but they are not adopted verbatim.
+Workspace validation produced twenty-two important refinements:
 
 1. Mechanical execution failures produce no receipt verdict; they do not add an
    `EXECUTION_FAILED` disposition.
@@ -3014,6 +3148,10 @@ Workspace validation produced twenty-one important refinements:
     supplied bytes must be retained outside text normalization and every
     derived document must be reproducible from those bytes plus an admitted
     transformation.
+22. Remediation closure requires a checkpoint-bound proof surface declared
+    before implementation and a generated receipt for the exact proof subject;
+    expected adversarial RED remains RED, stale receipts remain historical but
+    inapplicable, and activation is prospective rather than retroactive.
 
 With those refinements, every adopted direction is integrity-monotonic: it
 closes a false green, preserves boundary evidence, strengthens deterministic

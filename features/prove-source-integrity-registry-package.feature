@@ -87,3 +87,21 @@ Feature: Prove the Source Integrity Registry package
     And the reconstructed output matches the declared derived digest
     And proof does not rewrite the origin, transformation, or derived authority
     And missing or mismatched derivation evidence fails closed
+
+  @sir-package-012
+  Scenario: Admit an exact remediation proof surface before implementation
+    Given a schema-valid remediation proof surface committed with its governing authority
+    When a remediation authority checkpoint is created
+    Then the checkpoint binds the proof-surface identity, path, and exact digest
+    And governed implementation must descend from that checkpoint
+    And a missing, unknown, changed, or unbound proof surface cannot authorize implementation
+
+  @sir-package-013
+  Scenario: Earn remediation closure for an exact proof subject
+    Given an admitted proof surface bound by an ancestor remediation authority checkpoint
+    And an implementation subject matching the checkpoint scope
+    When deterministic remediation proof is executed
+    Then every required observation retains its GREEN, RED, or NO_VERDICT raw outcome
+    And every expected outcome, finding code, and cardinality is evaluated separately
+    And closure is earned only from complete satisfied testimony for the exact subject
+    And a changed subject requires reproof without invalidating historical testimony

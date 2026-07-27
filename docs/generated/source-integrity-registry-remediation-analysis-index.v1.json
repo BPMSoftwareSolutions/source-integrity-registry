@@ -652,6 +652,10 @@
           "role": "context"
         },
         {
+          "planId": "SIR-RP-060",
+          "role": "guard"
+        },
+        {
           "planId": "SIR-RP-600",
           "role": "context"
         },
@@ -708,6 +712,10 @@
           "role": "context"
         },
         {
+          "planId": "SIR-RP-060",
+          "role": "guard"
+        },
+        {
           "planId": "SIR-RP-500",
           "role": "authority"
         },
@@ -717,7 +725,8 @@
         }
       ],
       "scenarioIds": [
-        "@sir-package-001"
+        "@sir-package-001",
+        "@sir-package-013"
       ]
     },
     {
@@ -897,6 +906,10 @@
           "role": "context"
         },
         {
+          "planId": "SIR-RP-060",
+          "role": "guard"
+        },
+        {
           "planId": "SIR-RP-500",
           "role": "authority"
         },
@@ -914,7 +927,8 @@
         }
       ],
       "scenarioIds": [
-        "@sir-package-008"
+        "@sir-package-008",
+        "@sir-package-013"
       ]
     },
     {
@@ -932,6 +946,10 @@
         {
           "planId": "SIR-RP-030",
           "role": "context"
+        },
+        {
+          "planId": "SIR-RP-060",
+          "role": "guard"
         },
         {
           "planId": "SIR-RP-100",
@@ -955,7 +973,8 @@
         }
       ],
       "scenarioIds": [
-        "@sir-package-009"
+        "@sir-package-009",
+        "@sir-package-012"
       ]
     },
     {
@@ -1153,6 +1172,28 @@
         "@sir-package-010",
         "@sir-package-011"
       ]
+    },
+    {
+      "analysisId": "SIR-RA-043",
+      "status": "VALID_WITH_REFINEMENT",
+      "supersededBy": null,
+      "scenarioCoveragePolicy": "scenario-required",
+      "earnedStates": [
+        "EVIDENCED",
+        "ANALYSIS_ADMITTED",
+        "PLAN_BOUND",
+        "FEATURE_AUTHORIZED"
+      ],
+      "planReferences": [
+        {
+          "planId": "SIR-RP-060",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-package-012",
+        "@sir-package-013"
+      ]
     }
   ],
   "plans": [
@@ -1235,6 +1276,20 @@
       "scenarioIds": [
         "@sir-package-010",
         "@sir-package-011"
+      ]
+    },
+    {
+      "planId": "SIR-RP-060",
+      "analysisIds": [
+        "SIR-RA-021",
+        "SIR-RA-023",
+        "SIR-RA-030",
+        "SIR-RA-032",
+        "SIR-RA-043"
+      ],
+      "scenarioIds": [
+        "@sir-package-012",
+        "@sir-package-013"
       ]
     },
     {
@@ -1672,6 +1727,23 @@
       "feature": "features/prove-source-integrity-registry-package.feature",
       "analysisIds": [
         "SIR-RA-042"
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-012",
+      "feature": "features/prove-source-integrity-registry-package.feature",
+      "analysisIds": [
+        "SIR-RA-032",
+        "SIR-RA-043"
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-013",
+      "feature": "features/prove-source-integrity-registry-package.feature",
+      "analysisIds": [
+        "SIR-RA-023",
+        "SIR-RA-030",
+        "SIR-RA-043"
       ]
     },
     {
