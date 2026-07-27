@@ -84,11 +84,27 @@ describe("sir CLI", () => {
     expect(result.stderr).toContain("SIR execution failure");
   });
 
-  it("exits 6 when the catalog itself cannot be trusted", async () => {
+  it("exits 3 when the catalog authority is invalid", async () => {
+    // Invalid catalog *content* is a deterministic admission verdict, not an
+    // inability to execute: the packaged bootstrap schema can judge it without
+    // consulting the catalog under evaluation.
     const registryPath = await sandbox.writeJson("registry.json", buildsValidRegistry());
     const brokenCatalog = await sandbox.writeText("broken-catalog.json", "{ not json");
 
     const result = await runsCli(["validate", registryPath, "--catalog", brokenCatalog]);
+
+    expect(result.exitCode).toBe(EXIT_CODE.SCHEMA_NOT_ADMITTED);
+  });
+
+  it("exits 6 when the catalog cannot be read at all", async () => {
+    const registryPath = await sandbox.writeJson("registry.json", buildsValidRegistry());
+
+    const result = await runsCli([
+      "validate",
+      registryPath,
+      "--catalog",
+      path.join(sandbox.root, "absent-catalog.json")
+    ]);
 
     expect(result.exitCode).toBe(EXIT_CODE.EXECUTION_FAILURE);
   });

@@ -11,9 +11,10 @@
     "registryId": { "$ref": "#/$defs/identifier" },
     "workspace": { "$ref": "#/$defs/workspace" },
     "entries": {
-      "type": "array",
-      "description": "Declared source body bindings. bodyId uniqueness is enforced.",
-      "items": { "$ref": "#/$defs/registryEntry" }
+      "type": "object",
+      "description": "Declared source body bindings, keyed by body identity. The member name is the body coordinate, so two logical bodies cannot occupy one structural position.",
+      "propertyNames": { "$ref": "#/$defs/identifier" },
+      "additionalProperties": { "$ref": "#/$defs/registryEntry" }
     }
   },
   "$defs": {
@@ -156,10 +157,10 @@
     },
     "registryEntry": {
       "type": "object",
+      "description": "Body identity is the containing member name, so it is never repeated as a value field.",
       "additionalProperties": false,
-      "required": ["bodyId", "responsibility", "source", "authority"],
+      "required": ["responsibility", "source", "authority"],
       "properties": {
-        "bodyId": { "$ref": "#/$defs/identifier" },
         "responsibility": { "$ref": "#/$defs/responsibility" },
         "source": { "$ref": "#/$defs/source" },
         "authority": { "$ref": "#/$defs/authority" }

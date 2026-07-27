@@ -76,12 +76,25 @@ export interface Finding {
 export interface Observation {
   performed: boolean;
   workspaceRoot?: string;
-  entries: ObservedEntry[];
+  /**
+   * Observed bodies keyed by body identity, constructed in code-point key order.
+   */
+  entries: {
+    [k: string]: ObservedEntry;
+  };
 }
+/**
+ * Body identity is the containing member name, so it is never repeated as a value field.
+ */
 export interface ObservedEntry {
-  bodyId: string;
   relativePath: string;
-  conformance: "BODY_CONFORMS" | "BODY_HASH_MISMATCH" | "BODY_NOT_FOUND" | "BODY_LOCATOR_UNRESOLVED";
+  conformance:
+    | "BODY_CONFORMS"
+    | "BODY_HASH_MISMATCH"
+    | "BODY_NOT_FOUND"
+    | "BODY_LOCATOR_UNRESOLVED"
+    | "BODY_NOT_CONTAINED"
+    | "BODY_CHANGED_DURING_OBSERVATION";
   expectedHash?: Sha256Digest;
   observedHash?: Sha256Digest;
   detail?: string;

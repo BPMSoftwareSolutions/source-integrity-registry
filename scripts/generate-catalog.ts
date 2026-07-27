@@ -2,7 +2,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { digestsBytes } from "../src/domain/digest.ts";
+import { parsesAuthorityDocument } from "../src/authority/parse-authority-document.ts";
 import { SUPPORTED_DIALECT } from "../src/domain/schema-identity.ts";
 import { CATALOG_ID, CATALOG_MANIFEST, buildsSchemaId } from "./catalog-manifest.ts";
 import { isMainModule } from "./is-main-module.ts";
@@ -23,7 +23,17 @@ export async function buildsCatalogDocument(): Promise<string> {
   for (const manifestEntry of CATALOG_MANIFEST) {
     const schemaPath = path.join(contractsRoot, manifestEntry.relativePath);
     const bytes = await readFile(schemaPath);
-    const schema = JSON.parse(bytes.toString("utf8")) as Record<string, unknown>;
+
+    // Generation consumes schema authority through the same duplicate-aware
+    // parser as validation, so a schema that SIR would refuse can never be
+    // admitted into the catalog it generates.
+    const parsed = parsesAuthorityDocument(bytes);
+    if (parsed.outcome === "failed") {
+      throw new Error(
+        `Schema at ${manifestEntry.relativePath} is not admissible authority: ${parsed.failure.message}`
+      );
+    }
+    const schema = parsed.document.value as Record<string, unknown>;
 
     const schemaId = buildsSchemaId(manifestEntry.schemaFamily, manifestEntry.schemaVersion);
 
@@ -44,7 +54,7 @@ export async function buildsCatalogDocument(): Promise<string> {
       schemaVersion: manifestEntry.schemaVersion,
       dialect: SUPPORTED_DIALECT,
       relativePath: path.relative(contractsRoot, schemaPath).split(path.sep).join("/"),
-      sha256: digestsBytes(bytes),
+      sha256: parsed.document.byteDigest,
       status: manifestEntry.status
     });
   }

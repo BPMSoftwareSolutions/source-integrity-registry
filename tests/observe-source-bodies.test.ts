@@ -6,6 +6,7 @@ import {
   buildsValidRegistry,
   createsSandbox,
   packagedCatalogPath,
+  readsFixtureEntry,
   type Sandbox
 } from "./support/fixtures.js";
 
@@ -15,8 +16,7 @@ function buildsRegistryForBody(
   contents: string
 ): Record<string, unknown> {
   const registry = buildsValidRegistry();
-  const entry = (registry["entries"] as Record<string, unknown>[])[0]!;
-  const source = entry["source"] as Record<string, unknown>;
+  const source = readsFixtureEntry(registry)["source"] as Record<string, unknown>;
 
   source["relativePath"] = relativePath;
   source["locator"] = { kind: "whole-file", name: relativePath.split("/").pop() };
@@ -26,6 +26,13 @@ function buildsRegistryForBody(
   };
 
   return registry;
+}
+
+/** The single observed entry, keyed by the fixture body identity. */
+function readsObservedEntry(receipt: {
+  observation?: { entries: Readonly<Record<string, { conformance: string }>> };
+}): { conformance: string } | undefined {
+  return receipt.observation?.entries["semantic-kernel-runtime"];
 }
 
 describe("Physical body observation", () => {
@@ -39,7 +46,7 @@ describe("Physical body observation", () => {
     await sandbox.dispose();
   });
 
-  it("confirms a body whose bytes match the declared digest", async () => {
+  it("@sir-admit-015 confirms a body whose bytes match the declared digest", async () => {
     const contents = "export class SemanticKernel {}\n";
     await sandbox.writeText("workspace/src/kernel/semantic-kernel.ts", contents);
     const registryPath = await sandbox.writeJson(
@@ -54,10 +61,10 @@ describe("Physical body observation", () => {
     });
 
     expect(receipt.disposition).toBe("REGISTRY_CONTRACT_VALID");
-    expect(receipt.observation?.entries[0]?.conformance).toBe("BODY_CONFORMS");
+    expect(readsObservedEntry(receipt)?.conformance).toBe("BODY_CONFORMS");
   });
 
-  it("reports drift when the observed bytes differ from the declared digest", async () => {
+  it("@sir-admit-016 reports drift when the observed bytes differ from the declared digest", async () => {
     const declared = "export class SemanticKernel {}\n";
     await sandbox.writeText(
       "workspace/src/kernel/semantic-kernel.ts",
@@ -75,11 +82,13 @@ describe("Physical body observation", () => {
     });
 
     expect(receipt.disposition).toBe("SOURCE_BODY_DRIFT");
-    expect(receipt.observation?.entries[0]?.conformance).toBe("BODY_HASH_MISMATCH");
-    expect(receipt.findings[0]?.instancePath).toBe("/entries/0/source");
+    expect(readsObservedEntry(receipt)?.conformance).toBe("BODY_HASH_MISMATCH");
+    expect(receipt.findings[0]?.instancePath).toBe("/entries/semantic-kernel-runtime/source");
   });
 
   it("reports a missing body rather than failing the run", async () => {
+    // The workspace root must itself exist; only the declared body is absent.
+    await sandbox.writeText("workspace/src/kernel/present.ts", "unrelated\n");
     const registryPath = await sandbox.writeJson(
       "registry.json",
       buildsRegistryForBody("src/kernel/absent.ts", "never written")
@@ -92,7 +101,7 @@ describe("Physical body observation", () => {
     });
 
     expect(receipt.disposition).toBe("SOURCE_BODY_DRIFT");
-    expect(receipt.observation?.entries[0]?.conformance).toBe("BODY_NOT_FOUND");
+    expect(readsObservedEntry(receipt)?.conformance).toBe("BODY_NOT_FOUND");
   });
 
   it("does not widen a sub-file locator to the whole file", async () => {
@@ -100,8 +109,7 @@ describe("Physical body observation", () => {
     await sandbox.writeText("workspace/src/kernel/semantic-kernel.ts", contents);
 
     const registry = buildsRegistryForBody("src/kernel/semantic-kernel.ts", contents);
-    const entry = (registry["entries"] as Record<string, unknown>[])[0]!;
-    (entry["source"] as Record<string, unknown>)["locator"] = {
+    (readsFixtureEntry(registry)["source"] as Record<string, unknown>)["locator"] = {
       kind: "named-declaration",
       name: "SemanticKernel"
     };
@@ -116,7 +124,7 @@ describe("Physical body observation", () => {
 
     // Even though the whole-file digest happens to match, a narrower locator
     // designates a different body and is not silently treated as conforming.
-    expect(receipt.observation?.entries[0]?.conformance).toBe("BODY_LOCATOR_UNRESOLVED");
+    expect(readsObservedEntry(receipt)?.conformance).toBe("BODY_LOCATOR_UNRESOLVED");
     expect(receipt.disposition).toBe("SOURCE_BODY_DRIFT");
   });
 

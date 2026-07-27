@@ -21,9 +21,11 @@ export interface SourceIntegrityRegistry {
   registryId: Identifier;
   workspace: Workspace;
   /**
-   * Declared source body bindings. bodyId uniqueness is enforced.
+   * Declared source body bindings, keyed by body identity. The member name is the body coordinate, so two logical bodies cannot occupy one structural position.
    */
-  entries: RegistryEntry[];
+  entries: {
+    [k: string]: RegistryEntry;
+  };
 }
 export interface RegistryContractDeclaration {
   contractType: "source-integrity-registry";
@@ -44,8 +46,10 @@ export interface Workspace {
    */
   revision: string;
 }
+/**
+ * Body identity is the containing member name, so it is never repeated as a value field.
+ */
 export interface RegistryEntry {
-  bodyId: Identifier;
   responsibility: Responsibility;
   source: Source;
   authority: Authority;

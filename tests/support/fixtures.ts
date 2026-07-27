@@ -39,9 +39,8 @@ export function buildsValidRegistry(): Record<string, unknown> {
       workspaceId: "semantic-kernel",
       revision: "2704a5909250f7cc56a91d2bf9ddee514c86e871"
     },
-    entries: [
-      {
-        bodyId: "semantic-kernel-runtime",
+    entries: {
+      "semantic-kernel-runtime": {
         responsibility: {
           capabilityId: "semantic-kernel",
           featureId: "execute-semantic-authority",
@@ -65,8 +64,21 @@ export function buildsValidRegistry(): Record<string, unknown> {
             "semantic-authority/execution/execute-semantic-authority.sej.v1.json"
         }
       }
-    ]
+    }
   };
+}
+
+/** Reads the single fixture entry so tests can mutate it in place. */
+export function readsFixtureEntry(
+  registry: Record<string, unknown>,
+  bodyId = "semantic-kernel-runtime"
+): Record<string, unknown> {
+  const entries = registry["entries"] as Record<string, Record<string, unknown>>;
+  const entry = entries[bodyId];
+  if (entry === undefined) {
+    throw new Error(`Fixture has no entry "${bodyId}".`);
+  }
+  return entry;
 }
 
 export interface Sandbox {

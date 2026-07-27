@@ -111,24 +111,27 @@
         "performed": { "type": "boolean" },
         "workspaceRoot": { "type": "string" },
         "entries": {
-          "type": "array",
-          "items": { "$ref": "#/$defs/observedEntry" }
+          "type": "object",
+          "description": "Observed bodies keyed by body identity, constructed in code-point key order.",
+          "additionalProperties": { "$ref": "#/$defs/observedEntry" }
         }
       }
     },
     "observedEntry": {
       "type": "object",
+      "description": "Body identity is the containing member name, so it is never repeated as a value field.",
       "additionalProperties": false,
-      "required": ["bodyId", "relativePath", "conformance"],
+      "required": ["relativePath", "conformance"],
       "properties": {
-        "bodyId": { "type": "string" },
         "relativePath": { "type": "string" },
         "conformance": {
           "enum": [
             "BODY_CONFORMS",
             "BODY_HASH_MISMATCH",
             "BODY_NOT_FOUND",
-            "BODY_LOCATOR_UNRESOLVED"
+            "BODY_LOCATOR_UNRESOLVED",
+            "BODY_NOT_CONTAINED",
+            "BODY_CHANGED_DURING_OBSERVATION"
           ]
         },
         "expectedHash": { "$ref": "#/$defs/sha256Digest" },

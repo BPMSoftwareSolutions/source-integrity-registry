@@ -6,6 +6,7 @@ import {
   buildsValidRegistry,
   createsSandbox,
   packagedCatalogPath,
+  readsFixtureEntry,
   REGISTRY_SCHEMA_ID,
   type Sandbox
 } from "./support/fixtures.js";
@@ -101,11 +102,11 @@ describe("Feature: Admit a Source Integrity Registry contract", () => {
   it("rejects a structurally invalid registry", async () => {
     // Given a registry payload governed by an accepted schema
     const registry = buildsValidRegistry();
-    const entry = (registry["entries"] as Record<string, unknown>[])[0]!;
     // The workspace revision must be an exact commit identity, not a branch.
     (registry["workspace"] as Record<string, unknown>)["revision"] = "main";
     // The responsibility kind is a closed set.
-    (entry["responsibility"] as Record<string, unknown>)["kind"] = "speculation";
+    (readsFixtureEntry(registry)["responsibility"] as Record<string, unknown>)["kind"] =
+      "speculation";
 
     const registryPath = await sandbox.writeJson("registry.json", registry);
 
@@ -118,7 +119,7 @@ describe("Feature: Admit a Source Integrity Registry contract", () => {
     // Then canonical validation findings identify the invalid instance paths
     const instancePaths = receipt.findings.map((finding) => finding.instancePath);
     expect(instancePaths).toContain("/workspace/revision");
-    expect(instancePaths).toContain("/entries/0/responsibility/kind");
+    expect(instancePaths).toContain("/entries/semantic-kernel-runtime/responsibility/kind");
 
     // And the receipt disposition is REGISTRY_CONTRACT_INVALID
     expect(receipt.disposition).toBe("REGISTRY_CONTRACT_INVALID");

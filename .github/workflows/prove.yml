@@ -1,0 +1,49 @@
+name: Prove
+
+# SIR-RA-017: the proof gate must hold on Windows and Linux under supported
+# Node versions, because packaged path and filesystem behavior differ between
+# them and a repository-only proof would not notice.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  prove:
+    name: prove (${{ matrix.os }}, node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: ["20.x", "22.x"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+
+      - name: Install with a frozen lockfile
+        run: pnpm install --frozen-lockfile
+
+      - name: Prove
+        run: pnpm prove
+
+      - name: Prove that proof left tracked content unchanged
+        shell: bash
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Proof modified tracked content:"
+            git status --porcelain
+            git diff
+            exit 1
+          fi
+          echo "Tracked content unchanged."

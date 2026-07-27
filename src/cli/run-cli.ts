@@ -184,10 +184,9 @@ function rendersReceiptText(receipt: ValidationReceipt): string {
   lines.push(`admitted:    ${String(receipt.schemaAdmission.admitted)}`);
 
   if (receipt.observation !== undefined) {
-    const conforming = receipt.observation.entries.filter(
-      (entry) => entry.conformance === "BODY_CONFORMS"
-    ).length;
-    lines.push(`observed:    ${conforming}/${receipt.observation.entries.length} bodies conform`);
+    const observed = Object.values(receipt.observation.entries);
+    const conforming = observed.filter((entry) => entry.conformance === "BODY_CONFORMS").length;
+    lines.push(`observed:    ${conforming}/${observed.length} bodies conform`);
   }
 
   if (receipt.findings.length > 0) {

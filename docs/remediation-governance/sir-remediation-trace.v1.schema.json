@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.deterministic.solutions/sir/governance/sir-remediation-trace/1.0.0/schema.json",
+  "title": "SIR Remediation Trace Block",
+  "description": "Closed format for the sir-trace block carried by each plan coordinate. Scenario-to-analysis edges are declared explicitly; independent analysisReferences and scenarioIds arrays are forbidden because their combination would require an inferred Cartesian product.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["traceabilityType", "planId", "planReferences", "scenarioMappings"],
+  "properties": {
+    "traceabilityType": { "const": "sir-remediation-trace.v1" },
+    "planId": {
+      "type": "string",
+      "pattern": "^SIR-RP-[0-9]{3}$"
+    },
+    "planReferences": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/analysisReference" },
+      "description": "Analysis coordinates this plan section cites, with the role each citation serves."
+    },
+    "scenarioMappings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/scenarioMapping" },
+      "description": "Explicit scenario-to-analysis edges. Each referenced analysis must also appear in planReferences."
+    }
+  },
+  "$defs": {
+    "analysisReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["analysisId", "role"],
+      "properties": {
+        "analysisId": {
+          "type": "string",
+          "pattern": "^SIR-RA-[0-9]{3}$"
+        },
+        "role": {
+          "enum": ["authority", "guard", "context"],
+          "description": "authority: current implementation direction. guard: a constraint, including a rejected decision that bounds the work. context: explanatory only."
+        }
+      }
+    },
+    "scenarioMapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scenarioId", "analysisReferences"],
+      "properties": {
+        "scenarioId": {
+          "type": "string",
+          "pattern": "^@sir-(admit|package|provenance)-[0-9]{3}$"
+        },
+        "analysisReferences": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/analysisReference" }
+        }
+      }
+    }
+  }
+}

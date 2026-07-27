@@ -1,0 +1,1012 @@
+{
+  "analysisLedgerType": "sir-remediation-analysis-index.v1",
+  "analyses": [
+    {
+      "analysisId": "SIR-RA-001",
+      "status": "VALID",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-010",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-800",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": []
+    },
+    {
+      "analysisId": "SIR-RA-002",
+      "status": "VALID",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-100",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-800",
+          "role": "context"
+        }
+      ],
+      "scenarioIds": []
+    },
+    {
+      "analysisId": "SIR-RA-003",
+      "status": "VALID",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-100",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-300",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-admit-007"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-004",
+      "status": "VALID",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-100",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-200",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-admit-001",
+        "@sir-admit-011"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-005",
+      "status": "NOT_ADOPTED",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-100",
+          "role": "guard"
+        },
+        {
+          "planId": "SIR-RP-200",
+          "role": "guard"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "guard"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-admit-001"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-006",
+      "status": "VALID_WITH_REFINEMENT",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-100",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-200",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-300",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-admit-002",
+        "@sir-admit-006",
+        "@sir-admit-010",
+        "@sir-admit-012"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-007",
+      "status": "VALID_WITH_REFINEMENT",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-100",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-300",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-admit-005",
+        "@sir-admit-006",
+        "@sir-admit-010"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-008",
+      "status": "VALID_WITH_REFINEMENT",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-100",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-300",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-admit-003",
+        "@sir-admit-004",
+        "@sir-admit-008",
+        "@sir-admit-009"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-009",
+      "status": "VALID",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-100",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-300",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-admit-003",
+        "@sir-admit-004",
+        "@sir-admit-005"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-010",
+      "status": "VALID_WITH_REFINEMENT",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-100",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-300",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-admit-003",
+        "@sir-admit-007",
+        "@sir-admit-008",
+        "@sir-admit-009"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-011",
+      "status": "VALID_WITH_REFINEMENT",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-100",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-400",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-admit-013",
+        "@sir-admit-014"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-012",
+      "status": "VALID_WITH_REFINEMENT",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-100",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-400",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-admit-013",
+        "@sir-admit-014"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-013",
+      "status": "VALID_WITH_REFINEMENT",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-100",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-400",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-admit-014",
+        "@sir-admit-015",
+        "@sir-admit-016",
+        "@sir-admit-017"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-014",
+      "status": "VALID_WITH_REFINEMENT",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-200",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-400",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-admit-017"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-015",
+      "status": "VALID_WITH_REFINEMENT",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-500",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-package-001",
+        "@sir-package-002"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-016",
+      "status": "VALID",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-500",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-package-001"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-017",
+      "status": "VALID",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-500",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-package-003"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-018",
+      "status": "VALID",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-100",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-800",
+          "role": "context"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-provenance-001"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-019",
+      "status": "VALID_WITH_REFINEMENT",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-100",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-500",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-900",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-package-004"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-020",
+      "status": "VALID_WITH_REFINEMENT",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-900",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": []
+    },
+    {
+      "analysisId": "SIR-RA-021",
+      "status": "DEFERRED",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-600",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "context"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-provenance-001"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-022",
+      "status": "VALID",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-000",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-020",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-950",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": []
+    },
+    {
+      "analysisId": "SIR-RA-023",
+      "status": "VALID_WITH_REFINEMENT",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-500",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-package-001"
+      ]
+    },
+    {
+      "analysisId": "SIR-RA-024",
+      "status": "VALID_WITH_REFINEMENT",
+      "supersededBy": null,
+      "planReferences": [
+        {
+          "planId": "SIR-RP-000",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-030",
+          "role": "context"
+        },
+        {
+          "planId": "SIR-RP-100",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-500",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-700",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-900",
+          "role": "authority"
+        },
+        {
+          "planId": "SIR-RP-950",
+          "role": "authority"
+        }
+      ],
+      "scenarioIds": [
+        "@sir-package-004"
+      ]
+    }
+  ],
+  "plans": [
+    {
+      "planId": "SIR-RP-000",
+      "analysisIds": [
+        "SIR-RA-022",
+        "SIR-RA-024"
+      ],
+      "scenarioIds": []
+    },
+    {
+      "planId": "SIR-RP-010",
+      "analysisIds": [
+        "SIR-RA-001"
+      ],
+      "scenarioIds": []
+    },
+    {
+      "planId": "SIR-RP-020",
+      "analysisIds": [
+        "SIR-RA-022"
+      ],
+      "scenarioIds": []
+    },
+    {
+      "planId": "SIR-RP-030",
+      "analysisIds": [
+        "SIR-RA-002",
+        "SIR-RA-003",
+        "SIR-RA-004",
+        "SIR-RA-006",
+        "SIR-RA-007",
+        "SIR-RA-008",
+        "SIR-RA-009",
+        "SIR-RA-010",
+        "SIR-RA-011",
+        "SIR-RA-012",
+        "SIR-RA-013",
+        "SIR-RA-014",
+        "SIR-RA-015",
+        "SIR-RA-016",
+        "SIR-RA-017",
+        "SIR-RA-018",
+        "SIR-RA-021",
+        "SIR-RA-023",
+        "SIR-RA-024"
+      ],
+      "scenarioIds": []
+    },
+    {
+      "planId": "SIR-RP-100",
+      "analysisIds": [
+        "SIR-RA-002",
+        "SIR-RA-003",
+        "SIR-RA-004",
+        "SIR-RA-005",
+        "SIR-RA-006",
+        "SIR-RA-007",
+        "SIR-RA-008",
+        "SIR-RA-009",
+        "SIR-RA-010",
+        "SIR-RA-011",
+        "SIR-RA-012",
+        "SIR-RA-013",
+        "SIR-RA-018",
+        "SIR-RA-019",
+        "SIR-RA-024"
+      ],
+      "scenarioIds": [
+        "@sir-admit-001",
+        "@sir-admit-002",
+        "@sir-admit-005",
+        "@sir-admit-007",
+        "@sir-admit-008",
+        "@sir-admit-013",
+        "@sir-admit-014",
+        "@sir-admit-015",
+        "@sir-admit-016",
+        "@sir-admit-017",
+        "@sir-package-004",
+        "@sir-provenance-001"
+      ]
+    },
+    {
+      "planId": "SIR-RP-200",
+      "analysisIds": [
+        "SIR-RA-004",
+        "SIR-RA-005",
+        "SIR-RA-006",
+        "SIR-RA-014"
+      ],
+      "scenarioIds": [
+        "@sir-admit-001",
+        "@sir-admit-002",
+        "@sir-admit-010",
+        "@sir-admit-011",
+        "@sir-admit-012",
+        "@sir-admit-017"
+      ]
+    },
+    {
+      "planId": "SIR-RP-300",
+      "analysisIds": [
+        "SIR-RA-003",
+        "SIR-RA-006",
+        "SIR-RA-007",
+        "SIR-RA-008",
+        "SIR-RA-009",
+        "SIR-RA-010"
+      ],
+      "scenarioIds": [
+        "@sir-admit-003",
+        "@sir-admit-004",
+        "@sir-admit-005",
+        "@sir-admit-006",
+        "@sir-admit-007",
+        "@sir-admit-008",
+        "@sir-admit-009",
+        "@sir-admit-010"
+      ]
+    },
+    {
+      "planId": "SIR-RP-400",
+      "analysisIds": [
+        "SIR-RA-011",
+        "SIR-RA-012",
+        "SIR-RA-013",
+        "SIR-RA-014"
+      ],
+      "scenarioIds": [
+        "@sir-admit-013",
+        "@sir-admit-014",
+        "@sir-admit-015",
+        "@sir-admit-016",
+        "@sir-admit-017"
+      ]
+    },
+    {
+      "planId": "SIR-RP-500",
+      "analysisIds": [
+        "SIR-RA-015",
+        "SIR-RA-016",
+        "SIR-RA-017",
+        "SIR-RA-019",
+        "SIR-RA-023",
+        "SIR-RA-024"
+      ],
+      "scenarioIds": [
+        "@sir-package-001",
+        "@sir-package-002",
+        "@sir-package-003",
+        "@sir-package-004"
+      ]
+    },
+    {
+      "planId": "SIR-RP-600",
+      "analysisIds": [
+        "SIR-RA-021"
+      ],
+      "scenarioIds": [
+        "@sir-provenance-001"
+      ]
+    },
+    {
+      "planId": "SIR-RP-700",
+      "analysisIds": [
+        "SIR-RA-003",
+        "SIR-RA-004",
+        "SIR-RA-005",
+        "SIR-RA-006",
+        "SIR-RA-007",
+        "SIR-RA-008",
+        "SIR-RA-009",
+        "SIR-RA-010",
+        "SIR-RA-011",
+        "SIR-RA-012",
+        "SIR-RA-013",
+        "SIR-RA-014",
+        "SIR-RA-015",
+        "SIR-RA-016",
+        "SIR-RA-017",
+        "SIR-RA-019",
+        "SIR-RA-021",
+        "SIR-RA-023",
+        "SIR-RA-024"
+      ],
+      "scenarioIds": [
+        "@sir-admit-001",
+        "@sir-admit-002",
+        "@sir-admit-003",
+        "@sir-admit-004",
+        "@sir-admit-005",
+        "@sir-admit-006",
+        "@sir-admit-007",
+        "@sir-admit-008",
+        "@sir-admit-009",
+        "@sir-admit-010",
+        "@sir-admit-011",
+        "@sir-admit-012",
+        "@sir-admit-013",
+        "@sir-admit-014",
+        "@sir-admit-015",
+        "@sir-admit-016",
+        "@sir-admit-017",
+        "@sir-package-001",
+        "@sir-package-002",
+        "@sir-package-003",
+        "@sir-package-004",
+        "@sir-provenance-001"
+      ]
+    },
+    {
+      "planId": "SIR-RP-800",
+      "analysisIds": [
+        "SIR-RA-001",
+        "SIR-RA-002",
+        "SIR-RA-018"
+      ],
+      "scenarioIds": []
+    },
+    {
+      "planId": "SIR-RP-900",
+      "analysisIds": [
+        "SIR-RA-019",
+        "SIR-RA-020",
+        "SIR-RA-024"
+      ],
+      "scenarioIds": []
+    },
+    {
+      "planId": "SIR-RP-950",
+      "analysisIds": [
+        "SIR-RA-022",
+        "SIR-RA-024"
+      ],
+      "scenarioIds": []
+    }
+  ],
+  "scenarios": [
+    {
+      "scenarioId": "@sir-admit-001",
+      "feature": "features/admit-source-integrity-registry.feature",
+      "analysisIds": [
+        "SIR-RA-004",
+        "SIR-RA-005"
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-002",
+      "feature": "features/admit-source-integrity-registry.feature",
+      "analysisIds": [
+        "SIR-RA-006"
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-003",
+      "feature": "features/admit-source-integrity-registry.feature",
+      "analysisIds": [
+        "SIR-RA-008",
+        "SIR-RA-009",
+        "SIR-RA-010"
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-004",
+      "feature": "features/admit-source-integrity-registry.feature",
+      "analysisIds": [
+        "SIR-RA-008",
+        "SIR-RA-009"
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-005",
+      "feature": "features/admit-source-integrity-registry.feature",
+      "analysisIds": [
+        "SIR-RA-007",
+        "SIR-RA-009"
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-006",
+      "feature": "features/admit-source-integrity-registry.feature",
+      "analysisIds": [
+        "SIR-RA-006",
+        "SIR-RA-007"
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-007",
+      "feature": "features/admit-source-integrity-registry.feature",
+      "analysisIds": [
+        "SIR-RA-003",
+        "SIR-RA-010"
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-008",
+      "feature": "features/admit-source-integrity-registry.feature",
+      "analysisIds": [
+        "SIR-RA-008",
+        "SIR-RA-010"
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-009",
+      "feature": "features/admit-source-integrity-registry.feature",
+      "analysisIds": [
+        "SIR-RA-008",
+        "SIR-RA-010"
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-010",
+      "feature": "features/admit-source-integrity-registry.feature",
+      "analysisIds": [
+        "SIR-RA-006",
+        "SIR-RA-007"
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-011",
+      "feature": "features/admit-source-integrity-registry.feature",
+      "analysisIds": [
+        "SIR-RA-004"
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-012",
+      "feature": "features/admit-source-integrity-registry.feature",
+      "analysisIds": [
+        "SIR-RA-006"
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-013",
+      "feature": "features/admit-source-integrity-registry.feature",
+      "analysisIds": [
+        "SIR-RA-011",
+        "SIR-RA-012"
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-014",
+      "feature": "features/admit-source-integrity-registry.feature",
+      "analysisIds": [
+        "SIR-RA-011",
+        "SIR-RA-012",
+        "SIR-RA-013"
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-015",
+      "feature": "features/admit-source-integrity-registry.feature",
+      "analysisIds": [
+        "SIR-RA-013"
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-016",
+      "feature": "features/admit-source-integrity-registry.feature",
+      "analysisIds": [
+        "SIR-RA-013"
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-017",
+      "feature": "features/admit-source-integrity-registry.feature",
+      "analysisIds": [
+        "SIR-RA-013",
+        "SIR-RA-014"
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-001",
+      "feature": "features/prove-source-integrity-registry-package.feature",
+      "analysisIds": [
+        "SIR-RA-015",
+        "SIR-RA-016",
+        "SIR-RA-023"
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-002",
+      "feature": "features/prove-source-integrity-registry-package.feature",
+      "analysisIds": [
+        "SIR-RA-015"
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-003",
+      "feature": "features/prove-source-integrity-registry-package.feature",
+      "analysisIds": [
+        "SIR-RA-017"
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-004",
+      "feature": "features/prove-source-integrity-registry-package.feature",
+      "analysisIds": [
+        "SIR-RA-019",
+        "SIR-RA-024"
+      ]
+    },
+    {
+      "scenarioId": "@sir-provenance-001",
+      "feature": "features/establish-source-integrity-registry-release-provenance.feature",
+      "analysisIds": [
+        "SIR-RA-018",
+        "SIR-RA-021"
+      ]
+    }
+  ]
+}

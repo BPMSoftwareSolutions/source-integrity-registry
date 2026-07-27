@@ -9,20 +9,44 @@ export {
 export { createsSirSchemaValidator } from "./validation/ajv-factory.js";
 
 export {
-  loadsSchemaCatalog,
+  admitsSchemaCatalog,
   resolvesSchemaFromCatalog,
   CatalogIntegrityError,
+  type CatalogAdmission,
   type SchemaCatalog,
   type SchemaCatalogEntry,
-  type SchemaResolution
+  type SchemaResolution,
+  type AdmissionFinding
 } from "./catalog/schema-catalog.js";
+
+export {
+  parsesAuthorityDocument,
+  escapesJsonPointerToken,
+  joinsJsonPointer,
+  type ParsedAuthorityDocument,
+  type AuthorityParseResult,
+  type AuthorityParseFailure,
+  type AuthorityParseFailureKind
+} from "./authority/parse-authority-document.js";
 
 export {
   observesSourceBodies,
   type ObservationResult,
   type ObservedEntry,
+  type ObservableEntry,
   type BodyConformance
 } from "./observation/observe-source-bodies.js";
+
+export {
+  resolvesContainedPath,
+  resolvesRealContainedPath,
+  resolvesRealRoot,
+  isContainedBy,
+  type ContainmentOutcome,
+  type TargetIdentity
+} from "./domain/containment.js";
+
+export { comparesByCodePoint, ordersRecordByKey } from "./domain/ordering.js";
 
 export {
   DISPOSITIONS,

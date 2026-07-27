@@ -1,20 +1,35 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  loadsSchemaCatalog,
+  admitsSchemaCatalog,
   resolvesSchemaFromCatalog,
   resolvesContainedPath,
-  CatalogIntegrityError
+  CatalogIntegrityError,
+  type SchemaCatalog,
+  type SchemaCatalogEntry
 } from "../src/catalog/schema-catalog.js";
 import { SUPPORTED_DIALECT } from "../src/domain/schema-identity.js";
 import { packagedCatalogPath, contractsRoot, REGISTRY_SCHEMA_ID } from "./support/fixtures.js";
 
+/** Admits the packaged catalog, failing the test if it is not admissible. */
+async function admitsPackagedCatalog(): Promise<SchemaCatalog> {
+  const admission = await admitsSchemaCatalog(packagedCatalogPath);
+  if (admission.outcome !== "admitted") {
+    throw new Error(`Packaged catalog was not admitted: ${JSON.stringify(admission.findings)}`);
+  }
+  return admission.catalog;
+}
+
 describe("Packaged schema catalog", () => {
   it("resolves every accepted entry against its recorded digest", async () => {
-    const catalog = await loadsSchemaCatalog(packagedCatalogPath);
+    const catalog = await admitsPackagedCatalog();
     expect(catalog.entries.length).toBeGreaterThan(0);
 
-    for (const entry of catalog.entries.filter((candidate) => candidate.status === "accepted")) {
+    const accepted = catalog.entries.filter(
+      (candidate: SchemaCatalogEntry) => candidate.status === "accepted"
+    );
+
+    for (const entry of accepted) {
       const resolution = await resolvesSchemaFromCatalog(catalog, entry.schemaId);
 
       expect(resolution.outcome, `${entry.schemaId}: ${JSON.stringify(resolution)}`).toBe(
@@ -28,7 +43,7 @@ describe("Packaged schema catalog", () => {
   });
 
   it("declares no floating identifiers", async () => {
-    const catalog = await loadsSchemaCatalog(packagedCatalogPath);
+    const catalog = await admitsPackagedCatalog();
 
     for (const entry of catalog.entries) {
       expect(entry.schemaId).not.toMatch(/\/(latest|[0-9]+\.x|\^[0-9])/u);
@@ -37,7 +52,7 @@ describe("Packaged schema catalog", () => {
   });
 
   it("refuses an identity absent from the catalog", async () => {
-    const catalog = await loadsSchemaCatalog(packagedCatalogPath);
+    const catalog = await admitsPackagedCatalog();
 
     const resolution = await resolvesSchemaFromCatalog(
       catalog,
@@ -47,15 +62,17 @@ describe("Packaged schema catalog", () => {
     expect(resolution.outcome).toBe("not-admitted");
   });
 
-  it("refuses a malformed catalog rather than trusting it", async () => {
-    await expect(loadsSchemaCatalog(`${packagedCatalogPath}.absent`)).rejects.toBeInstanceOf(
+  it("treats an unreadable catalog as a mechanical failure, not a verdict", async () => {
+    await expect(admitsSchemaCatalog(`${packagedCatalogPath}.absent`)).rejects.toBeInstanceOf(
       CatalogIntegrityError
     );
   });
 
   it("reports the registry schema as accepted", async () => {
-    const catalog = await loadsSchemaCatalog(packagedCatalogPath);
-    const entry = catalog.entries.find((candidate) => candidate.schemaId === REGISTRY_SCHEMA_ID);
+    const catalog = await admitsPackagedCatalog();
+    const entry = catalog.entries.find(
+      (candidate: SchemaCatalogEntry) => candidate.schemaId === REGISTRY_SCHEMA_ID
+    );
 
     expect(entry?.status).toBe("accepted");
   });

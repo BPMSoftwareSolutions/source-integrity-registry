@@ -4,16 +4,25 @@ import path from "node:path";
 import type { ErrorObject, ValidateFunction } from "ajv";
 
 import {
-  loadsSchemaCatalog,
+  parsesAuthorityDocument,
+  type AuthorityParseFailure
+} from "../authority/parse-authority-document.js";
+import {
+  admitsSchemaCatalog,
   resolvesSchemaFromCatalog,
   describesCause,
+  type AdmissionFinding,
   type SchemaCatalog
 } from "../catalog/schema-catalog.js";
-import { digestsBytes, digestsMatch, type Sha256Digest } from "../domain/digest.js";
+import { resolvesRealRoot } from "../domain/containment.js";
+import { digestsMatch, type Sha256Digest } from "../domain/digest.js";
 import type { Disposition } from "../domain/dispositions.js";
+import { comparesByCodePoint } from "../domain/ordering.js";
 import { parsesSchemaIdentity, SUPPORTED_DIALECT } from "../domain/schema-identity.js";
+import { escapesJsonPointerToken } from "../authority/parse-authority-document.js";
 import {
   observesSourceBodies,
+  type ObservableEntry,
   type ObservationResult
 } from "../observation/observe-source-bodies.js";
 import { createsSirSchemaValidator } from "./ajv-factory.js";
@@ -58,8 +67,8 @@ export interface ValidateRegistryRequest {
   readonly registryPath: string;
   readonly schemaCatalogPath: string;
   /**
-   * Root against which entry `source.relativePath` values are observed.
-   * Observation is skipped when omitted, leaving a pure Step-Zero contract check.
+   * Root against which entry source paths are observed. Observation is skipped
+   * when omitted, leaving a pure Step-Zero contract check.
    */
   readonly workspaceRoot?: string;
 }
@@ -73,8 +82,8 @@ export class ValidationExecutionError extends Error {
  * Runs the SIR validation circuit and produces canonical testimony.
  *
  * The circuit refuses to evaluate a payload under a schema it cannot first
- * prove trustworthy, so schema admission and digest verification both precede
- * payload evaluation and stop the circuit on failure.
+ * prove trustworthy, so catalog admission, schema admission, and digest
+ * verification all precede payload evaluation and stop the circuit on failure.
  */
 export async function validatesSourceIntegrityRegistry(
   request: ValidateRegistryRequest
@@ -91,27 +100,20 @@ export async function validatesSourceIntegrityRegistry(
     );
   }
 
-  const registryDigest = digestsBytes(bytes);
-
-  // 2. Parse JSON without mutation.
-  let payload: unknown;
-  try {
-    payload = JSON.parse(bytes.toString("utf8"));
-  } catch (cause) {
+  // 2. Parse authority without mutation, preserving duplicate-member evidence.
+  const parsed = parsesAuthorityDocument(bytes);
+  if (parsed.outcome === "failed") {
     return buildsReceipt({
       disposition: "REGISTRY_CONTRACT_INVALID",
       registryPath,
-      registryDigest,
+      registryDigest: parsed.byteDigest,
       schemaAdmission: { admitted: false },
-      findings: [
-        {
-          code: "SIR_PAYLOAD_NOT_JSON",
-          instancePath: "",
-          message: `Registry payload is not valid JSON: ${describesCause(cause)}`
-        }
-      ]
+      findings: [translatesRegistryParseFailure(parsed.failure)]
     });
   }
+
+  const registryDigest = parsed.document.byteDigest;
+  const payload = parsed.document.value;
 
   // 3. Extract contract.schemaId.
   const declaredSchemaId = readsDeclaredSchemaId(payload);
@@ -143,14 +145,31 @@ export async function validatesSourceIntegrityRegistry(
         {
           code: "SIR_SCHEMA_ID_NOT_EXACT",
           instancePath: "/contract/schemaId",
-          message: `Declared schema identity "${declaredSchemaId}" is not an exact versioned SIR schema URI. Floating identifiers are forbidden.`
+          message: `Declared schema identity "${declaredSchemaId}" is not an exact versioned SIR schema URI. Floating identifiers and aliases are forbidden.`
         }
       ]
     });
   }
 
-  // 4. Resolve exact schema from the local catalog.
-  const catalog: SchemaCatalog = await loadsSchemaCatalog(request.schemaCatalogPath);
+  // 4. Admit the catalog contract before consulting any catalog entry.
+  const admission = await admitsSchemaCatalog(request.schemaCatalogPath);
+  if (admission.outcome === "not-admitted") {
+    return buildsReceipt({
+      disposition: "SCHEMA_NOT_ADMITTED",
+      registryPath,
+      registryDigest,
+      schemaAdmission: {
+        admitted: false,
+        declaredSchemaId,
+        catalogPath: path.resolve(request.schemaCatalogPath)
+      },
+      findings: admission.findings
+    });
+  }
+
+  const catalog: SchemaCatalog = admission.catalog;
+
+  // 5. Resolve the exact schema, verify its digest, and bind its identity.
   const resolution = await resolvesSchemaFromCatalog(catalog, declaredSchemaId);
 
   if (resolution.outcome === "not-admitted") {
@@ -164,17 +183,10 @@ export async function validatesSourceIntegrityRegistry(
         catalogPath: catalog.catalogPath,
         ...(resolution.entry === undefined ? {} : { catalogDigest: resolution.entry.sha256 })
       },
-      findings: [
-        {
-          code: "SIR_SCHEMA_NOT_ADMITTED",
-          instancePath: "/contract/schemaId",
-          message: resolution.reason
-        }
-      ]
+      findings: resolution.findings
     });
   }
 
-  // 5. Verify catalog schema digest.
   if (resolution.outcome === "digest-mismatch") {
     return buildsReceipt({
       disposition: "SCHEMA_DIGEST_MISMATCH",
@@ -187,17 +199,11 @@ export async function validatesSourceIntegrityRegistry(
         catalogDigest: resolution.entry.sha256,
         observedDigest: resolution.observedDigest
       },
-      findings: [
-        {
-          code: "SIR_SCHEMA_DIGEST_MISMATCH",
-          instancePath: "/contract/schemaId",
-          message: resolution.reason
-        }
-      ]
+      findings: resolution.findings
     });
   }
 
-  const admission = {
+  const schemaAdmission = {
     admitted: true,
     declaredSchemaId,
     catalogPath: catalog.catalogPath,
@@ -205,34 +211,30 @@ export async function validatesSourceIntegrityRegistry(
     observedDigest: resolution.observedDigest
   } as const;
 
-  // The declared redundancy must agree. Any disagreement is a hard admission
-  // failure, checked before the payload is evaluated.
+  // The payload's restated schema facts must agree with the resolved schema.
   const redundancyFindings = collectsRedundancyFindings(payload, identity, resolution.entry.sha256);
   if (redundancyFindings.length > 0) {
     return buildsReceipt({
       disposition: "SCHEMA_NOT_ADMITTED",
       registryPath,
       registryDigest,
-      schemaAdmission: { ...admission, admitted: false },
+      schemaAdmission: { ...schemaAdmission, admitted: false },
       findings: redundancyFindings
     });
   }
 
-  // 6 & 7. Validate the schema against the 2020-12 meta-schema, then compile.
+  // 6. Compile the same in-memory bytes that were digested and identity-bound.
   let validate: ValidateFunction;
   try {
-    const ajv = createsSirSchemaValidator();
-    validate = ajv.compile(resolution.schema);
+    validate = createsSirSchemaValidator().compile(resolution.schema);
   } catch (cause) {
     throw new ValidationExecutionError(
       `Schema ${declaredSchemaId} did not compile under Draft 2020-12: ${describesCause(cause)}`
     );
   }
 
-  // 8. Validate the registry payload.
+  // 7. Validate the registry payload.
   const conforms = validate(payload);
-
-  // 9. Canonicalize validation findings.
   const findings = canonicalizesAjvErrors(validate.errors ?? []);
 
   if (!conforms) {
@@ -240,7 +242,7 @@ export async function validatesSourceIntegrityRegistry(
       disposition: "REGISTRY_CONTRACT_INVALID",
       registryPath,
       registryDigest,
-      schemaAdmission: admission,
+      schemaAdmission,
       findings,
       ...readsSubjectIdentity(payload)
     });
@@ -252,45 +254,55 @@ export async function validatesSourceIntegrityRegistry(
   const observationFindings: ValidationFinding[] = [];
 
   if (request.workspaceRoot !== undefined) {
-    const conformingPayload = payload as {
-      entries: readonly {
-        bodyId: string;
-        source: {
-          relativePath: string;
-          locator: { kind: string; name: string };
-          hash: { algorithm: string; expected: Sha256Digest };
-        };
-      }[];
-    };
+    const realWorkspaceRoot = await resolvesRealRoot(request.workspaceRoot);
+    if (realWorkspaceRoot === undefined) {
+      throw new ValidationExecutionError(
+        `Workspace root ${request.workspaceRoot} could not be resolved to a real directory.`
+      );
+    }
 
-    observation = await observesSourceBodies(
-      conformingPayload.entries,
-      path.resolve(request.workspaceRoot)
-    );
+    const conformingPayload = payload as { entries: Readonly<Record<string, { source: ObservableEntry }>> };
+    const observable: Record<string, ObservableEntry> = {};
+    for (const [bodyId, entry] of Object.entries(conformingPayload.entries)) {
+      observable[bodyId] = entry.source;
+    }
 
-    for (const entry of observation.entries) {
+    observation = await observesSourceBodies(observable, realWorkspaceRoot);
+
+    for (const [bodyId, entry] of Object.entries(observation.entries)) {
       if (entry.conformance !== "BODY_CONFORMS") {
         observationFindings.push({
           code: `SIR_${entry.conformance}`,
-          instancePath: instancePathForBody(conformingPayload.entries, entry.bodyId),
-          message: `Body "${entry.bodyId}" at ${entry.relativePath}: ${entry.detail ?? entry.conformance}`
+          instancePath: `/entries/${escapesJsonPointerToken(bodyId)}/source`,
+          message: `Body "${bodyId}" at ${entry.relativePath}: ${entry.detail ?? entry.conformance}`
         });
       }
     }
   }
 
-  // 10. Produce the validation receipt.
+  // 8. Produce the validation receipt.
   const drifted = observationFindings.length > 0;
 
   return buildsReceipt({
     disposition: drifted ? "SOURCE_BODY_DRIFT" : "REGISTRY_CONTRACT_VALID",
     registryPath,
     registryDigest,
-    schemaAdmission: admission,
-    findings: observationFindings,
+    schemaAdmission,
+    findings: canonicalizesFindings(observationFindings),
     ...readsSubjectIdentity(payload),
     ...(observation === undefined ? {} : { observation })
   });
+}
+
+function translatesRegistryParseFailure(failure: AuthorityParseFailure): ValidationFinding {
+  return {
+    code:
+      failure.kind === "DUPLICATE_MEMBER"
+        ? "SIR_REGISTRY_DUPLICATE_MEMBER"
+        : "SIR_PAYLOAD_NOT_ADMISSIBLE",
+    instancePath: failure.pointer ?? "",
+    message: `Registry authority is not admissible: ${failure.message}`
+  };
 }
 
 function readsDeclaredSchemaId(payload: unknown): string | undefined {
@@ -349,34 +361,34 @@ function collectsRedundancyFindings(
 }
 
 /**
- * Renders AJV findings in a stable order.
+ * Renders AJV findings in a stable, runtime-independent order.
  *
  * Two runs over identical bytes must produce identical receipts, so findings
- * are sorted rather than left in AJV's traversal order.
+ * are sorted by code point rather than left in AJV's traversal order or
+ * ordered by a locale-sensitive comparison.
  */
 function canonicalizesAjvErrors(errors: readonly ErrorObject[]): ValidationFinding[] {
-  return errors
-    .map((error) => ({
+  return canonicalizesFindings(
+    errors.map((error) => ({
       code: error.keyword,
       instancePath: error.instancePath,
       schemaPath: error.schemaPath,
       message: error.message ?? `Value violates "${error.keyword}".`
     }))
-    .sort(
-      (left, right) =>
-        left.instancePath.localeCompare(right.instancePath) ||
-        (left.schemaPath ?? "").localeCompare(right.schemaPath ?? "") ||
-        left.code.localeCompare(right.code) ||
-        left.message.localeCompare(right.message)
-    );
+  );
 }
 
-function instancePathForBody(
-  entries: readonly { bodyId: string }[],
-  bodyId: string
-): string {
-  const index = entries.findIndex((entry) => entry.bodyId === bodyId);
-  return index < 0 ? "/entries" : `/entries/${index}/source`;
+/** Sorts findings by code point without dropping, merging, or deduplicating. */
+function canonicalizesFindings(
+  findings: readonly ValidationFinding[]
+): ValidationFinding[] {
+  return [...findings].sort(
+    (left, right) =>
+      comparesByCodePoint(left.instancePath, right.instancePath) ||
+      comparesByCodePoint(left.schemaPath ?? "", right.schemaPath ?? "") ||
+      comparesByCodePoint(left.code, right.code) ||
+      comparesByCodePoint(left.message, right.message)
+  );
 }
 
 function readsSubjectIdentity(payload: unknown): {
@@ -411,7 +423,7 @@ function buildsReceipt(parts: {
   registryPath: string;
   registryDigest: Sha256Digest;
   schemaAdmission: ValidationReceipt["schemaAdmission"];
-  findings: readonly ValidationFinding[];
+  findings: readonly (ValidationFinding | AdmissionFinding)[];
   registryId?: string;
   workspaceId?: string;
   workspaceRevision?: string;
@@ -434,7 +446,7 @@ function buildsReceipt(parts: {
         : { workspaceRevision: parts.workspaceRevision })
     },
     schemaAdmission: parts.schemaAdmission,
-    findings: parts.findings,
+    findings: canonicalizesFindings(parts.findings as readonly ValidationFinding[]),
     ...(parts.observation === undefined ? {} : { observation: parts.observation })
   };
 }

@@ -25,6 +25,24 @@ No slice may broaden invalid acceptance, continue after failed admission,
 silently repair authority during proof, invent an unsupported domain rule, or
 claim a stronger guarantee than it implements. (`SIR-RA-022`)
 
+```sir-trace
+{
+  "traceabilityType": "sir-remediation-trace.v1",
+  "planId": "SIR-RP-000",
+  "planReferences": [
+    {
+      "analysisId": "SIR-RA-024",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-022",
+      "role": "context"
+    }
+  ],
+  "scenarioMappings": []
+}
+```
+
 ## SIR-RP-010 — Status and release decision
 
 The current `1.0.0` schemas are repository candidates. They have not been
@@ -38,6 +56,20 @@ published or accepted by an external consumer. Therefore:
 
 An in-repository filename or catalog status does not, by itself, establish that
 release boundary. (`SIR-RA-001`)
+
+```sir-trace
+{
+  "traceabilityType": "sir-remediation-trace.v1",
+  "planId": "SIR-RP-010",
+  "planReferences": [
+    {
+      "analysisId": "SIR-RA-001",
+      "role": "authority"
+    }
+  ],
+  "scenarioMappings": []
+}
+```
 
 ## SIR-RP-020 — Governing principle
 
@@ -72,6 +104,20 @@ Release provenance
 These are cumulative gates. One layer cannot turn another layer's RED result
 GREEN. (`SIR-RA-022`)
 
+```sir-trace
+{
+  "traceabilityType": "sir-remediation-trace.v1",
+  "planId": "SIR-RP-020",
+  "planReferences": [
+    {
+      "analysisId": "SIR-RA-022",
+      "role": "authority"
+    }
+  ],
+  "scenarioMappings": []
+}
+```
+
 ## SIR-RP-030 — Release blockers
 
 The following conditions block the first release:
@@ -95,6 +141,92 @@ The following conditions block the first release:
    (`SIR-RA-021`)
 10. The remediation traceability graph has no generated machine-readable
     projection or committed conformance check. (`SIR-RA-024`)
+
+```sir-trace
+{
+  "traceabilityType": "sir-remediation-trace.v1",
+  "planId": "SIR-RP-030",
+  "planReferences": [
+    {
+      "analysisId": "SIR-RA-002",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-003",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-004",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-006",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-007",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-008",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-009",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-010",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-011",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-012",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-013",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-014",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-015",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-016",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-017",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-018",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-021",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-023",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-024",
+      "role": "context"
+    }
+  ],
+  "scenarioMappings": []
+}
+```
 
 ## SIR-RP-100 — Remediation Slice Zero: reconcile canonical features
 
@@ -248,6 +380,213 @@ scenario analysis reference must also be admitted by the containing plan's
 - Every scenario-to-analysis edge is explicit; none is inferred from proximity
   or independent arrays.
 
+```sir-trace
+{
+  "traceabilityType": "sir-remediation-trace.v1",
+  "planId": "SIR-RP-100",
+  "planReferences": [
+    {
+      "analysisId": "SIR-RA-002",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-003",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-004",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-005",
+      "role": "guard"
+    },
+    {
+      "analysisId": "SIR-RA-006",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-007",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-009",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-008",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-010",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-011",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-012",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-013",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-018",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-019",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-024",
+      "role": "authority"
+    }
+  ],
+  "scenarioMappings": [
+    {
+      "scenarioId": "@sir-admit-007",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-003",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-001",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-004",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-005",
+          "role": "guard"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-002",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-006",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-005",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-007",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-009",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-008",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-008",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-010",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-013",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-011",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-012",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-014",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-011",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-012",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-013",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-015",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-013",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-016",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-013",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-017",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-013",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-004",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-019",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-024",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-provenance-001",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-018",
+          "role": "authority"
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## SIR-RP-200 — Remediation Slice One: schema-native body identity and authority parsing
 
 ### Registry representation
@@ -363,6 +702,91 @@ and no repair. (`SIR-RA-006`)
 These outcomes close the false greens without narrowing unrelated valid
 registries. (`SIR-RA-004`, `SIR-RA-006`, `SIR-RA-014`)
 
+```sir-trace
+{
+  "traceabilityType": "sir-remediation-trace.v1",
+  "planId": "SIR-RP-200",
+  "planReferences": [
+    {
+      "analysisId": "SIR-RA-004",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-005",
+      "role": "guard"
+    },
+    {
+      "analysisId": "SIR-RA-006",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-014",
+      "role": "authority"
+    }
+  ],
+  "scenarioMappings": [
+    {
+      "scenarioId": "@sir-admit-001",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-004",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-005",
+          "role": "guard"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-002",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-006",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-010",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-006",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-011",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-004",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-012",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-006",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-017",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-014",
+          "role": "authority"
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## SIR-RP-300 — Remediation Slice Two: catalog and schema trust admission
 
 ### Outcome matrix
@@ -465,6 +889,149 @@ Use specific finding codes without expanding dispositions:
 - Digest mismatch retains its distinct disposition and exit code.
 - No catalog or schema admission RED can fall through to payload evaluation.
 
+```sir-trace
+{
+  "traceabilityType": "sir-remediation-trace.v1",
+  "planId": "SIR-RP-300",
+  "planReferences": [
+    {
+      "analysisId": "SIR-RA-006",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-007",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-008",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-009",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-010",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-003",
+      "role": "context"
+    }
+  ],
+  "scenarioMappings": [
+    {
+      "scenarioId": "@sir-admit-003",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-008",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-009",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-010",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-004",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-008",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-009",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-005",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-007",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-009",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-006",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-006",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-007",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-007",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-003",
+          "role": "context"
+        },
+        {
+          "analysisId": "SIR-RA-010",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-008",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-008",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-010",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-009",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-008",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-010",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-010",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-006",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-007",
+          "role": "authority"
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## SIR-RP-400 — Remediation Slice Three: real containment under a stable snapshot
 
 ### Establish real roots
@@ -526,6 +1093,94 @@ statement. A structurally invalid registry is never observed. (`SIR-RA-013`)
   conforming testimony.
 - Observable concurrent change cannot produce a GREEN result.
 - Tests do not claim protection outside the stable-snapshot precondition.
+
+```sir-trace
+{
+  "traceabilityType": "sir-remediation-trace.v1",
+  "planId": "SIR-RP-400",
+  "planReferences": [
+    {
+      "analysisId": "SIR-RA-011",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-012",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-013",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-014",
+      "role": "context"
+    }
+  ],
+  "scenarioMappings": [
+    {
+      "scenarioId": "@sir-admit-013",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-011",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-012",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-014",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-011",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-012",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-013",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-015",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-013",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-016",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-013",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-017",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-013",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-014",
+          "role": "context"
+        }
+      ]
+    }
+  ]
+}
+```
 
 ## SIR-RP-500 — Remediation Slice Four: portable, fresh, idempotent package proof
 
@@ -656,6 +1311,89 @@ Regeneration is an explicit authoring action outside proof. (`SIR-RA-024`)
 - The remediation traceability projection is current and every graph edge
   conforms to its permitted role.
 
+```sir-trace
+{
+  "traceabilityType": "sir-remediation-trace.v1",
+  "planId": "SIR-RP-500",
+  "planReferences": [
+    {
+      "analysisId": "SIR-RA-015",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-016",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-017",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-023",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-024",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-019",
+      "role": "authority"
+    }
+  ],
+  "scenarioMappings": [
+    {
+      "scenarioId": "@sir-package-001",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-015",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-016",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-023",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-002",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-015",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-003",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-017",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-004",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-019",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-024",
+          "role": "authority"
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## SIR-RP-600 — Remediation Slice Five: release provenance
 
 Internal consistency is not independent authorization. Before external
@@ -678,6 +1416,30 @@ release provenance receipt
 The provenance receipt is separate from registry validation receipts. A
 signature cannot turn contract or package proof RED into GREEN.
 (`SIR-RA-021`)
+
+```sir-trace
+{
+  "traceabilityType": "sir-remediation-trace.v1",
+  "planId": "SIR-RP-600",
+  "planReferences": [
+    {
+      "analysisId": "SIR-RA-021",
+      "role": "context"
+    }
+  ],
+  "scenarioMappings": [
+    {
+      "scenarioId": "@sir-provenance-001",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-021",
+          "role": "context"
+        }
+      ]
+    }
+  ]
+}
+```
 
 ## SIR-RP-700 — Feature-to-remediation traceability
 
@@ -709,6 +1471,359 @@ directions; the final feature wording remains semantically focused.
 | Remediation graph conformance | `@sir-package-004` | Generated analysis index and traceability checker | Unknown ID, wrong role, cycle, orphan, or drift | `SIR-RA-019`, `SIR-RA-024` |
 | Authenticated release binding | `@sir-provenance-001` | Provenance gate | Unsigned or mismatched release | `SIR-RA-021` |
 
+```sir-trace
+{
+  "traceabilityType": "sir-remediation-trace.v1",
+  "planId": "SIR-RP-700",
+  "planReferences": [
+    {
+      "analysisId": "SIR-RA-003",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-004",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-006",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-007",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-008",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-009",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-010",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-011",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-012",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-013",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-014",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-015",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-016",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-017",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-019",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-021",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-023",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-024",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-005",
+      "role": "guard"
+    }
+  ],
+  "scenarioMappings": [
+    {
+      "scenarioId": "@sir-admit-001",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-004",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-005",
+          "role": "guard"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-002",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-006",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-003",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-008",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-009",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-010",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-004",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-008",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-009",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-005",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-007",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-009",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-006",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-006",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-007",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-007",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-003",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-010",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-008",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-008",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-010",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-009",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-008",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-010",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-010",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-006",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-007",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-011",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-004",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-012",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-006",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-013",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-011",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-012",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-014",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-011",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-012",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-013",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-015",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-013",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-016",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-013",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-017",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-013",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-014",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-001",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-015",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-016",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-023",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-002",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-015",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-003",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-017",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-004",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-019",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-024",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-provenance-001",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-021",
+          "role": "context"
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## SIR-RP-800 — Files and artifacts expected to change
 
 The remediation is expected to touch:
@@ -735,6 +1850,28 @@ The remediation is expected to touch:
 
 All contract identities remain `1.0.0`; their candidate bytes and catalog
 digests are regenerated together. (`SIR-RA-001`)
+
+```sir-trace
+{
+  "traceabilityType": "sir-remediation-trace.v1",
+  "planId": "SIR-RP-800",
+  "planReferences": [
+    {
+      "analysisId": "SIR-RA-001",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-002",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-018",
+      "role": "context"
+    }
+  ],
+  "scenarioMappings": []
+}
+```
 
 ## SIR-RP-900 — Required adversarial matrix
 
@@ -786,6 +1923,28 @@ Positive controls retain:
 
 Each vector cites its governing scenario ID. (`SIR-RA-019`, `SIR-RA-020`,
 `SIR-RA-024`)
+
+```sir-trace
+{
+  "traceabilityType": "sir-remediation-trace.v1",
+  "planId": "SIR-RP-900",
+  "planReferences": [
+    {
+      "analysisId": "SIR-RA-019",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-020",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-024",
+      "role": "authority"
+    }
+  ],
+  "scenarioMappings": []
+}
+```
 
 ## SIR-RP-950 — Completion gates
 
@@ -868,3 +2027,21 @@ RELEASE-BOUND SIR INTEGRITY
 ```
 
 No gate can compensate for another failed gate. (`SIR-RA-022`, `SIR-RA-024`)
+
+```sir-trace
+{
+  "traceabilityType": "sir-remediation-trace.v1",
+  "planId": "SIR-RP-950",
+  "planReferences": [
+    {
+      "analysisId": "SIR-RA-022",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-024",
+      "role": "authority"
+    }
+  ],
+  "scenarioMappings": []
+}
+```

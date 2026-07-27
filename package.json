@@ -25,17 +25,25 @@
     "typecheck": "tsc --noEmit",
     "generate:types": "tsx scripts/generate-types.ts",
     "generate:catalog": "tsx scripts/generate-catalog.ts",
+    "generate:remediation-index": "tsx scripts/generate-remediation-index.ts",
     "check:generated": "tsx scripts/check-generated.ts",
+    "check:remediation-index": "tsx scripts/check-remediation-index.ts",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "prove:core": "pnpm typecheck && pnpm test && pnpm check:generated && pnpm check:remediation-index && tsx scripts/prove-fresh-build.ts",
+    "prove": "pnpm prove:core && tsx scripts/prove-packed-consumer.ts",
+    "prepack": "pnpm prove:core"
   },
   "dependencies": {
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1"
   },
   "devDependencies": {
+    "@cucumber/gherkin": "^42.0.0",
+    "@cucumber/messages": "^34.2.0",
     "@types/node": "^20.14.0",
     "json-schema-to-typescript": "^15.0.4",
+    "marked": "^18.0.7",
     "tsx": "^4.23.1",
     "typescript": "^5.6.3",
     "vitest": "^2.1.8"

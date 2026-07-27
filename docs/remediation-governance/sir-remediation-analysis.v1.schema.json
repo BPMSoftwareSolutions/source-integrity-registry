@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.deterministic.solutions/sir/governance/sir-remediation-analysis/1.0.0/schema.json",
+  "title": "SIR Remediation Analysis Block",
+  "description": "Closed format for the sir-analysis metadata block carried by each analysis ledger entry. One block per analysis coordinate.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["analysisMetadataType", "analysisId", "status", "supersededBy"],
+  "properties": {
+    "analysisMetadataType": { "const": "sir-remediation-analysis.v1" },
+    "analysisId": {
+      "type": "string",
+      "pattern": "^SIR-RA-[0-9]{3}$"
+    },
+    "status": {
+      "enum": [
+        "VALID",
+        "VALID_WITH_REFINEMENT",
+        "ALREADY_SATISFIED",
+        "DEFERRED",
+        "NOT_ADOPTED"
+      ],
+      "description": "Normalized form of the ledger's allowed validation statuses."
+    },
+    "supersededBy": {
+      "description": "Analysis coordinate replacing this decision, or null when current.",
+      "oneOf": [{ "type": "null" }, { "type": "string", "pattern": "^SIR-RA-[0-9]{3}$" }]
+    }
+  }
+}

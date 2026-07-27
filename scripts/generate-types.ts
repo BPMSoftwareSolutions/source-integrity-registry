@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 
 import { compile } from "json-schema-to-typescript";
 
+import { parsesAuthorityDocument } from "../src/authority/parse-authority-document.ts";
 import { CATALOG_MANIFEST } from "./catalog-manifest.ts";
 import { isMainModule } from "./is-main-module.ts";
 
@@ -29,10 +30,13 @@ export async function buildsGeneratedTypes(): Promise<readonly GeneratedArtifact
 
   for (const entry of CATALOG_MANIFEST) {
     const schemaPath = path.join(contractsRoot, entry.relativePath);
-    const schema = JSON.parse((await readFile(schemaPath)).toString("utf8")) as Record<
-      string,
-      unknown
-    >;
+    const parsed = parsesAuthorityDocument(await readFile(schemaPath));
+    if (parsed.outcome === "failed") {
+      throw new Error(
+        `Schema at ${entry.relativePath} is not admissible authority: ${parsed.failure.message}`
+      );
+    }
+    const schema = parsed.document.value as Record<string, unknown>;
 
     const declarations = await compile(schema, entry.schemaFamily, {
       bannerComment: "",

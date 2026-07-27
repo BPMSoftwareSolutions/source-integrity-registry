@@ -104,6 +104,15 @@ The reviews were checked against the following current conditions:
 
 **Status:** VALID.
 
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-001",
+  "status": "VALID",
+  "supersededBy": null
+}
+```
+
 **Workspace validation:** The repository is at its initial implementation
 commit, `HEAD` has no release tag, and the user has confirmed that no `1.0.0`
 schema was published or externally accepted. Local catalog status does not
@@ -126,6 +135,15 @@ versioning decision must be re-opened under this same ID.
 
 **Status:** VALID.
 
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-002",
+  "status": "VALID",
+  "supersededBy": null
+}
+```
+
 **Workspace validation:** The current feature lacks the new obligations, while
 tests and implementation already contain behaviors not represented one-to-one
 by its five scenarios.
@@ -146,6 +164,15 @@ remediation obligations; it must not retroactively bless unrelated behavior.
 
 **Status:** VALID.
 
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-003",
+  "status": "VALID",
+  "supersededBy": null
+}
+```
+
 **Workspace validation:** The current scenario at
 `features/admit-source-integrity-registry.feature:17` says "mutated historical
 schema", but `1.0.0` is an unreleased candidate.
@@ -164,6 +191,15 @@ weaken byte-for-byte digest enforcement.
 **Sources:** Review A Slice 1; Review B finding 2.
 
 **Status:** VALID.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-004",
+  "status": "VALID",
+  "supersededBy": null
+}
+```
 
 **Workspace validation:** The registry contract uses an array at
 `contracts/source-integrity-registry/1.0.0/source-integrity-registry.schema.json:13`
@@ -188,6 +224,15 @@ duplicate.
 
 **Status:** NOT ADOPTED.
 
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-005",
+  "status": "NOT_ADOPTED",
+  "supersededBy": null
+}
+```
+
 **Workspace validation:** Current intent and schemas allow an empty registry,
 and no feature requires at least one entry. The current `bodyId` uses the shared
 identifier vocabulary with a 200-character maximum and permits a leading
@@ -208,6 +253,15 @@ mandatory; this decision rejects only unsupported extra restrictions.
 **Sources:** Review A clarification 2; Review B duplicate-member scenarios.
 
 **Status:** VALID WITH REFINEMENT.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-006",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null
+}
+```
 
 **Workspace validation:** Runtime and generation paths use `JSON.parse`, which
 loses duplicate-member evidence. Registry bytes are digested before parsing,
@@ -246,6 +300,15 @@ loaders must all fail closed on parser rejection.
 
 **Status:** VALID WITH REFINEMENT.
 
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-007",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null
+}
+```
+
 **Workspace validation:** The current loader throws `CatalogIntegrityError` for
 invalid JSON, malformed entries, duplicate schema identities, and unreadable
 files, and the CLI maps all of them to exit `6`. Once the packaged catalog
@@ -281,6 +344,15 @@ available only when the circuit cannot truthfully produce a verdict;
 
 **Status:** VALID WITH REFINEMENT.
 
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-008",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null
+}
+```
+
 **Workspace validation:** `src/domain/schema-identity.ts` already has an
 anchored expression that requires the exact `https` scheme, admitted host,
 family syntax, exact semantic version, final `schema.json`, and no query,
@@ -304,6 +376,15 @@ exact template.
 **Sources:** Review A Slice 2; Review B finding 3.
 
 **Status:** VALID.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-009",
+  "status": "VALID",
+  "supersededBy": null
+}
+```
 
 **Workspace validation:** `loadsSchemaCatalog` currently checks only that
 `catalogId` is a string, `entries` is an array, required entry fields are
@@ -331,6 +412,15 @@ bytes; the caller catalog cannot replace it.
 **Sources:** Review A Slice 2; Review B finding 4.
 
 **Status:** VALID WITH REFINEMENT.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-010",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null
+}
+```
 
 **Workspace validation:** `resolvesSchemaFromCatalog` already rejects scalar,
 null, and array schema JSON. It does not compare loaded `$id` or `$schema` with
@@ -360,6 +450,15 @@ evaluation.
 **Sources:** Review A Slice 3; Review B finding 5.
 
 **Status:** VALID WITH REFINEMENT.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-011",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null
+}
+```
 
 **Workspace validation:** The current catalog lives at
 `contracts/catalog/sir-schema-catalog.v1.json`, while entry paths are relative
@@ -394,6 +493,15 @@ symbolic-link behavior must fail closed.
 
 **Status:** VALID WITH REFINEMENT.
 
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-012",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null
+}
+```
+
 **Workspace validation:** A `realpath` check followed by `readFile` has a
 time-of-check/time-of-use window. Node's current path-based reads cannot prove
 that hostile concurrent replacement never caused escaped bytes to be opened.
@@ -419,6 +527,15 @@ no-follow file-handle mechanics remain a future option.
 **Sources:** Review B finding 6 and proposed corrected feature.
 
 **Status:** VALID WITH REFINEMENT.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-013",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null
+}
+```
 
 **Workspace validation:** The current feature's one drift scenario mixes
 per-body observation, conformance, aggregation, and receipt disposition.
@@ -447,6 +564,15 @@ prevents a valid disposition.
 
 **Status:** VALID WITH REFINEMENT.
 
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-014",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null
+}
+```
+
 **Workspace validation:** Findings currently use `localeCompare`, whose
 ordering can depend on runtime locale. Keyed observations will otherwise retain
 input insertion order.
@@ -470,6 +596,15 @@ deduplicate, or merge distinct findings.
 **Sources:** Review A clarification 5.
 
 **Status:** VALID WITH REFINEMENT.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-015",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null
+}
+```
 
 **Workspace validation:** `check:generated` already computes expected bytes and
 compares them without writing. `package.json` has no aggregate proof or prepack
@@ -502,6 +637,15 @@ repository source for the packed artifact.
 
 **Status:** VALID.
 
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-016",
+  "status": "VALID",
+  "supersededBy": null
+}
+```
+
 **Workspace validation:** Plain `pnpm test` reproducibly fails with
 `spawn UNKNOWN` on the current 24-core Windows host. Runs with one or two
 workers pass all 37 tests.
@@ -520,6 +664,15 @@ it must not skip tests, narrow test discovery, or weaken assertions.
 **Sources:** Review A Slice 4 and packed-package smoke guidance.
 
 **Status:** VALID.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-017",
+  "status": "VALID",
+  "supersededBy": null
+}
+```
 
 **Workspace validation:** The repository has no CI workflow or package smoke
 script. `npm pack --dry-run` confirms the current file list but does not import
@@ -542,6 +695,15 @@ missing.
 **Sources:** Review B repository-proof separation.
 
 **Status:** VALID.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-018",
+  "status": "VALID",
+  "supersededBy": null
+}
+```
 
 **Workspace validation:** Only the product admission feature currently exists.
 Worker policy, prepack behavior, and release signatures are different
@@ -567,6 +729,15 @@ requires every applicable feature to be GREEN.
 
 **Status:** VALID WITH REFINEMENT.
 
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-019",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null
+}
+```
+
 **Workspace validation:** Existing tests describe the feature textually, but
 scenario names are the only identifiers and the feature/test relationship is
 not mechanically stable.
@@ -591,6 +762,15 @@ tag.
 matrix.
 
 **Status:** VALID WITH REFINEMENT.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-020",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null
+}
+```
 
 **Workspace validation:** Current tests cover lexical traversal, digest
 mismatch, unknown identity, structural invalidity, drift, and receipt
@@ -624,6 +804,15 @@ behavior.
 
 **Status:** DEFERRED.
 
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-021",
+  "status": "DEFERRED",
+  "supersededBy": null
+}
+```
+
 **Workspace validation:** The current commit is unsigned and untagged. Catalog
 and schema digests establish internal consistency but can be regenerated
 together.
@@ -643,6 +832,15 @@ dispositions and is never claimed before signature verification succeeds.
 **Sources:** Review A revised completion equation; Review B completion gate.
 
 **Status:** VALID.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-022",
+  "status": "VALID",
+  "supersededBy": null
+}
+```
 
 **Workspace validation:** The current remediation completion equation combines
 several layers but does not explicitly require feature authority, proof
@@ -669,6 +867,15 @@ release provenance cannot turn a contract-validation failure green.
 **Sources:** Workspace validation of Review A clarification 5.
 
 **Status:** VALID WITH REFINEMENT.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-023",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null
+}
+```
 
 **Workspace validation:** The reviewed script sketch sets `prepack` to the full
 proof command while the full proof includes packed-artifact smoke validation.
@@ -710,6 +917,15 @@ the inner prepack gate or packed-consumer smoke fails.
 **Sources:** Follow-up review, "One remaining improvement I would make."
 
 **Status:** VALID WITH REFINEMENT.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-024",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null
+}
+```
 
 **Workspace validation:** Before this decision, the Markdown ledger defined 23
 stable analysis IDs, and the remediation plan cited all of them and assigned

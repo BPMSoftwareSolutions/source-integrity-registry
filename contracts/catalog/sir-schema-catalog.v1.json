@@ -21,7 +21,7 @@
       "schemaVersion": "1.0.0",
       "dialect": "https://json-schema.org/draft/2020-12/schema",
       "relativePath": "source-integrity-registry/1.0.0/source-integrity-registry.schema.json",
-      "sha256": "sha256:ae3491e1593b611591d6816781da9e0517288832e173b6e9d50cb6f6feb4d856",
+      "sha256": "sha256:f5369446698a9ddc78d656fdd31b72d244f9d0b9cbb472f069e2670c3e289336",
       "status": "accepted"
     },
     {
@@ -30,7 +30,7 @@
       "schemaVersion": "1.0.0",
       "dialect": "https://json-schema.org/draft/2020-12/schema",
       "relativePath": "source-integrity-validation-receipt/1.0.0/source-integrity-validation-receipt.schema.json",
-      "sha256": "sha256:e8a3d2c1e07055d50b568ff8ff8e404faf83113e49de0b72b03f01417247c389",
+      "sha256": "sha256:2311460cfaaed1c229145bd3e255d1a9b0add119e7cdc761488a936e290114c4",
       "status": "accepted"
     }
   ]
