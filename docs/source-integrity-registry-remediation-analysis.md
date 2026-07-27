@@ -730,9 +730,73 @@ Each projected analysis entry records:
 - scenario IDs;
 - `supersededBy`, when applicable.
 
-Do not infer roles or graph edges from prose. Add validated structured ledger
-or traceability blocks as the generator input; Markdown citations remain
+Do not infer roles or graph edges from prose. Add uniquely typed, validated
+structured blocks as the generator input; Markdown citations remain
 human-readable navigation.
+
+Each analysis ledger entry carries one `sir-analysis` block:
+
+````markdown
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-024",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null
+}
+```
+````
+
+Each plan coordinate carries one `sir-trace` block. Scenario-to-analysis edges
+are explicit rather than inferred by combining independent arrays:
+
+````markdown
+```sir-trace
+{
+  "traceabilityType": "sir-remediation-trace.v1",
+  "planId": "SIR-RP-200",
+  "planReferences": [
+    {
+      "analysisId": "SIR-RA-004",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-005",
+      "role": "guard"
+    }
+  ],
+  "scenarioMappings": [
+    {
+      "scenarioId": "@sir-admit-001",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-004",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-005",
+          "role": "guard"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-002",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-006",
+          "role": "authority"
+        }
+      ]
+    }
+  ]
+}
+```
+````
+
+The block formats are governed by closed internal schemas. A Markdown parser
+selects code blocks by their exact `sir-analysis` or `sir-trace` info string; it
+does not inspect ordinary JSON examples. A Gherkin parser resolves scenario
+tags from feature syntax.
 
 Generate the projection at
 `docs/generated/source-integrity-registry-remediation-analysis-index.v1.json`.
@@ -741,9 +805,16 @@ Do not hand-author it independently. Add a comparison-only conformance check to
 
 - every analysis, plan, and scenario ID is uniquely defined;
 - every citation resolves;
+- every plan coordinate has exactly one trace block;
+- every analysis coordinate has exactly one metadata block;
 - only adopted decisions are used as current `authority`;
 - `NOT_ADOPTED`, `DEFERRED`, or superseded decisions appear only in permitted
   roles;
+- every scenario-to-analysis edge is explicitly declared;
+- no plan-level and scenario-level arrays are combined into an inferred
+  Cartesian product;
+- every scenario analysis reference is also admitted by its containing plan
+  references;
 - supersession references exist and form no cycles;
 - every scenario resolves to one or more analysis decisions;
 - every active adopted decision has required plan and scenario coverage;
@@ -756,8 +827,11 @@ edges visible drift.
 
 **Non-degradation guard:** The projection never becomes an independent source
 of authority, the proof command never repairs it, heading slugs are not treated
-as stable coordinates, and reference roles prevent a rejected decision cited
-as a guard from being mistaken for active implementation authority.
+as stable coordinates, ordinary code examples are never parsed as metadata,
+and reference roles prevent a rejected decision cited as a guard from being
+mistaken for active implementation authority. Human-readable status summaries,
+if retained, are generated from the `sir-analysis` block rather than maintained
+as a second status value.
 
 ## Review-to-analysis coverage
 

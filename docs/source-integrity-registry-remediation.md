@@ -163,6 +163,78 @@ Add validated structured traceability blocks for those roles and edges. The
 generator must not infer authority from surrounding prose or Markdown section
 slugs.
 
+### Structured traceability blocks
+
+Each analysis entry carries exactly one metadata block selected by the exact
+`sir-analysis` fenced-code info string:
+
+````markdown
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-024",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null
+}
+```
+````
+
+Each plan coordinate carries exactly one trace block selected by the exact
+`sir-trace` fenced-code info string:
+
+````markdown
+```sir-trace
+{
+  "traceabilityType": "sir-remediation-trace.v1",
+  "planId": "SIR-RP-200",
+  "planReferences": [
+    {
+      "analysisId": "SIR-RA-004",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-005",
+      "role": "guard"
+    }
+  ],
+  "scenarioMappings": [
+    {
+      "scenarioId": "@sir-admit-001",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-004",
+          "role": "authority"
+        },
+        {
+          "analysisId": "SIR-RA-005",
+          "role": "guard"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-admit-002",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-006",
+          "role": "authority"
+        }
+      ]
+    }
+  ]
+}
+```
+````
+
+The block formats have closed internal schemas. A Markdown parser selects only
+the two exact info strings; ordinary JSON examples are never metadata. A
+Gherkin parser resolves scenario tags from feature syntax.
+
+Independent `analysisReferences` and `scenarioIds` arrays are forbidden because
+their combination would require an inferred Cartesian product.
+`scenarioMappings` declares every scenario-to-analysis edge directly. Each
+scenario analysis reference must also be admitted by the containing plan's
+`planReferences`. (`SIR-RA-024`)
+
 ### Slice Zero completion
 
 - Every adopted product direction has a semantically focused scenario.
@@ -171,6 +243,10 @@ slugs.
 - No scenario adds the unsupported non-empty-registry or narrower-body-ID
   restrictions rejected by `SIR-RA-005`.
 - Analysis, plan, and scenario coordinates are unique and role-classifiable.
+- Every analysis and plan coordinate has exactly one schema-valid structured
+  block.
+- Every scenario-to-analysis edge is explicit; none is inferred from proximity
+  or independent arrays.
 
 ## SIR-RP-200 — Remediation Slice One: schema-native body identity and authority parsing
 
@@ -551,12 +627,21 @@ from validated structured traceability blocks, not prose inference.
 Add a comparison-only traceability check to `prove:core`. It fails on:
 
 - duplicate or unknown analysis, plan, or scenario IDs;
+- missing, duplicate, or schema-invalid `sir-analysis` or `sir-trace` blocks;
 - unresolved citations;
 - a rejected, deferred, or superseded decision used as current authority;
+- an ordinary JSON example interpreted as traceability metadata;
+- an implicit Cartesian product between plan analysis references and scenarios;
+- a scenario analysis reference absent from its containing plan references;
 - a supersession cycle;
 - an orphaned active decision;
 - a scenario without analysis authority;
 - committed projection drift.
+
+Use a Markdown parser to locate typed blocks and a Gherkin parser to locate
+scenario tags. Do not scrape headings, prose, or feature text with regular
+expressions. Human-readable status summaries, if retained, are generated from
+`sir-analysis` metadata instead of being independently authored.
 
 Regeneration is an explicit authoring action outside proof. (`SIR-RA-024`)
 
@@ -640,6 +725,8 @@ The remediation is expected to touch:
 - fixtures and all affected tests;
 - package proof and packed-consumer smoke scripts;
 - remediation-index generation and comparison-only traceability scripts;
+- closed internal schemas for `sir-analysis` and `sir-trace` blocks under
+  `docs/remediation-governance/`;
 - `docs/generated/source-integrity-registry-remediation-analysis-index.v1.json`;
 - `vitest.config.ts` and `package.json`;
 - CI workflows for Windows and Linux;
@@ -673,6 +760,10 @@ Negative controls include:
 - packed default catalog resolving differently from repository assumptions;
 - proof changing tracked content;
 - duplicate or unknown `SIR-RA`, `SIR-RP`, or scenario ID;
+- missing, duplicate, or schema-invalid typed traceability block;
+- ordinary JSON example mistaken for metadata;
+- implicit Cartesian-product scenario edges;
+- scenario analysis reference absent from its plan references;
 - rejected or deferred analysis used with the `authority` role;
 - missing or cyclic supersession target;
 - orphaned active analysis decision or scenario;
@@ -689,6 +780,8 @@ Positive controls retain:
 - catalog self-conformance;
 - digest and compilation from the same in-memory schema bytes;
 - current generated declarations and catalog digests;
+- ordinary Markdown and JSON examples ignored by traceability projection;
+- explicit scenario-to-analysis mappings projected without inferred edges;
 - installed tarball library, CLI, and catalog behavior.
 
 Each vector cites its governing scenario ID. (`SIR-RA-019`, `SIR-RA-020`,
@@ -740,6 +833,8 @@ Draft 2020-12 meta-schema valid
 
 ```text
 scenario-to-proof traceability complete
++
+typed analysis and trace blocks schema-valid
 +
 generated remediation index current
 +
