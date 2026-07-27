@@ -127,13 +127,29 @@ describe("@sir-package-006 Explicit analysis scenario-coverage policy", () => {
     const { index, violations } = await buildsTraceabilityProjection();
     expect(violations, JSON.stringify(violations, null, 2)).toEqual([]);
     expect(index).not.toBeNull();
+    const adoptedStatuses = new Set([
+      "VALID",
+      "VALID_WITH_REFINEMENT",
+      "ALREADY_SATISFIED"
+    ]);
 
     for (const analysis of index?.analyses ?? []) {
       if (analysis.scenarioCoveragePolicy === "scenario-required") {
         expect(analysis.scenarioIds.length, analysis.analysisId).toBeGreaterThan(0);
       } else {
         expect(analysis.scenarioIds, analysis.analysisId).toEqual([]);
-        expect(analysis.earnedStates).toContain("FEATURE_NOT_REQUIRED");
+        const authorityBound =
+          adoptedStatuses.has(analysis.status) &&
+          analysis.planReferences.some((reference) => reference.role === "authority");
+        if (authorityBound) {
+          expect(analysis.earnedStates, analysis.analysisId).toContain(
+            "FEATURE_NOT_REQUIRED"
+          );
+        } else {
+          expect(analysis.earnedStates, analysis.analysisId).not.toContain(
+            "FEATURE_NOT_REQUIRED"
+          );
+        }
       }
     }
   });

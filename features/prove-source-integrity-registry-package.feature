@@ -69,3 +69,21 @@ Feature: Prove the Source Integrity Registry package
     When repository history is evaluated
     Then a valid authority checkpoint exists in a parent commit
     And the checkpoint binds the analyses, plans, scenarios, feature bytes, validated projection, and implementation scope
+
+  @sir-package-010
+  Scenario: Preserve exact admitted documentation origin bytes
+    Given a supplied document admitted under an immutable origin snapshot identity
+    When repository proof verifies the origin snapshot
+    Then the exact supplied byte sequence remains retrievable
+    And its raw byte length and digest match the admitted identity
+    And text normalization cannot silently replace the admitted bytes
+    And changed source bytes require a new snapshot identity
+
+  @sir-package-011
+  Scenario: Reproduce a derived document from admitted origin and transformation
+    Given immutable origin bytes and a closed documentation derivation declaration
+    When repository proof reconstructs the derived document in temporary storage
+    Then the declared transformation consumes the admitted origin bytes
+    And the reconstructed output matches the declared derived digest
+    And proof does not rewrite the origin, transformation, or derived authority
+    And missing or mismatched derivation evidence fails closed

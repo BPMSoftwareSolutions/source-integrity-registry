@@ -2149,6 +2149,773 @@ be explicit, and a checkpoint created in the same commit as implementation
 cannot authorize that implementation. A checkpoint ID cannot be edited,
 deleted, or reused after creation.
 
+## Documentation-authority candidate review
+
+This review evaluates two proposed documentation surfaces without treating
+either surface as self-authorizing evidence:
+
+| Source coordinate | Snapshot identity | Authority posture |
+| --- | --- | --- |
+| `DDAI-ORIGIN` — `docs/durable-documentation-authority-intent-original.md` | raw length `19878` bytes, `sha256:162197a180a93f4c0ce248f525e151347ae0526c4a44c5275d2183a13a021e74` | Untracked supplied origin bytes; not yet admitted or protected from Git text normalization. |
+| `DDAI` — `docs/durable-documentation-authority-intent.md` | `sha256:de07b5ff26ff6e29e6081109a2d380aa1ae04f5b4cfae387bba7b5dd19e65b17` | Untracked candidate input; not canonical documentation authority. |
+| `COURSE` — `docs/public-course-building-deterministic-systems-with-sir.md` | commit `eda96afaa7e50e0ad4e359a020321f3bddff7d88`, blob `c34aaaa055a90a5018961d73d693c11a51687408`, `sha256:57ed3091fa24481ce4eb32c368fae2db0399b7ac2b3840032499eb70b407eec2` | Tracked public-course candidate whose claims remain bounded by this review. |
+
+The section coordinates in the matrix below are stable review coordinates for
+these exact snapshots. They do not claim that a heading or line number alone is
+content identity. A changed source digest requires re-analysis under the same
+decision IDs where the durable question is unchanged.
+
+### SIR-RA-033 — Treat human and documentary intent as candidate input before authority
+
+**Sources:** `DDAI-001`, `DDAI-010`, and `DDAI-011`.
+
+**Status:** ALREADY SATISFIED.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-033",
+  "status": "ALREADY_SATISFIED",
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-033-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-033#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-033#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-033#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-033#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "Proposed documentary intent cannot become implementation authority merely because it exists under docs."
+    ],
+    "doesNotProve": [
+      "A candidate intent is correct, complete, or authorized for implementation."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "plan-only",
+    "requiresScenarioCoverage": false,
+    "rationale": "This decision classifies documentary input before any executable documentation feature is admitted."
+  }
+}
+```
+
+**Workspace validation:** The current remediation circuit already separates
+candidate review input from admitted analysis, plan authority, feature
+authority, checkpoint, implementation, and executed proof. The `DDAI` opening,
+"Wants and desires become reviewable intent," and reusable change-analysis
+sections align with that architecture.
+
+**Direction:** Retain the principle that human purpose and documentary proposals
+enter as candidate evidence. Admit only atomic, workspace-supported directions
+through stable analysis IDs; do not treat either reviewed document as an
+implementation instruction.
+
+**Integrity gain:** Preserves human purpose without allowing prose, enthusiasm,
+or document placement to bypass the repository's transition gates.
+
+**Non-degradation guard:** Candidate intent remains visible and reviewable; the
+classification must not erase the originating purpose or imply that machine
+governance replaces human authorization.
+
+### SIR-RA-034 — Limit documentation proof to typed operational declarations and bounded projections
+
+**Sources:** `DDAI-005`, `DDAI-015`, `DDAI-017`, and `DDAI-019`.
+
+**Status:** VALID WITH REFINEMENT.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-034",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-034-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-034#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-034#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-034#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-034#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "Validated typed declarations and deterministic projections embedded in documentation can participate in a proof chain."
+    ],
+    "doesNotProve": [
+      "Surrounding Markdown prose is true or machine-authoritative merely because the file also contains a typed block."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "plan-only",
+    "requiresScenarioCoverage": false,
+    "rationale": "The analysis narrows a documentation-authority claim; it does not authorize a new documentation runtime."
+  }
+}
+```
+
+**Workspace validation:** The remediation ledger and plan demonstrate the valid
+pattern: expressive prose surrounds closed `sir-analysis` and `sir-trace`
+blocks, while the checker derives graph facts only from schema-valid blocks and
+parsed Gherkin. The checker does not infer authority from arbitrary headings or
+nearby language.
+
+**Direction:** Teach that documentation can carry proof inputs, evidence, or
+projections only where the exact operational declaration is typed, validated,
+consumed, and bounded. Describe ordinary explanatory prose as documentation
+about proof, not proof itself.
+
+**Integrity gain:** Reuses the repository's existing typed-block architecture
+without creating a second heuristic prose interpreter.
+
+**Non-degradation guard:** Do not award authority to a whole document because
+one section is operational, and do not require every human explanation to
+become machine syntax.
+
+### SIR-RA-035 — Add source provenance only through repository-resolvable snapshots
+
+**Sources:** `DDAI-006`, `DDAI-007`, `DDAI-008`, and `DDAI-018`.
+
+**Status:** VALID WITH REFINEMENT.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-035",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-035-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-035#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-035#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-035#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-035#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "A documentation claim can be tied to exact admitted repository source bytes and a stable structured coordinate."
+    ],
+    "doesNotProve": [
+      "The source claim is semantically correct, authorized for publication, or faithfully transformed without a separately reviewed transformation."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "plan-only",
+    "requiresScenarioCoverage": false,
+    "rationale": "This admits a future provenance direction while withholding implementation authority until a dedicated feature and contract exist."
+  }
+}
+```
+
+**Workspace validation:** Exact source revision and byte digests fit the
+existing physical-to-logical model. The current registry can declare Markdown
+whole-file bodies, but it does not validate document sections, transformations,
+conversation identities, or publication provenance. Exact UTF-8 sub-file byte
+offset testimony also remains outside the present Step-Zero boundary.
+
+**Direction:** If public teaching claims later require source provenance, first
+admit a repository-local source-snapshot contract using exact bytes, a stable
+document/section coordinate, and a digest. Add transformation and publication
+claims only through separate bounded authorities.
+
+**Integrity gain:** Makes selected teaching claims reproducible from admitted
+local evidence without depending on ephemeral external navigation.
+
+**Non-degradation guard:** Do not infer edges from prose, substitute line
+numbers for identity, confuse Unicode character offsets with byte offsets, or
+claim semantic fidelity from digest agreement alone.
+
+### SIR-RA-036 — Reject raw conversation coordinates as first-class repository authority
+
+**Sources:** `DDAI-006` and `DDAI-007`.
+
+**Status:** NOT ADOPTED.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-036",
+  "status": "NOT_ADOPTED",
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-036-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-036#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-036#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-036#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-036#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "Unresolved conversation IDs, message IDs, timestamps, and character ranges cannot become SIR authority."
+    ],
+    "doesNotProve": [
+      "Conversation material is valueless or may be discarded before admitted purpose is preserved."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "plan-only",
+    "requiresScenarioCoverage": false,
+    "rationale": "This is a guard against an incompatible authority source, not an executable product behavior."
+  }
+}
+```
+
+**Workspace validation:** The repository has no contract, resolver, retention
+policy, privacy boundary, or offline proof for conversation and message IDs.
+Character ranges are not UTF-8 byte coordinates, and a vendor-local
+conversation identifier is not an immutable repository object.
+
+**Direction:** Do not store raw conversation coordinates as canonical SIR
+authority. Preserve the admitted purpose in repository-local analysis prose and
+snapshot only the minimum source material required by an explicitly governed
+provenance contract.
+
+**Integrity gain:** Avoids a non-portable external trust root, privacy and
+retention liabilities, and false provenance produced by unresolvable IDs.
+
+**Non-degradation guard:** A future source-capture capability may be proposed
+under a new analysis if it has explicit consent, minimization, stable local
+bytes, a resolver, and bounded proof.
+
+### SIR-RA-037 — Reject operational consumption as a universal admission rule for durable documents
+
+**Sources:** `DDAI-014`, `DDAI-015`, `DDAI-016`, and `DDAI-020`.
+
+**Status:** NOT ADOPTED.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-037",
+  "status": "NOT_ADOPTED",
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-037-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-037#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-037#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-037#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-037#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "A durable repository document need not be rejected solely because no machine operation consumes it."
+    ],
+    "doesNotProve": [
+      "Unbounded duplicate documentation or unsupported truth surfaces are acceptable."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "plan-only",
+    "requiresScenarioCoverage": false,
+    "rationale": "The decision bounds repository-document policy and introduces no executable scenario."
+  }
+}
+```
+
+**Workspace validation:** The repository legitimately retains a license,
+README, intent narrative, architecture explanation, review evidence, and human
+teaching material that are not all extracted into machine operations. Requiring
+an execution harness, scanner, or projection for each would increase code,
+schemas, tests, and synchronization cost without proportional integrity gain.
+
+**Direction:** Apply operational-consumer requirements only to documents or
+sections claiming machine authority. Admit other durable documents when they
+have a clear human purpose, ownership, bounded claims, and no conflicting
+canonical responsibility.
+
+**Integrity gain:** Prevents documentation sprawl without manufacturing
+low-value automation merely to justify necessary human-readable artifacts.
+
+**Non-degradation guard:** Human-only status must not be used to hide an
+operational rule in prose or to maintain parallel normative sources for the
+same machine decision.
+
+### SIR-RA-038 — Reject direct documentation-governance fields in the current registry and receipt contracts
+
+**Sources:** `DDAI-016`, `DDAI-018`, and `DDAI-019`.
+
+**Status:** NOT ADOPTED.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-038",
+  "status": "NOT_ADOPTED",
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-038-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-038#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-038#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-038#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-038#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The conceptual documentation-authority payload and receipt shown in DDAI are not valid source-integrity-registry 1.0.0 instances."
+    ],
+    "doesNotProve": [
+      "A separately versioned documentation contract would be a bad architectural fit."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "plan-only",
+    "requiresScenarioCoverage": false,
+    "rationale": "This guard prevents an incompatible contract expansion; a future contract requires its own scenario-required analysis."
+  }
+}
+```
+
+**Workspace validation:** The closed `source-integrity-registry/1.0.0` entry
+shape requires `responsibility`, `source`, and `authority`. It has no entry
+`kind`, document intent object, structured-block inventory, or operational
+consumer array. The receipt contract likewise has no documentation lifecycle
+or `DOCUMENT_AUTHORITY_CONFORMS` disposition. Direct adoption would fail the
+current schemas or require an integrity-degrading in-place expansion.
+
+**Direction:** Do not paste the conceptual DDAI shapes into the current
+registry or receipt. Continue using Markdown whole-file bodies where the
+existing contract is truthful. If section-level documentation governance is
+later evidenced, design a new contract family or properly versioned extension
+after feature authority.
+
+**Integrity gain:** Preserves the closed pre-release contracts and prevents
+conceptual examples from masquerading as admitted instances.
+
+**Non-degradation guard:** Do not block truthful whole-file Markdown
+registration under the current contract, and do not pre-select a future schema
+shape before its requirements and consumers are validated.
+
+### SIR-RA-039 — Retain the course's core Step-Zero architecture and adversarial teaching
+
+**Sources:** `COURSE-002` through `COURSE-008`, `COURSE-M01`, `COURSE-M02`,
+`COURSE-M04` through `COURSE-M08`, `COURSE-M10`, `COURSE-M11`, and
+`COURSE-011` through `COURSE-014`.
+
+**Status:** ALREADY SATISFIED.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-039",
+  "status": "ALREADY_SATISFIED",
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-039-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-039#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-039#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-039#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-039#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The identified course sections accurately teach the repository's implemented Step-Zero invariants and bounded remediation model at the reviewed baseline."
+    ],
+    "doesNotProve": [
+      "Every exercise answer, external system design, or future repository revision conforms automatically."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "plan-only",
+    "requiresScenarioCoverage": false,
+    "rationale": "This records alignment of teaching content with existing executable product and governance scenarios."
+  }
+}
+```
+
+**Workspace validation:** The course's exact authority, bootstrap, identity
+agreement, duplicate-aware parsing, no-mutation, fail-closed dispositions,
+physical observation, canonical testimony, adversarial testing, and remediation
+sections match the schemas, source, features, and tests at baseline commit
+`1eeb6a92f867ebd4593e98133ba4a852d6b2dcdd`. Its commit-history coordinates
+exist. Its research distinctions are also directionally accurate: JSON Schema
+distinguishes `$schema` dialect from `$id` resource identity; RFC 8259 warns
+that duplicate member behavior is unpredictable; and reproducible builds have
+a broader source/environment/instruction boundary than SIR's local build
+comparison. See [JSON Schema Draft 2020-12 Core](https://json-schema.org/draft/2020-12/json-schema-core),
+[RFC 8259 section 4](https://datatracker.ietf.org/doc/html/rfc8259#section-4),
+and the [Reproducible Builds definition](https://reproducible-builds.org/docs/definition/).
+
+**Direction:** Retain these sections as the course backbone. Prefer
+counterexamples, explicit input boundaries, single dispositions, and honest
+"does not prove" statements over broader product claims.
+
+**Integrity gain:** Teaches the architecture from real false greens and
+executable repository evidence rather than a generic governance narrative.
+
+**Non-degradation guard:** Baseline-specific facts must stay labeled with their
+baseline, and educational simplification must not broaden SIR's implemented
+acceptance set or proof boundary.
+
+### SIR-RA-040 — Correct volatile, publication, portability, and schema-versioning claims before course promotion
+
+**Sources:** `COURSE-001`, `COURSE-M00`, `COURSE-M03`, `COURSE-M04`, and
+`COURSE-M09`.
+
+**Status:** VALID WITH REFINEMENT.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-040",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-040-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-040#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-040#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-040#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-040#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The course identifies a fixed repository baseline and can be corrected to avoid unsupported release, reproducibility, portability, and schema-compatibility claims."
+    ],
+    "doesNotProve": [
+      "The course is externally published, editorially approved, accessible on every platform, or current for a later commit."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "plan-only",
+    "requiresScenarioCoverage": false,
+    "rationale": "This is a publication-disposition and maintenance decision; course changes require a later documentation feature if operational automation is proposed."
+  }
+}
+```
+
+**Workspace validation:** The course correctly pins baseline `1eeb6a9`, but
+calls itself public without release testimony, calls its local proof record
+reproducible even though full reproducible-build equivalence is not established,
+and uses POSIX-specific `shasum`, line continuation, and `jq` commands in a
+repository that supports Windows. It says the receipt schema is published even
+though external publication remains unproven. Its schema-versioning table also
+treats accepted-instance-set changes as an automatic SemVer mapping. SemVer
+requires a declared public API and forbids modifying a released version, but it
+does not itself define JSON Schema compatibility policy; SIR must declare that
+policy explicitly. See [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html)
+and the [Reproducible Builds definition](https://reproducible-builds.org/docs/definition/).
+
+**Direction:** Before promotion beyond a repository course candidate:
+
+- distinguish "tracked public course candidate" from externally published
+  course;
+- replace "immutable JSON Schema" with exact version-addressed schema whose
+  bytes become immutable after explicit external acceptance;
+- call Module 0 a pinned local proof baseline, not a reproducible-build result;
+- label POSIX prerequisites or use repository-owned cross-platform commands;
+- call the receipt schema packaged or shipped candidate authority until
+  publication provenance exists; and
+- replace the patch/minor/major table with an explicitly adopted SIR
+  schema-compatibility policy or present it as a design exercise.
+
+**Integrity gain:** Removes public teaching false greens while preserving the
+course's useful structure and fixed historical laboratory.
+
+**Non-degradation guard:** Do not replace pinned historical facts with floating
+"current" counts, weaken the published-byte immutability rule, or add a
+documentation generator whose maintenance cost exceeds the drift it closes.
+
+### SIR-RA-041 — Bound fractal, ecosystem, and self-learning language as design patterns
+
+**Sources:** `DDAI-009`, `DDAI-012`, `DDAI-013`, `COURSE-003.1`,
+`COURSE-CAPSTONE`, `COURSE-009`, and `COURSE-014`.
+
+**Status:** VALID WITH REFINEMENT.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-041",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-041-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-041#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-041#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-041#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-041#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "The small fail-closed cell is a reusable architectural pattern when a downstream boundary actually consumes and enforces its result."
+    ],
+    "doesNotProve": [
+      "SIR currently implements a general network aggregator, domain semantics, autonomous learning, distributed consensus, deployment enforcement, or release authorization."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "plan-only",
+    "requiresScenarioCoverage": false,
+    "rationale": "This constrains teaching language and future architecture intent without asserting an implemented ecosystem feature."
+  }
+}
+```
+
+**Workspace validation:** The current package implements registry validation,
+whole-file observation, receipts, repository proof, and remediation history. It
+does not implement the course's parent aggregator, runtime deployment gate, or
+a documentation-learning system. The course generally states these limits, but
+phrases such as "SIR can govern any system," "self-learning," and a
+"deterministic network" can be read as present capabilities when separated
+from their conditions.
+
+**Direction:** Retain fractal governance as a course-defined pattern and
+"self-learning" only as shorthand for human-reviewed, authority-changing
+remediation. Every transfer example must name the real consuming gate,
+domain-specific authority, representable body types, missing-testimony rule,
+and properties SIR does not prove.
+
+**Integrity gain:** Preserves a useful compositional teaching model without
+turning architectural analogy into product capability.
+
+**Non-degradation guard:** No parent may convert RED or missing testimony to
+GREEN, and no transfer blueprint may relabel byte/declaration integrity as
+domain correctness, safety, authorization, or runtime attestation.
+
+### SIR-RA-042 — Preserve exact supplied origin bytes before documentation derivation
+
+**Sources:** `DDAI-ORIGIN`, `DDAI`, the repository `.gitattributes`, and the
+observed byte-level difference between the two files.
+
+**Status:** VALID WITH REFINEMENT.
+
+```sir-analysis
+{
+  "analysisMetadataType": "sir-remediation-analysis.v1",
+  "analysisId": "SIR-RA-042",
+  "status": "VALID_WITH_REFINEMENT",
+  "supersededBy": null,
+  "evidence": [
+    {
+      "evidenceId": "SIR-RA-042-E01",
+      "kind": "ledger-section",
+      "reference": "SIR-RA-042#workspace-validation"
+    }
+  ],
+  "direction": {
+    "reference": "SIR-RA-042#direction"
+  },
+  "integrityGain": {
+    "reference": "SIR-RA-042#integrity-gain"
+  },
+  "nonDegradationGuards": [
+    {
+      "reference": "SIR-RA-042#non-degradation-guard"
+    }
+  ],
+  "proofBoundary": {
+    "proves": [
+      "An admitted documentation origin remains recoverable as the exact supplied byte sequence, and a declared derived document can be reproduced from that origin and its admitted transformation."
+    ],
+    "doesNotProve": [
+      "A digest can reconstruct missing bytes, the derivation preserves semantic intent, or the supplied document has independently proven authorship, conversation provenance, or publication authority."
+    ]
+  },
+  "scenarioCoveragePolicy": {
+    "classification": "scenario-required",
+    "requiresScenarioCoverage": true,
+    "rationale": "Exact-byte retention and deterministic derivation are executable repository guarantees; prose or a recorded digest cannot establish them."
+  }
+}
+```
+
+**Workspace validation:** The supplied
+`docs/durable-documentation-authority-intent-original.md` is currently `19878`
+raw bytes with
+`sha256:162197a180a93f4c0ce248f525e151347ae0526c4a44c5275d2183a13a021e74`.
+The reviewed `docs/durable-documentation-authority-intent.md` is `19876` raw
+bytes with
+`sha256:de07b5ff26ff6e29e6081109a2d380aa1ae04f5b4cfae387bba7b5dd19e65b17`.
+The observed content delta is one deleted blank line. The existing review
+recorded only the derived candidate digest, so it could detect neither loss of
+the supplied origin nor whether the candidate remained reproducible from it.
+
+Both files are untracked. The supplied origin contains `989` CRLF sequences and
+no bare LF sequences, while `.gitattributes` applies `text=auto eol=lf`.
+Admitting the Markdown file through that text filter would preserve normalized
+text, not the exact supplied bytes identified above. A SHA-256 digest is an
+identity witness for bytes that remain available; it is not a backup and
+cannot regenerate a missing preimage.
+
+**Direction:** Before any derived documentation is treated as durable, admit
+the exact supplied byte sequence under an immutable snapshot ID in a
+repository representation that is not subject to text or checkout
+normalization. Bind that snapshot to its raw byte length and SHA-256 digest.
+Keep the readable or edited document separate. A closed derivation declaration
+must bind the origin snapshot ID and digest, the transformation artifact and
+digest, and the derived path and digest. Verification must reconstruct the
+derived output from the stored origin plus transformation in an isolated
+temporary location, compare exact output bytes, and never repair either
+authority during proof. Changing source bytes creates a new origin snapshot;
+it never rewrites an existing snapshot identity.
+
+**Integrity gain:** Makes the supplied document exactly recoverable, exposes
+normalization and edit drift, and turns the origin-to-derived relationship into
+repeatable evidence instead of narrative reconstruction.
+
+**Non-degradation guard:** Do not claim that a hash reconstructs content, hash
+normalized text while calling it the supplied raw file, overwrite the origin
+with a derived copy, apply a repository-wide binary policy when a narrow
+snapshot rule suffices, mutate the current registry or receipt `1.0.0`
+contracts, or claim semantic fidelity from byte reproduction alone.
+
+## Documentation-authority section disposition matrix
+
+The matrix is exhaustive at the durable teaching-section level. `ALIGNED`
+means the section describes an existing architecture property.
+`GOOD FIT — REFINE` means the direction can increase integrity only under the
+cited guard. `DEGRADING / BAD FIT` means direct adoption would broaden claims,
+create an incompatible contract, or impose maintenance without proportional
+integrity gain.
+
+| Source section coordinate | Disposition | Analysis | Durable condition |
+| --- | --- | --- | --- |
+| `DDAI-001` — opening intent circuit | ALIGNED | `SIR-RA-033` | Intent remains candidate until admitted. |
+| `DDAI-002` — Integrity produces fidelity | GOOD FIT — REFINE | `SIR-RA-033`, `SIR-RA-041` | Treat fidelity as an evaluated correspondence, not a guaranteed equation. |
+| `DDAI-003` — Every change must justify integrity gain | ALIGNED | `SIR-RA-033` | Preservation against evidenced risk also qualifies; necessary neutral work retains cost posture. |
+| `DDAI-004` — Cost belongs in the integrity equation | ALIGNED | `SIR-RA-033`, `SIR-RA-037` | Maintenance surface is an explicit non-degradation concern. |
+| `DDAI-005` — Documentation is part of proof | GOOD FIT — REFINE | `SIR-RA-034` | Only typed, validated, consumed declarations or bounded projections participate. |
+| `DDAI-006` — Conversation-derived authority | DEGRADING / BAD FIT as written | `SIR-RA-035`, `SIR-RA-036` | Use minimized admitted local snapshots; raw conversation IDs are not authority. |
+| `DDAI-007` — Do not rely on line numbers | GOOD FIT — REFINE | `SIR-RA-035`, `SIR-RA-036` | Exact bytes plus structured coordinates; no character/byte conflation. |
+| `DDAI-008` — Documentation circuit | GOOD FIT — REFINE | `SIR-RA-034`, `SIR-RA-035` | Future feature and contract required; publication is independent authority. |
+| `DDAI-009` — Self-learning without uncontrolled mutation | GOOD FIT — REFINE | `SIR-RA-041` | Human-reviewed remediation, not autonomous learning. |
+| `DDAI-010` — Wants and desires become reviewable intent | ALIGNED | `SIR-RA-033` | Human purpose is preserved before admission. |
+| `DDAI-011` — Reusable integrity-change contract | GOOD FIT — REFINE | `SIR-RA-033`, `SIR-RA-035` | Existing analysis v1 remains canonical; add no parallel contract without evidence. |
+| `DDAI-012` — Complete fidelity equation | GOOD FIT — REFINE | `SIR-RA-041` | Several terms are future gates, not current earned facts. |
+| `DDAI-013` — Course-level teaching statement | GOOD FIT — REFINE | `SIR-RA-039`, `SIR-RA-041` | Teach only claims supported at the pinned baseline. |
+| `DDAI-014` — Documentation must do work | DEGRADING / BAD FIT as universal rule | `SIR-RA-037` | Apply operationality only to machine-authoritative claims. |
+| `DDAI-015` — Remediation documents as reference pattern | ALIGNED | `SIR-RA-034` | Typed operational declarations are the reference pattern. |
+| `DDAI-016` — Same model for all documentation | DEGRADING / BAD FIT as mandatory scope | `SIR-RA-037`, `SIR-RA-038` | Architecture, course, standards, and runbooks need separate evidenced consumers. |
+| `DDAI-017` — Documentation becomes registered authority | GOOD FIT — REFINE | `SIR-RA-034`, `SIR-RA-038` | Whole-file Markdown already fits; proposed fields do not fit v1. |
+| `DDAI-018` — Extraction must be governed | ALIGNED for operational extraction | `SIR-RA-034`, `SIR-RA-035` | Typed selector and closed contract required. |
+| `DDAI-019` — Four documentation relationships and receipt | GOOD FIT — REFINE | `SIR-RA-035`, `SIR-RA-038` | Future contract family; current SIR proves none automatically. |
+| `DDAI-020` — Document lifecycle and strongest rule | DEGRADING / BAD FIT as universal rule | `SIR-RA-034`, `SIR-RA-037` | Derived lifecycle only for governed authority documents. |
+| `COURSE-001` — title, status, outcomes | GOOD FIT — REFINE | `SIR-RA-040` | Candidate/publication distinction and version-addressed schema wording. |
+| `COURSE-002` — deterministic boundary | ALIGNED | `SIR-RA-039` | Retain explicit equal-input boundary and exclusions. |
+| `COURSE-003` — smallest governed cell | ALIGNED | `SIR-RA-039` | Matches current fail-closed circuit. |
+| `COURSE-003.1` — fractal composition | GOOD FIT — REFINE | `SIR-RA-041` | Pattern only; general aggregator is not implemented. |
+| `COURSE-004` — eight invariants | ALIGNED | `SIR-RA-039` | Matches current contracts and runtime. |
+| `COURSE-005` — research foundation | GOOD FIT — REFINE | `SIR-RA-039`, `SIR-RA-040` | Distinguish external standards from SIR-specific policy. |
+| `COURSE-006` — repository map | ALIGNED at baseline | `SIR-RA-039` | Keep baseline-pinned. |
+| `COURSE-007` — repository evolution | ALIGNED at baseline | `SIR-RA-039` | Commit coordinates exist; counts are historical, not floating. |
+| `COURSE-008` — schedule | ALIGNED | `SIR-RA-039` | Curriculum structure adds no runtime claim. |
+| `COURSE-M00` — establish laboratory | GOOD FIT — REFINE | `SIR-RA-040` | Local pinned proof, not clean-checkout or reproducible-build testimony. |
+| `COURSE-M01` — deterministic cell | ALIGNED | `SIR-RA-039` | Dispositions and exit boundary match source. |
+| `COURSE-M02` — intent before implementation | ALIGNED | `SIR-RA-039` | Scenario identity and bounded example fit. |
+| `COURSE-M03` — schema backbone/versioning | GOOD FIT — REFINE | `SIR-RA-039`, `SIR-RA-040` | Published-byte immutability retained; compatibility policy must be explicit. |
+| `COURSE-M04` — authority bootstrap | GOOD FIT — REFINE | `SIR-RA-039`, `SIR-RA-040` | Architecture aligns; label POSIX-only lab commands or replace them. |
+| `COURSE-M05` — preserve raw evidence | ALIGNED | `SIR-RA-039` | Duplicate-aware parser matches implementation. |
+| `COURSE-M06` — fail-closed circuit | ALIGNED | `SIR-RA-039` | Order, dispositions, and exits match implementation. |
+| `COURSE-M07` — logical-to-physical binding | ALIGNED | `SIR-RA-039` | Current boundary is honestly stated. |
+| `COURSE-M08` — observe without mutation | ALIGNED | `SIR-RA-039` | Containment and stable-snapshot limits match implementation. |
+| `COURSE-M09` — stable composable testimony | GOOD FIT — REFINE | `SIR-RA-039`, `SIR-RA-040`, `SIR-RA-041` | Receipt is packaged candidate; parent composition remains capstone design. |
+| `COURSE-M10` — adversarial proof | ALIGNED | `SIR-RA-039` | Threat matrix matches closed false greens. |
+| `COURSE-M11` — remediation and release | ALIGNED at baseline | `SIR-RA-039` | Preserve package-proof/release-provenance separation. |
+| `COURSE-CAPSTONE` — ecosystem integration | GOOD FIT — REFINE | `SIR-RA-041` | Requires real consuming gate and domain authority. |
+| `COURSE-009` — transfer blueprints | GOOD FIT — REFINE | `SIR-RA-041` | Bound by current language/locator contract and external authorities. |
+| `COURSE-010` — adoption checklist | GOOD FIT — REFINE | `SIR-RA-041` | A design review checklist, not a current SIR verdict. |
+| `COURSE-011` — instructor guidance | ALIGNED | `SIR-RA-039` | Counterexamples and proof boundaries reinforce integrity. |
+| `COURSE-012` — glossary | GOOD FIT — REFINE | `SIR-RA-039`, `SIR-RA-041` | Course-defined terms must not imply implemented capability. |
+| `COURSE-013` — primary reading list | ALIGNED with source review | `SIR-RA-039`, `SIR-RA-040` | Primary sources support the bounded distinctions; SIR policy remains explicit. |
+| `COURSE-014` — closing principle | GOOD FIT — REFINE | `SIR-RA-041` | Architectural direction, not proof of an existing deterministic network. |
+
 ## Review-to-analysis coverage
 
 This table ensures repeated review remains idempotent and no reviewed point is
@@ -2186,11 +2953,21 @@ silently lost.
 | Durable remediation: fail-before-write generation | `SIR-RA-029` |
 | Durable remediation: executed scenario testimony | `SIR-RA-030` |
 | Durable remediation: feature-authority checkpoint | `SIR-RA-032` |
+| Documentation review: intent remains candidate input | `SIR-RA-033` |
+| Documentation review: typed operational documentation | `SIR-RA-034` |
+| Documentation review: repository-resolvable source provenance | `SIR-RA-035` |
+| Documentation review: raw conversation authority rejected | `SIR-RA-036` |
+| Documentation review: universal operationality rejected | `SIR-RA-037` |
+| Documentation review: incompatible v1 document fields rejected | `SIR-RA-038` |
+| Public-course review: core architecture aligned | `SIR-RA-039` |
+| Public-course review: factual and portability refinements | `SIR-RA-040` |
+| Public-course review: ecosystem language bounded | `SIR-RA-041` |
+| Documentation integrity correction: exact origin recovery and derivation | `SIR-RA-042` |
 
 ## Analysis conclusion
 
 The two reviews are directionally sound, but they are not adopted verbatim.
-Workspace validation produced eleven important refinements:
+Workspace validation produced twenty-one important refinements:
 
 1. Mechanical execution failures produce no receipt verdict; they do not add an
    `EXECUTION_FAILED` disposition.
@@ -2214,6 +2991,29 @@ Workspace validation produced eleven important refinements:
     presence in source.
 11. Feature-first ordering is enforced prospectively through a checkpoint in a
     parent commit, with bootstrap limits stated rather than concealed.
+12. Human desire and documentary prose remain candidate input until admitted
+    through atomic analysis and plan authority.
+13. Documentation participates in proof only through its typed, validated,
+    consumed declarations or deterministic bounded projections.
+14. Repository-resolvable source snapshots are a good provenance direction;
+    unresolvable raw conversation coordinates are not.
+15. Character ranges and line numbers are navigation, not exact UTF-8 byte
+    identity.
+16. Machine consumption is required for machine-authoritative declarations,
+    not for every durable human document.
+17. The conceptual documentation fields and dispositions do not fit the closed
+    current registry and receipt contracts.
+18. The public course's core Step-Zero and adversarial architecture aligns with
+    the pinned repository baseline.
+19. Publication, reproducibility, cross-platform laboratory, and JSON Schema
+    compatibility claims require explicit correction or policy before course
+    promotion.
+20. Fractal governance, ecosystem composition, and self-learning remain
+    bounded design patterns until real consuming gates and proof exist.
+21. A source digest is an identity witness, not recoverable storage; exact
+    supplied bytes must be retained outside text normalization and every
+    derived document must be reproducible from those bytes plus an admitted
+    transformation.
 
 With those refinements, every adopted direction is integrity-monotonic: it
 closes a false green, preserves boundary evidence, strengthens deterministic

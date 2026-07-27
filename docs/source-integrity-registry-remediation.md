@@ -264,6 +264,169 @@ The following conditions block the first release:
 }
 ```
 
+## SIR-RP-040 — Documentation and public-course candidate disposition
+
+The reviewed documentation snapshots are classified by the durable matrix in
+the remediation analysis. That matrix is authority for disposition only; it
+does not make either source document an implementation contract.
+
+The admitted posture is:
+
+- retain the public course's core Step-Zero, adversarial-proof, and remediation
+  teaching at its pinned repository baseline; (`SIR-RA-039`)
+- correct publication, reproducibility, portability, and schema-versioning
+  overclaims before treating the course as externally published authority;
+  (`SIR-RA-040`)
+- preserve human intent as candidate input and admit only atomic directions
+  through the existing remediation circuit; (`SIR-RA-033`)
+- allow typed, validated, consumed documentation declarations to participate
+  in proof without promoting surrounding prose; (`SIR-RA-034`)
+- defer any source-provenance implementation until repository-local snapshots,
+  stable structured coordinates, a closed contract, and bounded transformation
+  testimony are feature-authorized; (`SIR-RA-035`)
+- reject raw conversation coordinates, universal operationality requirements,
+  and direct additions to the current registry or receipt contracts;
+  (`SIR-RA-036` through `SIR-RA-038`) and
+- retain fractal governance, ecosystem transfer, and self-learning as bounded
+  design language rather than current package capability. (`SIR-RA-041`)
+
+`docs/durable-documentation-authority-intent.md` therefore remains candidate
+review material; it must not be promoted unchanged as a parallel authority
+surface. A future implementation of documentation provenance, section
+extraction, course projection, or document receipts requires a new
+scenario-required analysis, a targeted feature, a committed authority state,
+and a descendant checkpointed implementation.
+
+```sir-trace
+{
+  "traceabilityType": "sir-remediation-trace.v1",
+  "planId": "SIR-RP-040",
+  "planReferences": [
+    {
+      "analysisId": "SIR-RA-033",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-034",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-035",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-036",
+      "role": "guard"
+    },
+    {
+      "analysisId": "SIR-RA-037",
+      "role": "guard"
+    },
+    {
+      "analysisId": "SIR-RA-038",
+      "role": "guard"
+    },
+    {
+      "analysisId": "SIR-RA-039",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-040",
+      "role": "authority"
+    },
+    {
+      "analysisId": "SIR-RA-041",
+      "role": "authority"
+    }
+  ],
+  "scenarioMappings": []
+}
+```
+
+## SIR-RP-050 — Preserve documentation origin bytes and prove derivation
+
+The supplied
+`docs/durable-documentation-authority-intent-original.md` is the origin
+evidence for this remediation. Its current raw-byte identity is:
+
+```text
+length: 19878
+sha256:162197a180a93f4c0ce248f525e151347ae0526c4a44c5275d2183a13a021e74
+```
+
+That digest verifies retained bytes; it cannot reconstruct bytes that are
+discarded. The reviewed `docs/durable-documentation-authority-intent.md` is a
+separate derived candidate with digest
+`sha256:de07b5ff26ff6e29e6081109a2d380aa1ae04f5b4cfae387bba7b5dd19e65b17`.
+Neither file may be edited as part of authority admission.
+
+Implementation is authorized only after this analysis, plan, the mapped
+feature scenarios, and the regenerated traceability projection are committed,
+followed by an immutable authority checkpoint in a descendant commit. The
+checkpointed implementation must:
+
+1. preserve the exact supplied origin bytes under an immutable snapshot ID in
+   a narrowly scoped representation immune to Git text normalization;
+2. bind the origin ID to its raw SHA-256 digest and byte length;
+3. keep the human-readable derived document separate from the origin;
+4. use a closed declaration that binds origin identity, transformation
+   identity and digest, and expected derived identity and digest;
+5. reproduce the derived document in temporary storage and compare exact bytes
+   without repairing tracked authority during proof;
+6. fail closed on a missing or changed origin, transformation, declaration, or
+   derived output; and
+7. create a new snapshot identity rather than mutating admitted origin bytes.
+
+The implementation must use a separately versioned documentation-snapshot
+contract or other bounded authority designed for this proof. It must not add
+documentation fields or dispositions to the current registry and receipt
+`1.0.0` contracts. (`SIR-RA-035`, `SIR-RA-038`, `SIR-RA-042`)
+
+```sir-trace
+{
+  "traceabilityType": "sir-remediation-trace.v1",
+  "planId": "SIR-RP-050",
+  "planReferences": [
+    {
+      "analysisId": "SIR-RA-035",
+      "role": "context"
+    },
+    {
+      "analysisId": "SIR-RA-036",
+      "role": "guard"
+    },
+    {
+      "analysisId": "SIR-RA-038",
+      "role": "guard"
+    },
+    {
+      "analysisId": "SIR-RA-042",
+      "role": "authority"
+    }
+  ],
+  "scenarioMappings": [
+    {
+      "scenarioId": "@sir-package-010",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-042",
+          "role": "authority"
+        }
+      ]
+    },
+    {
+      "scenarioId": "@sir-package-011",
+      "analysisReferences": [
+        {
+          "analysisId": "SIR-RA-042",
+          "role": "authority"
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## SIR-RP-100 — Remediation Slice Zero: reconcile canonical features
 
 No schema or runtime remediation begins until the feature governing that slice
