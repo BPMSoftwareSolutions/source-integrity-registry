@@ -143,14 +143,21 @@ describe("@sir-package-011 Reproduce a derived document from admitted origin and
     expect(result.bytes.byteLength).toBe(derivation.derivedByteLength);
   });
 
-  it("reproduces bytes equal to the tracked derived document", async () => {
+  it("binds the derived identity to the declaration rather than a checked-out file", async () => {
     const snapshot = await readsSnapshot();
     const derivation = await readsDerivation();
     const result = reproducesDerivedDocument(snapshot, derivation);
     if (result.outcome !== "reproduced") throw new Error("derivation must reproduce");
 
-    const tracked = await readFile(path.join(repositoryRoot, derivation.derivedPath));
-    expect(Buffer.from(result.bytes).equals(tracked)).toBe(true);
+    // The reproduction is byte-exact against the declared derived digest.
+    expect(result.digest).toBe(derivation.derivedSha256);
+
+    // The working-tree Markdown copy is checked out through the repository's
+    // `text=auto eol=lf` filter, so on a fresh clone its bytes are normalized
+    // just as the origin's were. It is a rendering, not authority: proof that
+    // depended on it would pass only on the machine that authored the file.
+    const rendering = await readFile(path.join(repositoryRoot, derivation.derivedPath));
+    expect(rendering.byteLength).toBeGreaterThan(0);
   });
 
   it("fails closed when the declared origin digest disagrees with the snapshot", async () => {

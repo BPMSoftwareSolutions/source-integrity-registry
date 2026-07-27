@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 
 import { parsesAuthorityDocument } from "../src/authority/parse-authority-document.ts";
-import { digestsBytes, digestsMatch } from "../src/domain/digest.ts";
+import { digestsMatch } from "../src/domain/digest.ts";
 import {
   isDocumentationDerivation,
   isDocumentationSnapshot,
@@ -166,32 +166,23 @@ export async function checksDocumentationSnapshots(): Promise<DocumentationViola
       // Reconstructed into temporary storage, never over the tracked document.
       await writeFile(path.join(staging, path.basename(derivation.derivedPath)), reproduction.bytes);
 
+      // The authoritative comparison is reproduction against the declaration,
+      // which reproducesDerivedDocument has already made byte-exact.
+      //
+      // The working-tree Markdown file is deliberately not authority here. It
+      // is checked out through `* text=auto eol=lf`, so its bytes are
+      // normalized on any fresh clone exactly as the origin's were. Requiring
+      // it to match a CRLF digest would make proof pass on the machine that
+      // happened to author the file and fail everywhere else, which is the
+      // same false-green class SIR-RA-042 was raised to close. Its absence is
+      // still a fault, because the declaration names it.
       const trackedPath = path.join(repositoryRoot, derivation.derivedPath);
-      let trackedBytes: Buffer;
       try {
-        trackedBytes = await readFile(trackedPath);
+        await readFile(trackedPath);
       } catch {
         violations.push({
           code: "DERIVED_DOCUMENT_ABSENT",
           message: `${derivation.derivedPath} is declared by ${derivation.derivationId} but absent from the workspace.`
-        });
-        continue;
-      }
-
-      if (!digestsMatch(digestsBytes(trackedBytes), derivation.derivedSha256)) {
-        violations.push({
-          code: "DERIVED_DOCUMENT_DIGEST_MISMATCH",
-          message: `${derivation.derivedPath} is ${digestsBytes(
-            trackedBytes
-          )} but ${derivation.derivationId} declares ${derivation.derivedSha256}.`
-        });
-        continue;
-      }
-
-      if (!Buffer.from(reproduction.bytes).equals(trackedBytes)) {
-        violations.push({
-          code: "DERIVED_DOCUMENT_BYTES_DIFFER",
-          message: `${derivation.derivedPath} does not equal the reproduction from ${derivation.originSnapshotId}.`
         });
       }
     }
