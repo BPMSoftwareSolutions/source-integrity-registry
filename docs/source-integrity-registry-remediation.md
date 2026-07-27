@@ -1,12 +1,17 @@
 # Source Integrity Registry Pre-Release Remediation
 
-## Analysis authority
+## SIR-RP-000 — Analysis authority
 
 This plan derives from the stable decisions in
 [Source Integrity Registry Remediation Analysis](source-integrity-registry-remediation-analysis.md).
 Every adopted direction cites one or more `SIR-RA-NNN` IDs from that ledger.
 Re-analysis updates the ledger entry; it does not create an independent
 instruction in this plan.
+
+Plan coordinates use stable `SIR-RP-NNN` IDs. They are never renumbered or
+reused; a renamed section retains its coordinate. The generated remediation
+index records whether each analysis citation serves as current `authority`, a
+non-degradation `guard`, or explanatory `context`. (`SIR-RA-024`)
 
 The plan admits only integrity-monotonic work:
 
@@ -20,7 +25,7 @@ No slice may broaden invalid acceptance, continue after failed admission,
 silently repair authority during proof, invent an unsupported domain rule, or
 claim a stronger guarantee than it implements. (`SIR-RA-022`)
 
-## Status and release decision
+## SIR-RP-010 — Status and release decision
 
 The current `1.0.0` schemas are repository candidates. They have not been
 published or accepted by an external consumer. Therefore:
@@ -34,7 +39,7 @@ published or accepted by an external consumer. Therefore:
 An in-repository filename or catalog status does not, by itself, establish that
 release boundary. (`SIR-RA-001`)
 
-## Governing principle
+## SIR-RP-020 — Governing principle
 
 SIR will make invalid declared states unrepresentable in JSON Schema whenever
 possible. Runtime code will witness only facts that JSON Schema cannot observe:
@@ -67,7 +72,7 @@ Release provenance
 These are cumulative gates. One layer cannot turn another layer's RED result
 GREEN. (`SIR-RA-022`)
 
-## Release blockers
+## SIR-RP-030 — Release blockers
 
 The following conditions block the first release:
 
@@ -88,8 +93,10 @@ The following conditions block the first release:
    packed-consumer gate. (`SIR-RA-015`, `SIR-RA-017`, `SIR-RA-023`)
 9. Release provenance is not yet bound to a concrete authenticated artifact.
    (`SIR-RA-021`)
+10. The remediation traceability graph has no generated machine-readable
+    projection or committed conformance check. (`SIR-RA-024`)
 
-## Remediation Slice Zero: reconcile canonical features
+## SIR-RP-100 — Remediation Slice Zero: reconcile canonical features
 
 No schema or runtime remediation begins until the feature governing that slice
 has moved first. (`SIR-RA-002`)
@@ -147,6 +154,15 @@ Tests cite the governing tag in their name or adjacent comment. A scenario may
 have multiple platform vectors, but every scenario has proof and every proof
 identifies its governing scenario. (`SIR-RA-019`)
 
+Retain the `SIR-RP-NNN` coordinates assigned to this plan and classify analysis
+citations as `authority`, `guard`, or `context` for deterministic projection.
+A rejected decision, such as `SIR-RA-005`, may constrain the plan as a guard
+but may never appear as current implementation authority. (`SIR-RA-024`)
+
+Add validated structured traceability blocks for those roles and edges. The
+generator must not infer authority from surrounding prose or Markdown section
+slugs.
+
 ### Slice Zero completion
 
 - Every adopted product direction has a semantically focused scenario.
@@ -154,8 +170,9 @@ identifies its governing scenario. (`SIR-RA-019`)
 - No planned implementation behavior lacks a scenario ID.
 - No scenario adds the unsupported non-empty-registry or narrower-body-ID
   restrictions rejected by `SIR-RA-005`.
+- Analysis, plan, and scenario coordinates are unique and role-classifiable.
 
-## Remediation Slice One: schema-native body identity and authority parsing
+## SIR-RP-200 — Remediation Slice One: schema-native body identity and authority parsing
 
 ### Registry representation
 
@@ -270,7 +287,7 @@ and no repair. (`SIR-RA-006`)
 These outcomes close the false greens without narrowing unrelated valid
 registries. (`SIR-RA-004`, `SIR-RA-006`, `SIR-RA-014`)
 
-## Remediation Slice Two: catalog and schema trust admission
+## SIR-RP-300 — Remediation Slice Two: catalog and schema trust admission
 
 ### Outcome matrix
 
@@ -372,7 +389,7 @@ Use specific finding codes without expanding dispositions:
 - Digest mismatch retains its distinct disposition and exit code.
 - No catalog or schema admission RED can fall through to payload evaluation.
 
-## Remediation Slice Three: real containment under a stable snapshot
+## SIR-RP-400 — Remediation Slice Three: real containment under a stable snapshot
 
 ### Establish real roots
 
@@ -434,7 +451,7 @@ statement. A structurally invalid registry is never observed. (`SIR-RA-013`)
 - Observable concurrent change cannot produce a GREEN result.
 - Tests do not claim protection outside the stable-snapshot precondition.
 
-## Remediation Slice Four: portable, fresh, idempotent package proof
+## SIR-RP-500 — Remediation Slice Four: portable, fresh, idempotent package proof
 
 ### Default test command
 
@@ -462,8 +479,9 @@ It covers:
 1. static typechecking;
 2. plain `pnpm test`;
 3. comparison-only generated catalog and type checks;
-4. a fresh build;
-5. packed-artifact consumer smoke validation.
+4. comparison-only remediation traceability and index checks;
+5. a fresh build;
+6. packed-artifact consumer smoke validation.
 
 Proof must not invoke a generation or repair command. Prefer building in a
 temporary staging directory and comparing it with committed `dist`. Whether
@@ -512,6 +530,36 @@ Run frozen-lockfile and proof gates on Windows and Linux under supported Node
 versions. The smoke test consumes only the tarball, never repository source.
 (`SIR-RA-017`)
 
+### Machine-readable remediation projection
+
+Generate:
+
+```text
+docs/generated/
+  source-integrity-registry-remediation-analysis-index.v1.json
+```
+
+from the validated Markdown ledger, stable plan coordinates, and feature
+scenario tags. The projection records normalized status, role-aware plan
+references, scenario IDs, and supersession relationships. It is never
+hand-authored as parallel authority.
+
+The projection declares
+`analysisLedgerType: "sir-remediation-analysis-index.v1"`. Its graph edges come
+from validated structured traceability blocks, not prose inference.
+
+Add a comparison-only traceability check to `prove:core`. It fails on:
+
+- duplicate or unknown analysis, plan, or scenario IDs;
+- unresolved citations;
+- a rejected, deferred, or superseded decision used as current authority;
+- a supersession cycle;
+- an orphaned active decision;
+- a scenario without analysis authority;
+- committed projection drift.
+
+Regeneration is an explicit authoring action outside proof. (`SIR-RA-024`)
+
 ### Slice Four completion
 
 - Plain `pnpm test` passes on the current Windows host and CI.
@@ -520,8 +568,10 @@ versions. The smoke test consumes only the tarball, never repository source.
 - Package smoke proves the installed consumer surface.
 - Proof leaves tracked authority unchanged.
 - A missing export, CLI, catalog, schema, or dependency turns the gate RED.
+- The remediation traceability projection is current and every graph edge
+  conforms to its permitted role.
 
-## Remediation Slice Five: release provenance
+## SIR-RP-600 — Remediation Slice Five: release provenance
 
 Internal consistency is not independent authorization. Before external
 publication, establish:
@@ -544,7 +594,7 @@ The provenance receipt is separate from registry validation receipts. A
 signature cannot turn contract or package proof RED into GREEN.
 (`SIR-RA-021`)
 
-## Feature-to-remediation traceability
+## SIR-RP-700 — Feature-to-remediation traceability
 
 Scenario tags are assigned in Slice Zero. The names below are governing
 directions; the final feature wording remains semantically focused.
@@ -571,9 +621,10 @@ directions; the final feature wording remains semantically focused.
 | Exact repository proof | `@sir-package-001` | Package proof harness | Default-command failure, mutation, or lifecycle recursion | `SIR-RA-015`, `SIR-RA-016`, `SIR-RA-023` |
 | Stale generated authority | `@sir-package-002` | Generated drift check | Changed catalog or type | `SIR-RA-015` |
 | Packed consumer surface | `@sir-package-003` | Tarball smoke harness | Missing export, CLI, catalog, schema | `SIR-RA-017` |
+| Remediation graph conformance | `@sir-package-004` | Generated analysis index and traceability checker | Unknown ID, wrong role, cycle, orphan, or drift | `SIR-RA-019`, `SIR-RA-024` |
 | Authenticated release binding | `@sir-provenance-001` | Provenance gate | Unsigned or mismatched release | `SIR-RA-021` |
 
-## Files and artifacts expected to change
+## SIR-RP-800 — Files and artifacts expected to change
 
 The remediation is expected to touch:
 
@@ -588,6 +639,8 @@ The remediation is expected to touch:
 - CLI rendering where new finding codes require it;
 - fixtures and all affected tests;
 - package proof and packed-consumer smoke scripts;
+- remediation-index generation and comparison-only traceability scripts;
+- `docs/generated/source-integrity-registry-remediation-analysis-index.v1.json`;
 - `vitest.config.ts` and `package.json`;
 - CI workflows for Windows and Linux;
 - compiled `dist` output;
@@ -596,7 +649,7 @@ The remediation is expected to touch:
 All contract identities remain `1.0.0`; their candidate bytes and catalog
 digests are regenerated together. (`SIR-RA-001`)
 
-## Required adversarial matrix
+## SIR-RP-900 — Required adversarial matrix
 
 Negative controls include:
 
@@ -618,7 +671,12 @@ Negative controls include:
 - locale-independent observation and finding order;
 - packed package missing a catalog-referenced schema;
 - packed default catalog resolving differently from repository assumptions;
-- proof changing tracked content.
+- proof changing tracked content;
+- duplicate or unknown `SIR-RA`, `SIR-RP`, or scenario ID;
+- rejected or deferred analysis used with the `authority` role;
+- missing or cyclic supersession target;
+- orphaned active analysis decision or scenario;
+- manually drifted remediation index.
 
 Positive controls retain:
 
@@ -633,9 +691,10 @@ Positive controls retain:
 - current generated declarations and catalog digests;
 - installed tarball library, CLI, and catalog behavior.
 
-Each vector cites its governing scenario ID. (`SIR-RA-019`, `SIR-RA-020`)
+Each vector cites its governing scenario ID. (`SIR-RA-019`, `SIR-RA-020`,
+`SIR-RA-024`)
 
-## Completion gates
+## SIR-RP-950 — Completion gates
 
 ### Gate 1: authority JSON admission
 
@@ -682,6 +741,10 @@ Draft 2020-12 meta-schema valid
 ```text
 scenario-to-proof traceability complete
 +
+generated remediation index current
++
+all remediation graph edges resolve with permitted roles
++
 generated artifacts current
 +
 plain tests pass
@@ -709,4 +772,4 @@ authenticated release binding
 RELEASE-BOUND SIR INTEGRITY
 ```
 
-No gate can compensate for another failed gate. (`SIR-RA-022`)
+No gate can compensate for another failed gate. (`SIR-RA-022`, `SIR-RA-024`)

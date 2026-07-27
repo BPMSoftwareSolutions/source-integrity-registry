@@ -705,6 +705,60 @@ terminates and actually reaches consumer-surface validation.
 to prevent a stale or untested package, and the outer proof must fail if either
 the inner prepack gate or packed-consumer smoke fails.
 
+### SIR-RA-024 — Generate and verify a machine-readable remediation index
+
+**Sources:** Follow-up review, "One remaining improvement I would make."
+
+**Status:** VALID WITH REFINEMENT.
+
+**Workspace validation:** Before this decision, the Markdown ledger defined 23
+stable analysis IDs, and the remediation plan cited all of them and assigned
+planned scenario IDs. Those relationships were checked with an ad hoc command,
+but there was no committed deterministic projection or conformance checker.
+Plan sections also had human headings rather than stable plan coordinates.
+
+**Direction:** Keep the Markdown analysis ledger as human-readable authority
+and generate a machine-readable navigation projection from validated ledger,
+plan, and feature structures. Introduce stable `SIR-RP-NNN` plan coordinates
+and preserve the existing stable scenario tags.
+
+Each projected analysis entry records:
+
+- normalized analysis status;
+- stable plan references;
+- a reference role of `authority`, `guard`, or `context`;
+- scenario IDs;
+- `supersededBy`, when applicable.
+
+Do not infer roles or graph edges from prose. Add validated structured ledger
+or traceability blocks as the generator input; Markdown citations remain
+human-readable navigation.
+
+Generate the projection at
+`docs/generated/source-integrity-registry-remediation-analysis-index.v1.json`.
+Do not hand-author it independently. Add a comparison-only conformance check to
+`prove:core` that establishes:
+
+- every analysis, plan, and scenario ID is uniquely defined;
+- every citation resolves;
+- only adopted decisions are used as current `authority`;
+- `NOT_ADOPTED`, `DEFERRED`, or superseded decisions appear only in permitted
+  roles;
+- supersession references exist and form no cycles;
+- every scenario resolves to one or more analysis decisions;
+- every active adopted decision has required plan and scenario coverage;
+- no unknown ID or orphaned active decision exists;
+- the committed projection exactly matches deterministic regeneration.
+
+**Integrity gain:** Converts the existing human traceability graph into a
+reproducible proof surface, making missing, unknown, retired, or contradictory
+edges visible drift.
+
+**Non-degradation guard:** The projection never becomes an independent source
+of authority, the proof command never repairs it, heading slugs are not treated
+as stable coordinates, and reference roles prevent a rejected decision cited
+as a guard from being mistaken for active implementation authority.
+
 ## Review-to-analysis coverage
 
 This table ensures repeated review remains idempotent and no reviewed point is
@@ -736,11 +790,12 @@ silently lost.
 | Review B separate proof/provenance features | `SIR-RA-018`, `SIR-RA-021` |
 | Review B traceability matrix | `SIR-RA-019`, `SIR-RA-020` |
 | Review B completion gate | `SIR-RA-022` |
+| Follow-up: machine-readable analysis index | `SIR-RA-024` |
 
 ## Analysis conclusion
 
 The two reviews are directionally sound, but they are not adopted verbatim.
-Workspace validation produced four important refinements:
+Workspace validation produced six important refinements:
 
 1. Mechanical execution failures produce no receipt verdict; they do not add an
    `EXECUTION_FAILED` disposition.
@@ -750,6 +805,10 @@ Workspace validation produced four important refinements:
    and containment claims must acknowledge the stable-snapshot precondition.
 4. `minProperties: 1` and a narrower `bodyId` vocabulary are not integrity
    improvements without feature authority.
+5. The outer packed-artifact proof cannot also be the `prepack` hook without
+   creating package lifecycle recursion.
+6. A machine-readable index improves integrity only as a generated,
+   role-aware projection over stable coordinates, never as a second authority.
 
 With those refinements, every adopted direction is integrity-monotonic: it
 closes a false green, preserves boundary evidence, strengthens deterministic
