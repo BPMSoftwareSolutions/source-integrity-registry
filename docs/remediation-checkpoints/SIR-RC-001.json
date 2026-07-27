@@ -1,0 +1,39 @@
+{
+  "checkpointType": "sir-remediation-authority-checkpoint.v1",
+  "checkpointId": "SIR-RC-001",
+  "authorityCommit": "4d6f903b19bb4977dcc6ceb6ed45810869e45908",
+  "analysisIds": [
+    "SIR-RA-042"
+  ],
+  "planIds": [
+    "SIR-RP-050"
+  ],
+  "scenarioIds": [
+    "@sir-package-010",
+    "@sir-package-011"
+  ],
+  "authorityFiles": [
+    {
+      "path": "docs/source-integrity-registry-remediation-analysis.md",
+      "sha256": "sha256:a95875139a180178d6d985b34373dbf90ee6889ecaec9e84131a230fa26d401c"
+    },
+    {
+      "path": "docs/source-integrity-registry-remediation.md",
+      "sha256": "sha256:30f90c4387dd27663283a4e9a16b253e09a291aca34fae15264abe3566f491d2"
+    },
+    {
+      "path": "docs/generated/source-integrity-registry-remediation-analysis-index.v1.json",
+      "sha256": "sha256:98f1ae8ddb0585eb0bf17b7bf83a4a9e74f072f18f101b1cc9ff92f07052d64c"
+    },
+    {
+      "path": "features/prove-source-integrity-registry-package.feature",
+      "sha256": "sha256:a8f544251ac7eb73a8b160fb59c2771b651f268b111770fc42f6621ddc027563"
+    }
+  ],
+  "implementationScopes": [
+    "contracts/",
+    "docs/remediation-governance/",
+    "scripts/",
+    "src/"
+  ]
+}
