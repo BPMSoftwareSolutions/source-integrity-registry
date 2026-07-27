@@ -127,6 +127,54 @@ describe("@sir-package-003 Packed consumer surface", () => {
   });
 });
 
+describe("@sir-package-009 Governed paths are scopable by a checkpoint", () => {
+  it("lets the checkpoint author scope every path the history gate governs", async () => {
+    const { isImplementationPath } = await import("../scripts/check-remediation-history.js");
+    const { parsesCheckpointArguments } = await import(
+      "../scripts/create-remediation-checkpoint.js"
+    );
+
+    // A path the history gate treats as implementation but the author cannot
+    // express as a scope would be unauthorizable: every commit touching it
+    // would be RED with no legal way to make it GREEN.
+    const governed = [
+      "src/index.ts",
+      "contracts/catalog/sir-schema-catalog.v1.json",
+      "scripts/check-generated.ts",
+      "tests/documentation-snapshot.test.ts",
+      "docs/remediation-governance/sir-documentation-snapshot.v1.schema.json",
+      "docs/documentation-snapshots/SIR-DS-001.json",
+      ".gitattributes",
+      "package.json",
+      "vitest.config.ts"
+    ];
+
+    for (const governedPath of governed) {
+      expect(isImplementationPath(governedPath), `${governedPath} must be governed`).toBe(true);
+
+      const scope = governedPath.includes("/")
+        ? `${governedPath.slice(0, governedPath.lastIndexOf("/"))}/`
+        : governedPath;
+      expect(() =>
+        parsesCheckpointArguments([
+          "--checkpoint",
+          "SIR-RC-999",
+          "--analysis",
+          "SIR-RA-042",
+          "--plan",
+          "SIR-RP-050",
+          "--scenario",
+          "@sir-package-010",
+          "--feature",
+          "features/prove-source-integrity-registry-package.feature",
+          "--scope",
+          scope
+        ])
+      ).not.toThrow();
+    }
+  });
+});
+
 describe("@sir-provenance-001 Release provenance remains deferred", () => {
   it("makes no authenticated release claim yet", async () => {
     const manifest = await readsPackageManifest();

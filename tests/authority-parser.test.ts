@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { parsesAuthorityDocument } from "../src/authority/parse-authority-document.js";
 import { digestsBytes } from "../src/domain/digest.js";
-import { createsSirSchemaValidator } from "../src/validation/ajv-factory.js";
+import { createsSirSchemaValidator, validatesGuarded } from "../src/validation/ajv-factory.js";
 
 const encode = (text: string): Uint8Array => new TextEncoder().encode(text);
 
@@ -188,5 +188,31 @@ describe("Duplicate-aware authority parser", () => {
 
     expect(() => validate(result.document.value)).not.toThrow();
     expect(validate(result.document.value)).toBe(true);
+  });
+
+  it("@sir-admit-012 turns an unvalidatable document into RED rather than a crash", () => {
+    // JSON may define its own "valueOf" member, shadowing the inherited method
+    // with a non-callable value. An ordinary prototype does not help here, and
+    // enumerating every such shape would be an open-ended guess. What must hold
+    // is that the validation boundary always yields a verdict: a checker that
+    // throws returns no result at all and cannot refuse bad authority.
+    const result = parsesAuthorityDocument(
+      encode('{"items":[{"valueOf":1},{"valueOf":2}]}')
+    );
+    expect(result.outcome).toBe("parsed");
+    if (result.outcome !== "parsed") return;
+
+    const validate = createsSirSchemaValidator().compile({
+      $schema: "https://json-schema.org/draft/2020-12/schema",
+      type: "object",
+      properties: { items: { type: "array", uniqueItems: true } }
+    });
+
+    // Unguarded, AJV's deep-equality helper throws on this input.
+    expect(() => validate(result.document.value)).toThrow();
+
+    // Guarded, the same input is refused instead of escaping as an exception.
+    const verdict = validatesGuarded(validate, result.document.value);
+    expect(verdict.outcome).toBe("invalid");
   });
 });

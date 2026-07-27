@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
@@ -8,6 +8,7 @@ import {
   appliesTransformation,
   isDocumentationDerivation,
   isDocumentationSnapshot,
+  projectsCheckedOutBytes,
   recoversOriginBytes,
   reproducesDerivedDocument,
   type DocumentationDerivation,
@@ -143,7 +144,7 @@ describe("@sir-package-011 Reproduce a derived document from admitted origin and
     expect(result.bytes.byteLength).toBe(derivation.derivedByteLength);
   });
 
-  it("binds the derived identity to the declaration rather than a checked-out file", async () => {
+  it("binds both the exact derived identity and its checked-out projection", async () => {
     const snapshot = await readsSnapshot();
     const derivation = await readsDerivation();
     const result = reproducesDerivedDocument(snapshot, derivation);
@@ -152,12 +153,37 @@ describe("@sir-package-011 Reproduce a derived document from admitted origin and
     // The reproduction is byte-exact against the declared derived digest.
     expect(result.digest).toBe(derivation.derivedSha256);
 
-    // The working-tree Markdown copy is checked out through the repository's
-    // `text=auto eol=lf` filter, so on a fresh clone its bytes are normalized
-    // just as the origin's were. It is a rendering, not authority: proof that
-    // depended on it would pass only on the machine that authored the file.
+    // The working copy is filtered through `text=auto eol=lf`, so its exact
+    // CRLF digest is reproducible only on the authoring machine. The declared
+    // projection is what makes a content comparison possible on every host.
+    const projected = projectsCheckedOutBytes(result.bytes);
+    expect(digestsBytes(projected)).toBe(derivation.checkedOutProjection.sha256);
+    expect(projected.byteLength).toBe(derivation.checkedOutProjection.byteLength);
+
+    // The checked-out file must be one of the two admitted identities.
     const rendering = await readFile(path.join(repositoryRoot, derivation.derivedPath));
-    expect(rendering.byteLength).toBeGreaterThan(0);
+    expect([derivation.derivedSha256, derivation.checkedOutProjection.sha256]).toContain(
+      digestsBytes(rendering)
+    );
+  });
+
+  it("reports changed derived content rather than only checking existence", async () => {
+    const derivation = await readsDerivation();
+    const original = await readFile(path.join(repositoryRoot, derivation.derivedPath));
+
+    try {
+      // Appending real content must be detected. Checking only that the path
+      // exists made any edit to the derived document pass.
+      await writeFile(
+        path.join(repositoryRoot, derivation.derivedPath),
+        Buffer.concat([original, Buffer.from("CORRUPTED\n", "utf8")])
+      );
+
+      const violations = await checksDocumentationSnapshots();
+      expect(violations.map((violation) => violation.code)).toContain("DERIVED_DOCUMENT_CHANGED");
+    } finally {
+      await writeFile(path.join(repositoryRoot, derivation.derivedPath), original);
+    }
   });
 
   it("fails closed when the declared origin digest disagrees with the snapshot", async () => {
@@ -233,6 +259,36 @@ describe("@sir-package-011 Reproduce a derived document from admitted origin and
     expect(result.outcome).toBe("failed");
     if (result.outcome !== "failed") return;
     expect(result.failure.kind).toBe("DERIVATION_TRANSFORMATION_INAPPLICABLE");
+  });
+
+  it("fails closed when required derivation authority is absent", async () => {
+    const declarationPath = path.join(SNAPSHOT_DIRECTORY, "SIR-DD-001.json");
+    const original = await readFile(declarationPath);
+
+    try {
+      // Deleting the declaration must not delete the obligation. Iterating over
+      // whatever happens to be present made removal a vacuous pass.
+      await rm(declarationPath);
+
+      const violations = await checksDocumentationSnapshots();
+      expect(violations.map((violation) => violation.code)).toContain("REQUIRED_DERIVATION_ABSENT");
+    } finally {
+      await writeFile(declarationPath, original);
+    }
+  });
+
+  it("fails closed when required origin authority is absent", async () => {
+    const snapshotPath = path.join(SNAPSHOT_DIRECTORY, "SIR-DS-001.json");
+    const original = await readFile(snapshotPath);
+
+    try {
+      await rm(snapshotPath);
+
+      const violations = await checksDocumentationSnapshots();
+      expect(violations.map((violation) => violation.code)).toContain("REQUIRED_SNAPSHOT_ABSENT");
+    } finally {
+      await writeFile(snapshotPath, original);
+    }
   });
 
   it("proves the committed origin and derivation without rewriting authority", async () => {

@@ -12,5 +12,10 @@
   },
   "derivedPath": "docs/durable-documentation-authority-intent.md",
   "derivedByteLength": 19876,
-  "derivedSha256": "sha256:de07b5ff26ff6e29e6081109a2d380aa1ae04f5b4cfae387bba7b5dd19e65b17"
+  "derivedSha256": "sha256:de07b5ff26ff6e29e6081109a2d380aa1ae04f5b4cfae387bba7b5dd19e65b17",
+  "checkedOutProjection": {
+    "lineEndings": "lf",
+    "byteLength": 18888,
+    "sha256": "sha256:3e13c982ea0ecf84dea00c38c8e1f033184f0c338c7a5ff724ebc7b005e2348e"
+  }
 }
