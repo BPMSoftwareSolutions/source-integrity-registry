@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.deterministic.solutions/sir/documentation-snapshot/1.0.0/schema.json",
+  "title": "SIR documentation origin snapshot v1",
+  "description": "An immutable record of the exact bytes a document was supplied as. The payload is base64 so the snapshot is immune to text normalization; a digest alone could witness identity but never reconstruct a missing preimage.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "snapshotType",
+    "snapshotId",
+    "suppliedPath",
+    "byteLength",
+    "sha256",
+    "encoding",
+    "contentBase64"
+  ],
+  "properties": {
+    "snapshotType": {
+      "const": "sir-documentation-snapshot.v1"
+    },
+    "snapshotId": {
+      "type": "string",
+      "pattern": "^SIR-DS-[0-9]{3}$"
+    },
+    "suppliedPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9._/-]+$"
+    },
+    "byteLength": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "encoding": {
+      "const": "base64"
+    },
+    "contentBase64": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9+/]*={0,2}$"
+      }
+    }
+  }
+}

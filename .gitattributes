@@ -5,3 +5,10 @@
 
 pnpm-lock.yaml -diff linguist-generated
 contracts/generated/** linguist-generated
+
+# Documentation origin snapshots carry supplied bytes that may use any line
+# ending. The rule above would rewrite those bytes on commit and checkout, so
+# the admitted digest could never be recovered again. The snapshot files hold
+# their payload base64-encoded, and normalization is disabled for exactly that
+# narrow path rather than through a repository-wide binary policy.
+docs/documentation-snapshots/** -text

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { parsesAuthorityDocument } from "../src/authority/parse-authority-document.js";
 import { digestsBytes } from "../src/domain/digest.js";
+import { createsSirSchemaValidator } from "../src/validation/ajv-factory.js";
 
 const encode = (text: string): Uint8Array => new TextEncoder().encode(text);
 
@@ -160,5 +161,32 @@ describe("Duplicate-aware authority parser", () => {
     expect(
       Object.prototype.hasOwnProperty.call(result.document.value as object, "__proto__")
     ).toBe(true);
+    // The member is an own data property, which is what prevents pollution.
+    // It is defineProperty that establishes this, not a null prototype.
+    expect((result.document.value as Record<string, unknown>)["polluted"]).toBeUndefined();
+  });
+
+  it("@sir-admit-012 yields objects JSON Schema comparison keywords can evaluate", () => {
+    const result = parsesAuthorityDocument(
+      encode('{"items":[{"path":"a","sha256":"x"},{"path":"b","sha256":"y"}]}')
+    );
+
+    expect(result.outcome).toBe("parsed");
+    if (result.outcome !== "parsed") return;
+
+    // A null-prototype object has no valueOf, and the deep-equality helper
+    // behind uniqueItems/const/enum calls it unconditionally. Parsed authority
+    // would then throw during validation instead of producing a verdict, so a
+    // schema could never witness a defect in the document it was given.
+    const validate = createsSirSchemaValidator().compile({
+      $schema: "https://json-schema.org/draft/2020-12/schema",
+      type: "object",
+      properties: {
+        items: { type: "array", uniqueItems: true, items: { type: "object" } }
+      }
+    });
+
+    expect(() => validate(result.document.value)).not.toThrow();
+    expect(validate(result.document.value)).toBe(true);
   });
 });

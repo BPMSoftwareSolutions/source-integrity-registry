@@ -68,3 +68,17 @@ export {
   SUPPORTED_DIALECT,
   type SchemaIdentity
 } from "./domain/schema-identity.js";
+
+export {
+  recoversOriginBytes,
+  reproducesDerivedDocument,
+  appliesTransformation,
+  isDocumentationSnapshot,
+  isDocumentationDerivation,
+  type DocumentationSnapshot,
+  type DocumentationDerivation,
+  type DocumentationTransformationId,
+  type DocumentationFailure,
+  type OriginRecoveryResult,
+  type DerivationResult
+} from "./documentation/documentation-snapshot.js";

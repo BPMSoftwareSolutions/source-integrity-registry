@@ -188,7 +188,13 @@ class AuthorityReader {
 
   private readObject(pointer: string): Record<string, unknown> {
     this.expect("{", pointer);
-    const result: Record<string, unknown> = Object.create(null) as Record<string, unknown>;
+    // An ordinary prototype, not Object.create(null). Prototype pollution is
+    // already prevented below by defining members with defineProperty, which
+    // never invokes a "__proto__" setter. A null-prototype object additionally
+    // lacks valueOf, and JSON Schema comparison keywords such as uniqueItems
+    // over objects call it unconditionally, so parsed authority would throw
+    // during validation instead of being validated.
+    const result: Record<string, unknown> = {};
     const seen = new Set<string>();
 
     this.skipWhitespace();

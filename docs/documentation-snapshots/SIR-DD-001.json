@@ -1,0 +1,16 @@
+{
+  "derivationType": "sir-documentation-derivation.v1",
+  "derivationId": "SIR-DD-001",
+  "originSnapshotId": "SIR-DS-001",
+  "originSha256": "sha256:162197a180a93f4c0ce248f525e151347ae0526c4a44c5275d2183a13a021e74",
+  "transformation": {
+    "transformationId": "remove-blank-line-at-byte-offset.v1",
+    "parameters": {
+      "byteOffset": 12598,
+      "removedSequence": "\r\n"
+    }
+  },
+  "derivedPath": "docs/durable-documentation-authority-intent.md",
+  "derivedByteLength": 19876,
+  "derivedSha256": "sha256:de07b5ff26ff6e29e6081109a2d380aa1ae04f5b4cfae387bba7b5dd19e65b17"
+}

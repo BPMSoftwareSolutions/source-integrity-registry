@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.deterministic.solutions/sir/documentation-derivation/1.0.0/schema.json",
+  "title": "SIR documentation derivation declaration v1",
+  "description": "A closed declaration binding an origin snapshot identity and digest, a transformation identity and its parameters, and the expected derived identity and digest. Proof reconstructs the derived document from the origin rather than trusting the recorded result.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "derivationType",
+    "derivationId",
+    "originSnapshotId",
+    "originSha256",
+    "transformation",
+    "derivedPath",
+    "derivedByteLength",
+    "derivedSha256"
+  ],
+  "properties": {
+    "derivationType": {
+      "const": "sir-documentation-derivation.v1"
+    },
+    "derivationId": {
+      "type": "string",
+      "pattern": "^SIR-DD-[0-9]{3}$"
+    },
+    "originSnapshotId": {
+      "type": "string",
+      "pattern": "^SIR-DS-[0-9]{3}$"
+    },
+    "originSha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "transformation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["transformationId", "parameters"],
+      "properties": {
+        "transformationId": {
+          "description": "A closed set. An unadmitted transformation fails rather than passing bytes through unchanged.",
+          "enum": ["remove-blank-line-at-byte-offset.v1"]
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["byteOffset", "removedSequence"],
+          "properties": {
+            "byteOffset": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "removedSequence": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "derivedPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9._/-]+$"
+    },
+    "derivedByteLength": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "derivedSha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}
